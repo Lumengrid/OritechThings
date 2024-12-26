@@ -16,10 +16,6 @@ tasks.named('wrapper', Wrapper).configure {
 version = mod_version
 group = mod_group_id
 
-repositories {
-    mavenLocal()
-}
-
 base {
     archivesName = mod_id
 }
@@ -111,28 +107,24 @@ configurations {
     runtimeClasspath.extendsFrom localRuntime
 }
 
+repositories {
+    mavenLocal()
+    maven {
+        name = 'NeoForged'
+        url = 'https://maven.neoforged.net/releases'
+    }
+    flatDir {
+        dir './libs'
+    }
+}
+
 dependencies {
-    // Example optional mod dependency with JEI
-    // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
-    // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
-    // compileOnly "mezz.jei:jei-${mc_version}-neoforge-api:${jei_version}"
-    // We add the full version to localRuntime, not runtimeOnly, so that we do not publish a dependency on it
-    // localRuntime "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
-
-    // Example mod dependency using a mod jar from ./libs with a flat dir repository
-    // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
-    // The group id is ignored when searching -- in this case, it is "blank"
-    // implementation "blank:coolmod-${mc_version}:${coolmod_version}"
-
-    // Example mod dependency using a file as dependency
-    // implementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
-
-    // Example project dependency using a sister or child project:
-    // implementation project(":myproject")
-
-    // For more info:
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    implementation name: 'geckolib-neoforge-1.21.1-4.7.1'
+    implementation name: 'owo-lib-neoforge-0.12.15-beta.12+1.21'
+    implementation name: 'architectury-13.0.8-neoforge'
+    implementation name: 'athena-neoforge-1.21-4.0.1'
+    implementation name: "forgified-fabric-api-0.107.0+2.0.22+1.21.1"
+    implementation name: "oritech-neoforge-0.12.3"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

@@ -1,5 +1,5 @@
 {
-  "itemGroup.examplemod": "Example Mod Tab",
-  "block.examplemod.example_block": "Example Block",
-  "item.examplemod.example_item": "Example Item"
+  "itemGroup.oritechthings": "Oritech Things",
+  "block.oritechthings.example_block": "Example Block",
+  "item.oritechthings.example_item": "Example Item"
 }
