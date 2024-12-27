@@ -108,23 +108,25 @@ configurations {
 }
 
 repositories {
-    mavenLocal()
-    maven {
-        name = 'NeoForged'
-        url = 'https://maven.neoforged.net/releases'
-    }
-    flatDir {
-        dir './libs'
+    exclusiveContent {
+        forRepository {
+            maven {
+                url "https://cursemaven.com"
+            }
+        }
+        filter {
+            includeGroup "curse.maven"
+        }
     }
 }
 
 dependencies {
-    implementation name: 'geckolib-neoforge-1.21.1-4.7.1'
-    implementation name: 'owo-lib-neoforge-0.12.15-beta.12+1.21'
-    implementation name: 'architectury-13.0.8-neoforge'
-    implementation name: 'athena-neoforge-1.21-4.0.1'
-    implementation name: "forgified-fabric-api-0.107.0+2.0.22+1.21.1"
-    implementation name: "oritech-neoforge-0.12.3"
+    implementation "curse.maven:fabric-889079:5998326"
+    implementation "curse.maven:athena-841890:5629395"
+    implementation "curse.maven:architectury-419699:5786327"
+    implementation "curse.maven:owolib-532610:5945693"
+    implementation "curse.maven:geckolib-388172:6024484"
+    implementation "curse.maven:oritech-1030830:5968206"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
