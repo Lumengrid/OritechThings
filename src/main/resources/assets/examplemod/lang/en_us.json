@@ -1,5 +1,19 @@
 {
   "itemGroup.oritechthings": "Oritech Things",
-  "block.oritechthings.example_block": "Example Block",
-  "item.oritechthings.example_item": "Example Item"
+  "block.oritechthings.addon_block_speed_tier_2": "Addon Block Speed Tier 2",
+  "block.oritechthings.addon_block_speed_tier_3": "Addon Block Speed Tier 3",
+  "block.oritechthings.addon_block_speed_tier_4": "Addon Block Speed Tier 4",
+  "block.oritechthings.addon_block_speed_tier_5": "Addon Block Speed Tier 5",
+  "block.oritechthings.addon_block_speed_tier_6": "Addon Block Speed Tier 6",
+  "block.oritechthings.addon_block_speed_tier_7": "Addon Block Speed Tier 7",
+  "block.oritechthings.addon_block_speed_tier_8": "Addon Block Speed Tier 8",
+  "block.oritechthings.addon_block_speed_tier_9": "Addon Block Speed Tier 9",
+  "block.oritechthings.addon_block_efficiency_tier_2": "Addon Block Efficiency Tier 2",
+  "block.oritechthings.addon_block_efficiency_tier_3": "Addon Block Efficiency Tier 3",
+  "block.oritechthings.addon_block_efficiency_tier_4": "Addon Block Efficiency Tier 4",
+  "block.oritechthings.addon_block_efficiency_tier_5": "Addon Block Efficiency Tier 5",
+  "block.oritechthings.addon_block_efficiency_tier_6": "Addon Block Efficiency Tier 6",
+  "block.oritechthings.addon_block_efficiency_tier_7": "Addon Block Efficiency Tier 7",
+  "block.oritechthings.addon_block_efficiency_tier_8": "Addon Block Efficiency Tier 8",
+  "block.oritechthings.addon_block_efficiency_tier_9": "Addon Block Efficiency Tier 9"
 }
