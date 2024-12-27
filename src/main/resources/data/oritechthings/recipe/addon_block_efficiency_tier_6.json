@@ -9,7 +9,7 @@
       "item": "oritechthings:addon_block_efficiency_tier_5"
     },
     "b": {
-      "tag": "c:blocks/electrum"
+      "item": "oritech:electrum_block"
     },
     "p": {
       "item": "oritech:plastic_sheet"

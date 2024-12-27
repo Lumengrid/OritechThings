@@ -2,6 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
+    "p": {
+      "item": "oritech:plastic_sheet"
+    },
     "e": {
       "item": "oritech:machine_extender"
     },
@@ -11,10 +14,7 @@
     "b": {
       "item": "oritech:biosteel_block"
     },
-    "p": {
-      "item": "oritech:plastic_sheet"
-    },
-    "s": {
+    "m": {
       "item": "oritech:magnetic_coil"
     }
   },
