@@ -16,7 +16,7 @@ out
 # gradle
 build
 .gradle
-
+generated/
 # other
 eclipse
 run

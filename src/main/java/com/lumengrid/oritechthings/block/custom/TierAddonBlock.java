@@ -12,7 +12,7 @@ import rearth.oritech.block.blocks.addons.MachineAddonBlock;
 public class TierAddonBlock extends MachineAddonBlock {
 
     public TierAddonBlock(AddonSettings addonSettings) {
-        super(BlockBehaviour.Properties.of(), addonSettings);
+        super(BlockBehaviour.Properties.of().strength(2f).requiresCorrectToolForDrops(), addonSettings);
     }
 
     @Override

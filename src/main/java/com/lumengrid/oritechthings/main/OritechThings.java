@@ -23,8 +23,6 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
-import static com.lumengrid.oritechthings.block.ModBlocks.*;
-
 @Mod(OritechThings.MOD_ID)
 public class OritechThings
 {

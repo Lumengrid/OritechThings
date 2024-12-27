@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "oritechthings:block/addon_block_speed_tier_3"
-  }
-}
