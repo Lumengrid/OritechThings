@@ -1,5 +1,6 @@
 package com.lumengrid.oritechthings.main;
 
+import com.lumengrid.oritechthings.block.ModBlockEntities;
 import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.item.ModCreativeModeTabs;
 import com.lumengrid.oritechthings.item.ModItems;
@@ -36,6 +37,7 @@ public class OritechThings
         ModCreativeModeTabs.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
+        ModBlockEntities.TIER_ADDON_ENTITIES.register(modEventBus);
         NeoForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative);

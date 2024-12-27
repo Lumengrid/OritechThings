@@ -1,15 +1,15 @@
 package com.lumengrid.oritechthings.block;
 
+import com.lumengrid.oritechthings.block.custom.TierAddonBlock;
 import com.lumengrid.oritechthings.item.ModItems;
 import com.lumengrid.oritechthings.main.OritechThings;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import rearth.oritech.block.blocks.addons.MachineAddonBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
+
 
 import java.util.function.Supplier;
 
@@ -65,18 +65,20 @@ public class ModBlocks {
     public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENCY_TIER_9 = registerBlock("addon_block_efficiency_tier_9",
             () ->  EfficiencyAddonBlock(0.45f));
 
-    private static MachineAddonBlock SpeedAddonBlock(float speedMultiplier, float efficiencyMultiplier) {
-        return new MachineAddonBlock(BlockBehaviour.Properties.of().mapColor(MapColor.CLAY),
+    private static Block SpeedAddonBlock(float speedMultiplier, float efficiencyMultiplier) {
+        return new TierAddonBlock(
                 MachineAddonBlock.AddonSettings.getDefaultSettings()
                         .withSpeedMultiplier(speedMultiplier)
                         .withEfficiencyMultiplier(efficiencyMultiplier)
+                        .withNeedsSupport(false)
                         .withBoundingShape(MachineAddonBlock.MACHINE_SPEED_ADDON_SHAPE));
     }
 
-    private static MachineAddonBlock EfficiencyAddonBlock(float efficiencyMultiplier) {
-        return new MachineAddonBlock(BlockBehaviour.Properties.of().mapColor(MapColor.CLAY),
+    private static MachineAddonBlock EfficiencyAddonBlock(float efficiencyMultiplier) {;
+        return new TierAddonBlock(
                 MachineAddonBlock.AddonSettings.getDefaultSettings()
                         .withEfficiencyMultiplier(efficiencyMultiplier)
+                        .withNeedsSupport(false)
                         .withBoundingShape(MachineAddonBlock.MACHINE_EFFICIENCY_ADDON_SHAPE));
     }
 
