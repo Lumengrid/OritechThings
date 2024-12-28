@@ -16,7 +16,7 @@ public class ModCreativeModeTabs {
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, OritechThings.MOD_ID);
 
     public static final Supplier<CreativeModeTab> ORITECH_THINGS_TAB = CREATIVE_MODE_TAB.register("oritech_things_tab",
-            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModBlocks.ADDON_BLOCK_SPEED_TIER_9.get()))
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModBlocks.ADDON_BLOCK_SPEED_TIER_8.get()))
                     .title(Component.translatable("itemGroup.oritechthings"))
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModBlocks.ADDON_BLOCK_SPEED_TIER_2);
