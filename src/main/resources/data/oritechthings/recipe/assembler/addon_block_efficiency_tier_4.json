@@ -1,0 +1,28 @@
+{
+  "type": "oritech:assembler",
+  "fluidInputAmount": 0,
+  "fluidInputVariant": "minecraft:empty",
+  "fluidOutputAmount": 0,
+  "fluidOutputVariant": "minecraft:empty",
+  "ingredients": [
+    {
+      "item": "oritechthings:addon_block_efficiency_tier_3"
+    },
+    {
+      "item": "oritechthings:addon_block_efficiency_tier_3"
+    },
+    {
+      "item": "oritech:electrum_block"
+    },
+    {
+      "item": "oritech:machine_extender"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_efficiency_tier_4"
+    }
+  ],
+  "time": 400
+}
