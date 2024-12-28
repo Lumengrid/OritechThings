@@ -2,6 +2,7 @@ package com.lumengrid.oritechthings.block;
 
 import com.lumengrid.oritechthings.block.custom.TierAddonBlock;
 import com.lumengrid.oritechthings.item.ModItems;
+import com.lumengrid.oritechthings.main.ConfigLoader;
 import com.lumengrid.oritechthings.main.OritechThings;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
@@ -43,38 +44,7 @@ public class ModBlocks {
         }
     }
 
-    public static final DeferredRegister.Blocks BLOCKS =
-            DeferredRegister.createBlocks(OritechThings.MOD_ID);
-    public static final Map<String, Float> SPEED_ADDON_SPEED_MULTIPLIERS = Map.of(
-            "addon_block_speed_tier_2", 0.80f,
-            "addon_block_speed_tier_3", 0.70f,
-            "addon_block_speed_tier_4", 0.60f,
-            "addon_block_speed_tier_5", 0.50f,
-            "addon_block_speed_tier_6", 0.40f,
-            "addon_block_speed_tier_7", 0.30f,
-            "addon_block_speed_tier_8", 0.20f,
-            "addon_block_speed_tier_9", 0.10f
-    );
-    public static final Map<String, Float> SPEED_ADDON_EFFICIENCY_MULTIPLIERS = Map.of(
-            "addon_block_speed_tier_2", 1.10f,
-            "addon_block_speed_tier_3", 1.15f,
-            "addon_block_speed_tier_4", 1.20f,
-            "addon_block_speed_tier_5", 1.25f,
-            "addon_block_speed_tier_6", 1.30f,
-            "addon_block_speed_tier_7", 1.35f,
-            "addon_block_speed_tier_8", 1.40f,
-            "addon_block_speed_tier_9", 1.45f
-    );
-    public static final Map<String, Float> EFFICIENCY_ADDON_EFFICIENCY_MULTIPLIERS = Map.of(
-            "addon_block_efficiency_tier_2", 0.79f,
-            "addon_block_efficiency_tier_3", 0.75f,
-            "addon_block_efficiency_tier_4", 0.70f,
-            "addon_block_efficiency_tier_5", 0.65f,
-            "addon_block_efficiency_tier_6", 0.60f,
-            "addon_block_efficiency_tier_7", 0.55f,
-            "addon_block_efficiency_tier_8", 0.50f,
-            "addon_block_efficiency_tier_9", 0.45f
-    );
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(OritechThings.MOD_ID);
 
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_2 = registerBlock("addon_block_speed_tier_2", () -> SpeedAddonBlock("addon_block_speed_tier_2"));
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_3 = registerBlock("addon_block_speed_tier_3", () -> SpeedAddonBlock("addon_block_speed_tier_3"));
@@ -84,7 +54,6 @@ public class ModBlocks {
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_7 = registerBlock("addon_block_speed_tier_7", () -> SpeedAddonBlock("addon_block_speed_tier_7"));
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_8 = registerBlock("addon_block_speed_tier_8", () -> SpeedAddonBlock("addon_block_speed_tier_8"));
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_9 = registerBlock("addon_block_speed_tier_9", () -> SpeedAddonBlock("addon_block_speed_tier_9"));
-
 
     public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENCY_TIER_2 = registerBlock("addon_block_efficiency_tier_2", () -> EfficiencyAddonBlock("addon_block_efficiency_tier_2"));
     public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENCY_TIER_3 = registerBlock("addon_block_efficiency_tier_3", () -> EfficiencyAddonBlock("addon_block_efficiency_tier_3"));
@@ -96,8 +65,10 @@ public class ModBlocks {
     public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENCY_TIER_9 = registerBlock("addon_block_efficiency_tier_9", () -> EfficiencyAddonBlock("addon_block_efficiency_tier_9"));
 
     private static Block SpeedAddonBlock(String name) {
-        float speedMultiplier = SPEED_ADDON_SPEED_MULTIPLIERS.get(name);
-        float efficiencyMultiplier = SPEED_ADDON_EFFICIENCY_MULTIPLIERS.get(name);
+        String[] split = name.split("_");
+        int i = Integer.parseInt(split[split.length - 1]) - 2;
+        float speedMultiplier = ConfigLoader.getInstance().speedAddonSpeedMultiplier.get(i);
+        float efficiencyMultiplier = ConfigLoader.getInstance().speedAddonEfficiencyMultiplier.get(i);
         return new TierAddonBlock(
                 MachineAddonBlock.AddonSettings.getDefaultSettings()
                         .withSpeedMultiplier(speedMultiplier)
@@ -107,7 +78,9 @@ public class ModBlocks {
     }
 
     private static MachineAddonBlock EfficiencyAddonBlock(String name) {
-        float efficiencyMultiplier = EFFICIENCY_ADDON_EFFICIENCY_MULTIPLIERS.get(name);
+        String[] split = name.split("_");
+        int i = Integer.parseInt(split[split.length - 1]) - 2;
+        float efficiencyMultiplier = ConfigLoader.getInstance().efficiencyAddonEfficiencyMultiplier.get(i);
         return new TierAddonBlock(
                 MachineAddonBlock.AddonSettings.getDefaultSettings()
                         .withEfficiencyMultiplier(efficiencyMultiplier)
