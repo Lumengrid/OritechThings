@@ -5,9 +5,9 @@
     32
   ],
   "textures": {
-    "0": "oritechthings:block/addon_block_speed_tier_2",
-    "particle": "oritechthings:block/addon_block_speed_tier_2",
-    "texture": "oritechthings:block/addon_block_speed_tier_2"
+    "0": "oritechthings:block/addon_block_speed_tier_9",
+    "particle": "oritechthings:block/addon_block_speed_tier_9",
+    "texture": "oritechthings:block/addon_block_speed_tier_9"
   },
   "elements": [
     {
