@@ -1,5 +1,11 @@
 {
   "credit": "Made with Blockbench",
+  "parent": "block/cube",
+  "render_type": "cutout",
+  "texture_size": [
+    32,
+    32
+  ],
   "textures": {
     "0": "oritechthings:block/addon_block_speed",
     "particle": "oritechthings:block/addon_block_speed"
