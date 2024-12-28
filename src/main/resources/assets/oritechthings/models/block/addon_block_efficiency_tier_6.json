@@ -1,5 +1,7 @@
 {
   "credit": "Made with Blockbench",
+  "parent": "block/cube",
+  "render_type": "cutout",
   "textures": {
     "0": "oritechthings:block/addon_block_efficiency",
     "particle": "oritechthings:block/addon_block_efficiency"
