@@ -13,6 +13,10 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
+tasks.processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
 version = mod_version
 group = mod_group_id
 

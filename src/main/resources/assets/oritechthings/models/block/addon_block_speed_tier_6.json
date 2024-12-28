@@ -1,0 +1,162 @@
+{
+  "credit": "Made with Blockbench",
+  "texture_size": [
+    32,
+    32
+  ],
+  "textures": {
+    "0": "oritechthings:block/addon_block_speed_tier_2",
+    "particle": "oritechthings:block/addon_block_speed_tier_2",
+    "texture": "oritechthings:block/addon_block_speed_tier_2"
+  },
+  "elements": [
+    {
+      "name": "base",
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        2,
+        16
+      ],
+      "color": 9,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            8,
+            1
+          ],
+          "texture": "#missing"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            8,
+            1
+          ],
+          "texture": "#missing"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            1
+          ],
+          "texture": "#missing"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            8,
+            1
+          ],
+          "texture": "#missing"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": "#missing"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": "#missing"
+        }
+      }
+    },
+    {
+      "name": "gems holder",
+      "from": [
+        2,
+        2,
+        2
+      ],
+      "to": [
+        14,
+        4,
+        14
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          2,
+          2,
+          2
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            6,
+            0,
+            12,
+            1
+          ],
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            6,
+            1,
+            12,
+            2
+          ],
+          "texture": "#0"
+        },
+        "south": {
+          "uv": [
+            6,
+            2,
+            12,
+            3
+          ],
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            6,
+            3,
+            12,
+            4
+          ],
+          "texture": "#0"
+        },
+        "up": {
+          "uv": [
+            6,
+            6,
+            0,
+            0
+          ],
+          "texture": "#0"
+        },
+        "down": {
+          "uv": [
+            6,
+            6,
+            0,
+            12
+          ],
+          "texture": "#0"
+        }
+      }
+    }
+  ]
+}
