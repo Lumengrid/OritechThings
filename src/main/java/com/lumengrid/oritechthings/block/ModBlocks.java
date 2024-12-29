@@ -4,6 +4,7 @@ import com.lumengrid.oritechthings.block.custom.TierAddonBlock;
 import com.lumengrid.oritechthings.item.ModItems;
 import com.lumengrid.oritechthings.main.ConfigLoader;
 import com.lumengrid.oritechthings.main.OritechThings;
+import com.lumengrid.oritechthings.util.ShapeUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -16,17 +17,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import rearth.oritech.block.blocks.addons.MachineAddonBlock;
 import rearth.oritech.util.Geometry;
 
-
-import java.util.Map;
 import java.util.function.Supplier;
 
 public class ModBlocks {
-
-    public static final VoxelShape ADDON_SHAPE = Shapes.or(
-        Shapes.box(1 / 16f,0, 1 / 16f, 15 / 16f, 2 / 16f, 15 / 16f),
-        Shapes.box(3 / 16f,2 / 16f, 3 / 16f, 13 / 16f, 2 / 16f, 13 / 16f)
-    );
-
     public static VoxelShape[][] USABLE_ADDON_SHAPE;
     static {
         USABLE_ADDON_SHAPE = new VoxelShape[Direction.values().length][AttachFace.values().length];
@@ -37,7 +30,8 @@ public class ModBlocks {
 
                 for (AttachFace face : faces) {
                     USABLE_ADDON_SHAPE[facing.ordinal()][face.ordinal()] = Shapes.or(
-                        Geometry.rotateVoxelShape(ADDON_SHAPE, facing, face)
+                        Geometry.rotateVoxelShape(ShapeUtil.shapeFromDimension(1, 0, 1, 14, 2, 14), facing, face),
+                        Geometry.rotateVoxelShape(ShapeUtil.shapeFromDimension(3,2, 3, 10, 2, 10), facing, face)
                     );
                 }
             }
