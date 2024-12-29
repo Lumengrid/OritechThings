@@ -2,12 +2,17 @@ package com.lumengrid.oritechthings.block.custom;
 
 import com.lumengrid.oritechthings.block.entity.TierAddonBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +22,7 @@ import rearth.oritech.block.blocks.addons.MachineAddonBlock;
 public class TierAddonBlock extends MachineAddonBlock {
 
     public TierAddonBlock(AddonSettings addonSettings) {
-        super(BlockBehaviour.Properties.of().strength(2f).requiresCorrectToolForDrops(), addonSettings);
+        super(Properties.of().strength(2f).requiresCorrectToolForDrops(), addonSettings);
     }
 
     @Override
@@ -27,6 +32,29 @@ public class TierAddonBlock extends MachineAddonBlock {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
+
+        //Prima direzione usata per la direzione del blocco
+        Direction dir = switch (ctx.getClickedFace()) {
+            case DOWN, UP, NORTH -> Direction.NORTH;
+            case SOUTH -> Direction.SOUTH;
+            case WEST -> Direction.WEST;
+            case EAST -> Direction.EAST;
+        };
+
+        //Seconda direzione usata per capire se è su una parete, un muro o un pavimento
+        Direction face = ctx.getClickedFace();
+        AttachFace f = switch (face) {
+            case DOWN -> AttachFace.CEILING;
+            case UP -> AttachFace.FLOOR;
+            case NORTH, EAST, WEST, SOUTH -> AttachFace.WALL;
+        };
+
+        //Questo definisce gli stati del blocco quando è piazzato
+        return defaultBlockState().setValue(FACING, dir).setValue(FACE, f);
     }
 
     @NotNull
@@ -39,6 +67,7 @@ public class TierAddonBlock extends MachineAddonBlock {
         return this.addonSettings.boundingShape()[state.getValue(FACING).ordinal()][state.getValue(FACE).ordinal()];
     }
 
+    // Questo serve per dire al gioco: "Ciccio, guarda che a questo blocco devi assegnare queste proprietà"
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(ADDON_USED, FACING, FACE);
     }
