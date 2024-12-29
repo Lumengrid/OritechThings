@@ -10,12 +10,18 @@
     },
     "b": {
       "item": "oritech:biosteel_block"
+    },
+    "p": {
+      "item": "oritech:plastic_sheet"
+    },
+    "s": {
+      "item": "oritech:silicon"
     }
   },
   "pattern": [
-    "bbb",
+    "ppp",
     "aea",
-    "bbb"
+    "sbs"
   ],
   "result": {
     "count": 1,

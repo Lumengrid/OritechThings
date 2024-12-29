@@ -33,15 +33,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         addonBlockState(ModBlocks.ADDON_BLOCK_SPEED_TIER_9);
     }
 
-    private void blockWithItem(DeferredBlock<?> deferredBlock) {
-        simpleBlockWithItem(deferredBlock.get(), cubeAll(deferredBlock.get()));
-    }
-
     private void addonBlockState(DeferredBlock<?> deferredBlock) {
         simpleBlockWithItem(deferredBlock.get(), models().getExistingFile(modLoc("block/" + deferredBlock.getId().getPath())));
-//        getVariantBuilder(block)
-//                .forAllStates(state -> ConfiguredModel.builder()
-//                        .modelFile(models().getExistingFile(modLoc("block/" + modelName)))
-//                        .build());
     }
 }

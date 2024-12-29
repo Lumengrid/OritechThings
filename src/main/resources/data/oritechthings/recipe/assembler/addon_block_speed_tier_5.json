@@ -9,13 +9,13 @@
       "item": "oritechthings:addon_block_speed_tier_4"
     },
     {
-      "item": "oritechthings:addon_block_speed_tier_4"
+      "item": "oritech:machine_speed_addon"
     },
     {
-      "item": "oritech:biosteel_block"
+      "item": "oritech:biosteel_ingot"
     },
     {
-      "item": "oritech:machine_extender"
+      "item": "oritech:flux_gate"
     }
   ],
   "results": [
@@ -24,5 +24,5 @@
       "id": "oritechthings:addon_block_speed_tier_5"
     }
   ],
-  "time": 500
+  "time": 1000
 }
