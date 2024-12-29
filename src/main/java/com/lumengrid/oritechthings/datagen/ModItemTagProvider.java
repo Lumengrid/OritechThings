@@ -28,9 +28,9 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_4.get().asItem())
                 .add(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_5.get().asItem())
                 .add(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_6.get().asItem())
-                .add(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_2.get().asItem())
-                .add(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_2.get().asItem())
-                .add(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_2.get().asItem());
+                .add(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_7.get().asItem())
+                .add(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_8.get().asItem())
+                .add(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_9.get().asItem());
 
         tag(ModTags.Items.TIERED_ADDON_SPEED)
                 .add(ModBlocks.ADDON_BLOCK_SPEED_TIER_2.get().asItem())
@@ -38,8 +38,8 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModBlocks.ADDON_BLOCK_SPEED_TIER_4.get().asItem())
                 .add(ModBlocks.ADDON_BLOCK_SPEED_TIER_5.get().asItem())
                 .add(ModBlocks.ADDON_BLOCK_SPEED_TIER_6.get().asItem())
-                .add(ModBlocks.ADDON_BLOCK_SPEED_TIER_2.get().asItem())
-                .add(ModBlocks.ADDON_BLOCK_SPEED_TIER_2.get().asItem())
-                .add(ModBlocks.ADDON_BLOCK_SPEED_TIER_2.get().asItem());
+                .add(ModBlocks.ADDON_BLOCK_SPEED_TIER_7.get().asItem())
+                .add(ModBlocks.ADDON_BLOCK_SPEED_TIER_8.get().asItem())
+                .add(ModBlocks.ADDON_BLOCK_SPEED_TIER_9.get().asItem());
     }
 }
