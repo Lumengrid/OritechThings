@@ -6,7 +6,6 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 import net.neoforged.fml.loading.FMLPaths;
 
 import java.io.*;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigLoader {
-    public static final String CONFIG_FILE = "oritechthings.json";
+    public static final String CONFIG_FILE = "oritech-things.json5";
     private static ConfigLoader INSTANCE = new ConfigLoader();
 
     private ConfigLoader() {}
@@ -27,7 +26,7 @@ public class ConfigLoader {
     @Expose
     @SerializedName("speed_addon_speed_multiplier")
     public List<Float> speedAddonSpeedMultiplier = new ArrayList<>(
-        List.of(0.8f, 0.7f, 0.6f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f)
+        List.of(0.79f, 0.7f, 0.6f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f)
     );
 
     @Expose
