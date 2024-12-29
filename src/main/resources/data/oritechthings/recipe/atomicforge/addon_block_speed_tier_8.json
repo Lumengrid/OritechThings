@@ -6,13 +6,13 @@
   "fluidOutputVariant": "minecraft:empty",
   "ingredients": [
     {
+      "item": "oritechthings:addon_block_speed_tier_7"
+    },
+    {
+      "item": "oritech:machine_speed_addon"
+    },
+    {
       "item": "oritech:prometheum_ingot"
-    },
-    {
-      "item": "oritechthings:addon_block_speed_tier_7"
-    },
-    {
-      "item": "oritechthings:addon_block_speed_tier_7"
     }
   ],
   "results": [
@@ -21,5 +21,5 @@
       "id": "oritechthings:addon_block_speed_tier_8"
     }
   ],
-  "time": 400
+  "time": 800
 }
