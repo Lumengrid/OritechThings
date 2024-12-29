@@ -1,9 +1,16 @@
 package com.lumengrid.oritechthings.datagen;
 
 import com.lumengrid.oritechthings.block.ModBlocks;
+import com.lumengrid.oritechthings.block.custom.TierAddonBlock;
 import com.lumengrid.oritechthings.main.OritechThings;
+import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
@@ -34,6 +41,25 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     private void addonBlockState(DeferredBlock<?> deferredBlock) {
-        simpleBlockWithItem(deferredBlock.get(), models().getExistingFile(modLoc("block/" + deferredBlock.getId().getPath())));
+        ResourceLocation path = ResourceLocation.parse(deferredBlock.getId().getNamespace() + ":block/" + deferredBlock.getId().getPath());
+        ModelFile model = model(path);
+
+        //Questo crea il modello per l'inventario
+        simpleBlockItem(deferredBlock.get(), model);
+
+        //Questo invece per il blocco in se per se, e si occupa di cose tipo girare il modello di 180 gradi quando guarda verso sud invece che nord
+        getVariantBuilder(deferredBlock.get())
+            .forAllStates(state ->
+                    ConfiguredModel.builder()
+                        .modelFile(model)
+                        .rotationY((int) state.getValue(TierAddonBlock.FACING).getOpposite().toYRot())
+                        .rotationX(state.getValue(TierAddonBlock.FACE).ordinal() * 90)
+                        .build()
+                );
+
+    }
+
+    private static ModelFile model(ResourceLocation model) {
+        return new ModelFile.UncheckedModelFile(model);
     }
 }
