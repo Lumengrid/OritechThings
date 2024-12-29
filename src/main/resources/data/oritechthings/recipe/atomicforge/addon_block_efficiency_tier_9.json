@@ -6,13 +6,13 @@
   "fluidOutputVariant": "minecraft:empty",
   "ingredients": [
     {
+      "item": "oritechthings:addon_block_efficiency_tier_8"
+    },
+    {
+      "item": "oritech:machine_efficiency_addon"
+    },
+    {
       "item": "oritech:machine_core_7"
-    },
-    {
-      "item": "oritechthings:addon_block_efficiency_tier_8"
-    },
-    {
-      "item": "oritechthings:addon_block_efficiency_tier_8"
     }
   ],
   "results": [
@@ -21,5 +21,5 @@
       "id": "oritechthings:addon_block_efficiency_tier_9"
     }
   ],
-  "time": 450
+  "time": 900
 }

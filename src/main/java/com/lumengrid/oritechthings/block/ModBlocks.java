@@ -46,7 +46,7 @@ public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS =
             DeferredRegister.createBlocks(OritechThings.MOD_ID);
     public static final Map<String, Float> SPEED_ADDON_SPEED_MULTIPLIERS = Map.of(
-            "addon_block_speed_tier_2", 0.80f,
+            "addon_block_speed_tier_2", 0.79f,
             "addon_block_speed_tier_3", 0.70f,
             "addon_block_speed_tier_4", 0.60f,
             "addon_block_speed_tier_5", 0.50f,
