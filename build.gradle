@@ -122,15 +122,23 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+
+    maven {
+        url "https://maven.su5ed.dev/releases"
+    }
 }
 
 dependencies {
-    implementation "curse.maven:fabric-889079:5998326"
+    implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:0.104.0+2.0.15+1.21.1"
+
     implementation "curse.maven:athena-841890:5629395"
     implementation "curse.maven:architectury-419699:5786327"
     implementation "curse.maven:owolib-532610:5945693"
     implementation "curse.maven:geckolib-388172:6024484"
-    implementation "curse.maven:oritech-1030830:5968206"
+
+    implementation "curse.maven:oritech-1030830:6031584"
+
+    implementation "curse.maven:jei-238222:5846880"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
