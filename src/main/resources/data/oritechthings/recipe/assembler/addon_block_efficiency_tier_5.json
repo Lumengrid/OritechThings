@@ -9,13 +9,13 @@
       "item": "oritechthings:addon_block_efficiency_tier_4"
     },
     {
-      "item": "oritech:machine_efficiency_addon"
+      "item": "oritechthings:addon_block_efficiency_tier_4"
     },
     {
-      "item": "oritech:electrum_ingot"
+      "item": "oritech:electrum_block"
     },
     {
-      "item": "oritech:flux_gate"
+      "item": "oritech:machine_extender"
     }
   ],
   "results": [
@@ -24,5 +24,5 @@
       "id": "oritechthings:addon_block_efficiency_tier_5"
     }
   ],
-  "time": 1000
+  "time": 500
 }

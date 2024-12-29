@@ -6,13 +6,13 @@
   "fluidOutputVariant": "minecraft:empty",
   "ingredients": [
     {
+      "item": "oritech:flux_gate"
+    },
+    {
       "item": "oritechthings:addon_block_efficiency_tier_5"
     },
     {
-      "item": "oritech:machine_efficiency_addon"
-    },
-    {
-      "item": "oritech:advanced_computing_engine"
+      "item": "oritechthings:addon_block_efficiency_tier_5"
     }
   ],
   "results": [
@@ -21,5 +21,5 @@
       "id": "oritechthings:addon_block_efficiency_tier_6"
     }
   ],
-  "time": 600
+  "time": 300
 }

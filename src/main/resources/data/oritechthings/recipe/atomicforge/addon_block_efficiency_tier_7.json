@@ -6,13 +6,13 @@
   "fluidOutputVariant": "minecraft:empty",
   "ingredients": [
     {
+      "item": "oritech:heisenberg_compensator"
+    },
+    {
       "item": "oritechthings:addon_block_efficiency_tier_6"
     },
     {
-      "item": "oritech:machine_efficiency_addon"
-    },
-    {
-      "item": "oritech:heisenberg_compensator"
+      "item": "oritechthings:addon_block_efficiency_tier_6"
     }
   ],
   "results": [
@@ -21,5 +21,5 @@
       "id": "oritechthings:addon_block_efficiency_tier_7"
     }
   ],
-  "time": 700
+  "time": 350
 }
