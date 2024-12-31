@@ -34,6 +34,15 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.ADDON_BLOCK_SPEED_TIER_7.get());
         dropSelf(ModBlocks.ADDON_BLOCK_SPEED_TIER_8.get());
         dropSelf(ModBlocks.ADDON_BLOCK_SPEED_TIER_9.get());
+
+        dropSelf(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_2.get());
+        dropSelf(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_3.get());
+        dropSelf(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_4.get());
+        dropSelf(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_5.get());
+        dropSelf(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_6.get());
+        dropSelf(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_7.get());
+        dropSelf(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_8.get());
+        dropSelf(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_9.get());
     }
 
     @Override

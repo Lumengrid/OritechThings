@@ -1,0 +1,25 @@
+{
+  "type": "oritech:atomic_forge",
+  "fluidInputAmount": 0,
+  "fluidInputVariant": "minecraft:empty",
+  "fluidOutputAmount": 0,
+  "fluidOutputVariant": "minecraft:empty",
+  "ingredients": [
+    {
+      "item": "oritechthings:addon_block_speed_tier_6"
+    },
+    {
+      "item": "oritechthings:addon_block_efficiency_tier_4"
+    },
+    {
+      "item": "oritech:advanced_computing_engine"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_efficient_speed_tier_6"
+    }
+  ],
+  "time": 600
+}

@@ -35,6 +35,14 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.ADDON_BLOCK_SPEED_TIER_6.get())
                 .add(ModBlocks.ADDON_BLOCK_SPEED_TIER_7.get())
                 .add(ModBlocks.ADDON_BLOCK_SPEED_TIER_8.get())
-                .add(ModBlocks.ADDON_BLOCK_SPEED_TIER_9.get());
+                .add(ModBlocks.ADDON_BLOCK_SPEED_TIER_9.get())
+                .add(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_2.get())
+                .add(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_3.get())
+                .add(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_4.get())
+                .add(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_5.get())
+                .add(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_6.get())
+                .add(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_7.get())
+                .add(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_8.get())
+                .add(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_9.get());
     }
 }

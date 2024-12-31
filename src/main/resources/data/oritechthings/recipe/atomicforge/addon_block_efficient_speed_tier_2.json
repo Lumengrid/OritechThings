@@ -1,0 +1,25 @@
+{
+  "type": "oritech:atomic_forge",
+  "fluidInputAmount": 0,
+  "fluidInputVariant": "minecraft:empty",
+  "fluidOutputAmount": 0,
+  "fluidOutputVariant": "minecraft:empty",
+  "ingredients": [
+    {
+      "item": "oritechthings:addon_block_speed_tier_2"
+    },
+    {
+      "item": "oritech:machine_efficiency_addon"
+    },
+    {
+      "item": "oritech:plastic_sheet"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_efficient_speed_tier_2"
+    }
+  ],
+  "time": 200
+}
