@@ -27,6 +27,14 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.ADDON_BLOCK_SPEED_TIER_7);
                         output.accept(ModBlocks.ADDON_BLOCK_SPEED_TIER_8);
                         output.accept(ModBlocks.ADDON_BLOCK_SPEED_TIER_9);
+                        output.accept(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_2);
+                        output.accept(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_3);
+                        output.accept(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_4);
+                        output.accept(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_5);
+                        output.accept(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_6);
+                        output.accept(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_7);
+                        output.accept(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_8);
+                        output.accept(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_9);
                         output.accept(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_2);
                         output.accept(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_3);
                         output.accept(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_4);
