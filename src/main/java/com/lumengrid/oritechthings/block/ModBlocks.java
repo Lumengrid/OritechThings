@@ -48,37 +48,6 @@ public class ModBlocks {
 
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(OritechThings.MOD_ID);
 
-    public static final Map<String, Float> SPEED_ADDON_SPEED_MULTIPLIERS = Map.of(
-            "addon_block_speed_tier_2", 0.80f,
-            "addon_block_speed_tier_3", 0.70f,
-            "addon_block_speed_tier_4", 0.60f,
-            "addon_block_speed_tier_5", 0.50f,
-            "addon_block_speed_tier_6", 0.40f,
-            "addon_block_speed_tier_7", 0.30f,
-            "addon_block_speed_tier_8", 0.20f,
-            "addon_block_speed_tier_9", 0.10f
-    );
-    public static final Map<String, Float> SPEED_ADDON_EFFICIENCY_MULTIPLIERS = Map.of(
-            "addon_block_speed_tier_2", 1.10f,
-            "addon_block_speed_tier_3", 1.15f,
-            "addon_block_speed_tier_4", 1.20f,
-            "addon_block_speed_tier_5", 1.25f,
-            "addon_block_speed_tier_6", 1.30f,
-            "addon_block_speed_tier_7", 1.35f,
-            "addon_block_speed_tier_8", 1.40f,
-            "addon_block_speed_tier_9", 1.45f
-    );
-    public static final Map<String, Float> EFFICIENCY_ADDON_EFFICIENCY_MULTIPLIERS = Map.of(
-            "addon_block_efficiency_tier_2", 0.79f,
-            "addon_block_efficiency_tier_3", 0.75f,
-            "addon_block_efficiency_tier_4", 0.70f,
-            "addon_block_efficiency_tier_5", 0.65f,
-            "addon_block_efficiency_tier_6", 0.60f,
-            "addon_block_efficiency_tier_7", 0.55f,
-            "addon_block_efficiency_tier_8", 0.50f,
-            "addon_block_efficiency_tier_9", 0.45f
-    );
-
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_2 = registerBlock("addon_block_speed_tier_2", () -> speedAddonBlock("addon_block_speed_tier_2"));
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_3 = registerBlock("addon_block_speed_tier_3", () -> speedAddonBlock("addon_block_speed_tier_3"));
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_4 = registerBlock("addon_block_speed_tier_4", () -> speedAddonBlock("addon_block_speed_tier_4"));
