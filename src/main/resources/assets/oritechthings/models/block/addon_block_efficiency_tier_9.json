@@ -1,6 +1,6 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "block/cube",
+	"parent": "oritechthings:block/addon_base",
 	"render_type": "cutout",
 	"texture_size": [32, 32],
 	"textures": {
