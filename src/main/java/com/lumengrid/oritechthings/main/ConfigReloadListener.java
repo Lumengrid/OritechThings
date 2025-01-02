@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ConfigReloadListener implements ResourceManagerReloadListener {
 
+    @SuppressWarnings("null")
     @Override
     public void onResourceManagerReload(@NotNull ResourceManager pResourceManager) {
         ConfigLoader.getInstance().load();

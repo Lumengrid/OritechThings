@@ -12,7 +12,11 @@ public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> TIER_ADDON_ENTITIES =
             DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, OritechThings.MOD_ID);
 
-    public static final Supplier<BlockEntityType<TierAddonBlockEntity>> TIER_ADDON =
+        
+
+
+    @SuppressWarnings("null")
+public static final Supplier<BlockEntityType<TierAddonBlockEntity>> TIER_ADDON =
             TIER_ADDON_ENTITIES.register("tier_addon",
                     () -> BlockEntityType.Builder.of(TierAddonBlockEntity::new,
                             ModBlocks.ADDON_BLOCK_SPEED_TIER_2.get(),
