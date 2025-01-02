@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import net.neoforged.fml.loading.FMLPaths;
 
@@ -24,21 +23,17 @@ public class ConfigLoader {
     }
 
     @Expose
-    @SerializedName("speed_addon_speed_multiplier")
-    public List<Float> speedAddonSpeedMultiplier = new ArrayList<>(
-        List.of(0.79f, 0.7f, 0.6f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f)
-    );
-
-    @Expose
-    @SerializedName("speed_addon_efficiency_multiplier")
-    public List<Float> speedAddonEfficiencyMultiplier = new ArrayList<>(
-        List.of(1.10f, 1.15f, 1.20f, 1.25f, 1.30f, 1.35f, 1.40f, 1.45f)
-    );
-
-    @Expose
-    @SerializedName("efficiency_addon_efficiency_multiplier")
-    public List<Float> efficiencyAddonEfficiencyMultiplier = new ArrayList<>(
-        List.of(0.79f, 0.75f, 0.70f, 0.65f, 0.60f, 0.55f, 0.50f, 0.45f)
+    public List<AddonInfo> addonSettings = new ArrayList<>(
+        List.of(
+            new AddonInfo(0.79f, 1.10f,0.79f),
+            new AddonInfo(0.7f, 1.15f, 0.7f),
+            new AddonInfo(0.6f, 1.20f, 0.6f),
+            new AddonInfo(0.5f, 1.25f, 0.5f),
+            new AddonInfo(0.4f, 1.30f, 0.4f),
+            new AddonInfo(0.3f, 1.35f, 0.3f),
+            new AddonInfo(0.2f, 1.40f, 0.2f),
+            new AddonInfo(0.1f, 1.45f, 0.1f)
+        )
     );
 
     public void load() {
@@ -77,5 +72,8 @@ public class ConfigLoader {
         } catch (IOException e) {
             throw new RuntimeException("Failed to create default configuration file.", e);
         }
+    }
+
+    public record AddonInfo(@Expose float speedMultiplier, @Expose float efficiencyDown, @Expose float efficiencyUp) {
     }
 }
