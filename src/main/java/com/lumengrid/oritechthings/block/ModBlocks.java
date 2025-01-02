@@ -17,8 +17,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import rearth.oritech.block.blocks.addons.MachineAddonBlock;
 import rearth.oritech.util.Geometry;
 
-
-import java.util.Map;
 import java.util.function.Supplier;
 
 public class ModBlocks {
@@ -57,14 +55,14 @@ public class ModBlocks {
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_8 = registerBlock("addon_block_speed_tier_8", () -> speedAddonBlock("addon_block_speed_tier_8"));
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_9 = registerBlock("addon_block_speed_tier_9", () -> speedAddonBlock("addon_block_speed_tier_9"));
 
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_2 = registerBlock("addon_block_efficient_speed_tier_2", () -> speedEfficiencyAddonBlock("addon_block_speed_tier_2"));
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_3 = registerBlock("addon_block_efficient_speed_tier_3", () -> speedEfficiencyAddonBlock("addon_block_speed_tier_3"));
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_4 = registerBlock("addon_block_efficient_speed_tier_4", () -> speedEfficiencyAddonBlock("addon_block_speed_tier_4"));
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_5 = registerBlock("addon_block_efficient_speed_tier_5", () -> speedEfficiencyAddonBlock("addon_block_speed_tier_5"));
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_6 = registerBlock("addon_block_efficient_speed_tier_6", () -> speedEfficiencyAddonBlock("addon_block_speed_tier_6"));
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_7 = registerBlock("addon_block_efficient_speed_tier_7", () -> speedEfficiencyAddonBlock("addon_block_speed_tier_7"));
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_8 = registerBlock("addon_block_efficient_speed_tier_8", () -> speedEfficiencyAddonBlock("addon_block_speed_tier_8"));
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_9 = registerBlock("addon_block_efficient_speed_tier_9", () -> speedEfficiencyAddonBlock("addon_block_speed_tier_9"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_2 = registerBlock("addon_block_efficient_speed_tier_2", () -> efficientSpeedAddonBlock("addon_block_speed_tier_2"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_3 = registerBlock("addon_block_efficient_speed_tier_3", () -> efficientSpeedAddonBlock("addon_block_speed_tier_3"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_4 = registerBlock("addon_block_efficient_speed_tier_4", () -> efficientSpeedAddonBlock("addon_block_speed_tier_4"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_5 = registerBlock("addon_block_efficient_speed_tier_5", () -> efficientSpeedAddonBlock("addon_block_speed_tier_5"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_6 = registerBlock("addon_block_efficient_speed_tier_6", () -> efficientSpeedAddonBlock("addon_block_speed_tier_6"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_7 = registerBlock("addon_block_efficient_speed_tier_7", () -> efficientSpeedAddonBlock("addon_block_speed_tier_7"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_8 = registerBlock("addon_block_efficient_speed_tier_8", () -> efficientSpeedAddonBlock("addon_block_speed_tier_8"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_9 = registerBlock("addon_block_efficient_speed_tier_9", () -> efficientSpeedAddonBlock("addon_block_speed_tier_9"));
 
     public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENCY_TIER_2 = registerBlock("addon_block_efficiency_tier_2", () -> efficiencyAddonBlock("addon_block_efficiency_tier_2"));
     public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENCY_TIER_3 = registerBlock("addon_block_efficiency_tier_3", () -> efficiencyAddonBlock("addon_block_efficiency_tier_3"));
@@ -75,15 +73,13 @@ public class ModBlocks {
     public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENCY_TIER_8 = registerBlock("addon_block_efficiency_tier_8", () -> efficiencyAddonBlock("addon_block_efficiency_tier_8"));
     public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENCY_TIER_9 = registerBlock("addon_block_efficiency_tier_9", () -> efficiencyAddonBlock("addon_block_efficiency_tier_9"));
 
-    private static Block speedEfficiencyAddonBlock(String name) {
+    private static Block efficientSpeedAddonBlock(String name) {
         String[] split = name.split("_");
         int i = Integer.parseInt(split[split.length - 1]) - 2;
         float speedMultiplier = ConfigLoader.getInstance().addonSettings.get(i).speedMultiplier();
-        float efficiencyMultiplier = ConfigLoader.getInstance().addonSettings.get(i).efficiencyDown();
         return new TierAddonBlock(
                 MachineAddonBlock.AddonSettings.getDefaultSettings()
                         .withSpeedMultiplier(speedMultiplier)
-                        .withEfficiencyMultiplier(efficiencyMultiplier)
                         .withNeedsSupport(true)
                         .withBoundingShape(USABLE_ADDON_SHAPE));
     }
@@ -92,9 +88,11 @@ public class ModBlocks {
         String[] split = name.split("_");
         int i = Integer.parseInt(split[split.length - 1]) - 2;
         float speedMultiplier = ConfigLoader.getInstance().addonSettings.get(i).speedMultiplier();
+        float efficiencyMultiplier = ConfigLoader.getInstance().addonSettings.get(i).efficiencyDown();
         return new TierAddonBlock(
                 MachineAddonBlock.AddonSettings.getDefaultSettings()
                         .withSpeedMultiplier(speedMultiplier)
+                        .withEfficiencyMultiplier(efficiencyMultiplier)
                         .withNeedsSupport(true)
                         .withBoundingShape(USABLE_ADDON_SHAPE));
     }
