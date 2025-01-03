@@ -22,6 +22,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
+@SuppressWarnings("unused")
 @Mod(OritechThings.MOD_ID)
 public class OritechThings
 {

@@ -22,8 +22,8 @@ import java.util.function.Supplier;
 public class ModBlocks {
 
     public static final VoxelShape ADDON_SHAPE = Shapes.or(
-        Shapes.box(1 / 16f,0, 1 / 16f, 15 / 16f, 2 / 16f, 15 / 16f),
-        Shapes.box(3 / 16f,2 / 16f, 3 / 16f, 13 / 16f, 2 / 16f, 13 / 16f)
+        Shapes.box(1.0,0, 1.0, 15.0, 2.0, 15.0),
+        Shapes.box(3.0,2.0, 3.0, 13.0, 2.0, 13.0)
     );
 
     public static VoxelShape[][] USABLE_ADDON_SHAPE;

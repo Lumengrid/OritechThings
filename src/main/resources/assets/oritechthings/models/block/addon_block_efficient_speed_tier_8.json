@@ -1,6 +1,6 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "block/cube",
+	"parent": "oritechthings:block/addon_base",
 	"render_type": "cutout",
 	"textures": {
 		"0": "oritechthings:block/addon_block_efficient_speed",
@@ -235,5 +235,5 @@
 			"color": 0,
 			"children": [8, 9, 10, 11, 12, 13, 14, 15]
 		}
-	]
+	] 
 }
