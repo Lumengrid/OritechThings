@@ -14,6 +14,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         super(output, registries);
     }
 
+    @SuppressWarnings("null")
     @Override
     protected void buildRecipes(@NotNull RecipeOutput recipeOutput) {
         super.buildRecipes(recipeOutput);
