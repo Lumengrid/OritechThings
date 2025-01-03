@@ -23,33 +23,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
         for (DeferredBlock<?> data : Constants.getAll()) {
             addonBlockState(data);
         }
-
-        // addonBlockState(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_2);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_3);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_4);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_5);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_6);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_7);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_8);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_9);
-
-        // addonBlockState(ModBlocks.ADDON_BLOCK_SPEED_TIER_2);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_SPEED_TIER_3);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_SPEED_TIER_4);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_SPEED_TIER_5);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_SPEED_TIER_6);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_SPEED_TIER_7);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_SPEED_TIER_8);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_SPEED_TIER_9);
-
-        // addonBlockState(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_2);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_3);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_4);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_5);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_6);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_7);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_8);
-        // addonBlockState(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_9);
     }
 
     private void addonBlockState(DeferredBlock<?> deferredBlock) {
