@@ -19,31 +19,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         for(DeferredBlock<?> data: Constants.getAll()){
             customItemModel(data.getId().getPath());
         }
-
-        // customItemModel(ModBlocks.ADDON_BLOCK_SPEED_TIER_2.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_SPEED_TIER_3.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_SPEED_TIER_4.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_SPEED_TIER_5.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_SPEED_TIER_6.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_SPEED_TIER_7.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_SPEED_TIER_8.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_SPEED_TIER_9.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_2.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_3.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_4.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_5.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_6.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_7.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_8.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_9.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_2.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_3.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_4.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_5.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_6.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_7.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_8.getId().getPath());
-        // customItemModel(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_9.getId().getPath());
     }
 
     private void customItemModel(String blockName) {

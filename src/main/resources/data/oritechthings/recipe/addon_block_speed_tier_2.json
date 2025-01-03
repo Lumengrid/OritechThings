@@ -12,10 +12,10 @@
       "item": "oritech:biosteel_block"
     },
     "p": {
-      "item": "oritech:plastic_sheet"
+      "tag": "c:plates/plastic"
     },
     "s": {
-      "item": "oritech:silicon"
+      "tag": "c:silicon"
     }
   },
   "pattern": [

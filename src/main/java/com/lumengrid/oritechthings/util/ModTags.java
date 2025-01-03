@@ -9,6 +9,7 @@ import net.minecraft.world.item.Item;
 public class ModTags {
     public static class Items {
         public static final TagKey<Item> TIERED_ADDON_SPEED = createTag("tiered_addon_speed");
+        public static final TagKey<Item> TIERED_ADDON_EFFICIENT_SPEED = createTag("tiered_addon_efficient_speed");
         public static final TagKey<Item> TIERED_ADDON_EFFICIENCY = createTag("tiered_addon_efficiency");
 
         private static TagKey<Item> createTag(String name) {

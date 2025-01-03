@@ -9,13 +9,13 @@
       "item": "oritech:machine_efficiency_addon"
     },
     "b": {
-      "item": "oritech:electrum_block"
+      "tag": "c:storage_blocks/electrum"
     },
     "p": {
-      "item": "oritech:plastic_sheet"
+      "tag": "c:plates/plastic"
     },
     "s": {
-      "item": "oritech:silicon"
+      "tag": "c:silicon"
     }
   },
   "pattern": [

@@ -136,7 +136,10 @@ dependencies {
     implementation "curse.maven:owolib-532610:5945693"
     implementation "curse.maven:geckolib-388172:6024484"
 
-    implementation "curse.maven:oritech-1030830:6031584"
+    implementation "curse.maven:oritech-1030830:6043994"
+
+    implementation "curse.maven:rhino-416294:6000610"
+    implementation "curse.maven:kubejs-238086:5810100"
 
     implementation "curse.maven:jei-238222:5846880"
 }
