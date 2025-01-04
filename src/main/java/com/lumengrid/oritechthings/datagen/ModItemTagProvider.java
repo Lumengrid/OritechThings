@@ -37,5 +37,17 @@ public class ModItemTagProvider extends ItemTagsProvider {
         for(DeferredBlock<?> data: Constants.EFFICIENT){
             tag(ModTags.Items.TIERED_ADDON_EFFICIENT_SPEED).add(data.get().asItem());
         }
+
+        for(DeferredBlock<?> data: Constants.CAPACITOR){
+            tag(ModTags.Items.TIERED_ADDON_CAPACITOR).add(data.get().asItem());
+        }
+
+        for(DeferredBlock<?> data: Constants.ACCEPTOR){
+            tag(ModTags.Items.TIERED_ADDON_ACCEPTOR).add(data.get().asItem());
+        }
+
+        for(DeferredBlock<?> data: Constants.PROCESSING){
+            tag(ModTags.Items.TIERED_ADDON_PROCESSING).add(data.get().asItem());
+        }
     }
 }

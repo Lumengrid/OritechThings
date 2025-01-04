@@ -42,6 +42,30 @@ public static final Supplier<BlockEntityType<TierAddonBlockEntity>> TIER_ADDON =
                             ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_6.get(),
                             ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_7.get(),
                             ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_8.get(),
-                            ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_9.get()
-                    ).build(null));
+                            ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_9.get(),
+                            ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_2.get(),
+                            ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_3.get(),
+                            ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_4.get(),
+                            ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_5.get(),
+                            ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_6.get(),
+                            ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_7.get(),
+                            ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_8.get(),
+                            ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_9.get(),
+                            ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_2.get(),
+                            ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_3.get(),
+                            ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_4.get(),
+                            ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_5.get(),
+                            ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_6.get(),
+                            ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_7.get(),
+                            ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_8.get(),
+                            ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_9.get(),
+                            ModBlocks.ADDON_BLOCK_PROCESSING_TIER_2.get(),
+                            ModBlocks.ADDON_BLOCK_PROCESSING_TIER_3.get(),
+                            ModBlocks.ADDON_BLOCK_PROCESSING_TIER_4.get(),
+                            ModBlocks.ADDON_BLOCK_PROCESSING_TIER_5.get(),
+                            ModBlocks.ADDON_BLOCK_PROCESSING_TIER_6.get(),
+                            ModBlocks.ADDON_BLOCK_PROCESSING_TIER_7.get(),
+                            ModBlocks.ADDON_BLOCK_PROCESSING_TIER_8.get(),
+                            ModBlocks.ADDON_BLOCK_PROCESSING_TIER_9.get()
+                            ).build(null));
 }
