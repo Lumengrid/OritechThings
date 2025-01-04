@@ -73,6 +73,75 @@ public class ModBlocks {
     public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENCY_TIER_8 = registerBlock("addon_block_efficiency_tier_8", () -> efficiencyAddonBlock("addon_block_efficiency_tier_8"));
     public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENCY_TIER_9 = registerBlock("addon_block_efficiency_tier_9", () -> efficiencyAddonBlock("addon_block_efficiency_tier_9"));
 
+    public static final DeferredBlock<Block> ADDON_BLOCK_CAPACITOR_TIER_2 = registerBlock("addon_block_capacitor_tier_2", () -> capacitorAddonBlock("addon_block_capacitor_tier_2"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_CAPACITOR_TIER_3 = registerBlock("addon_block_capacitor_tier_3", () -> capacitorAddonBlock("addon_block_capacitor_tier_3"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_CAPACITOR_TIER_4 = registerBlock("addon_block_capacitor_tier_4", () -> capacitorAddonBlock("addon_block_capacitor_tier_4"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_CAPACITOR_TIER_5 = registerBlock("addon_block_capacitor_tier_5", () -> capacitorAddonBlock("addon_block_capacitor_tier_5"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_CAPACITOR_TIER_6 = registerBlock("addon_block_capacitor_tier_6", () -> capacitorAddonBlock("addon_block_capacitor_tier_6"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_CAPACITOR_TIER_7 = registerBlock("addon_block_capacitor_tier_7", () -> capacitorAddonBlock("addon_block_capacitor_tier_7"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_CAPACITOR_TIER_8 = registerBlock("addon_block_capacitor_tier_8", () -> capacitorAddonBlock("addon_block_capacitor_tier_8"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_CAPACITOR_TIER_9 = registerBlock("addon_block_capacitor_tier_9", () -> capacitorAddonBlock("addon_block_capacitor_tier_9"));
+
+    public static final DeferredBlock<Block> ADDON_BLOCK_ACCEPTOR_TIER_2 = registerBlock("addon_block_acceptor_tier_2", () -> acceptorAddonBlock("addon_block_acceptor_tier_2"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_ACCEPTOR_TIER_3 = registerBlock("addon_block_acceptor_tier_3", () -> acceptorAddonBlock("addon_block_acceptor_tier_3"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_ACCEPTOR_TIER_4 = registerBlock("addon_block_acceptor_tier_4", () -> acceptorAddonBlock("addon_block_acceptor_tier_4"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_ACCEPTOR_TIER_5 = registerBlock("addon_block_acceptor_tier_5", () -> acceptorAddonBlock("addon_block_acceptor_tier_5"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_ACCEPTOR_TIER_6 = registerBlock("addon_block_acceptor_tier_6", () -> acceptorAddonBlock("addon_block_acceptor_tier_6"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_ACCEPTOR_TIER_7 = registerBlock("addon_block_acceptor_tier_7", () -> acceptorAddonBlock("addon_block_acceptor_tier_7"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_ACCEPTOR_TIER_8 = registerBlock("addon_block_acceptor_tier_8", () -> acceptorAddonBlock("addon_block_acceptor_tier_8"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_ACCEPTOR_TIER_9 = registerBlock("addon_block_acceptor_tier_9", () -> acceptorAddonBlock("addon_block_acceptor_tier_9"));
+    
+    public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_2 = registerBlock("addon_block_processing_tier_2", () -> processingAddonBlock("addon_block_processing_tier_2"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_3 = registerBlock("addon_block_processing_tier_3", () -> processingAddonBlock("addon_block_processing_tier_3"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_4 = registerBlock("addon_block_processing_tier_4", () -> processingAddonBlock("addon_block_processing_tier_4"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_5 = registerBlock("addon_block_processing_tier_5", () -> processingAddonBlock("addon_block_processing_tier_5"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_6 = registerBlock("addon_block_processing_tier_6", () -> processingAddonBlock("addon_block_processing_tier_6"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_7 = registerBlock("addon_block_processing_tier_7", () -> processingAddonBlock("addon_block_processing_tier_7"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_8 = registerBlock("addon_block_processing_tier_8", () -> processingAddonBlock("addon_block_processing_tier_8"));
+    public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_9 = registerBlock("addon_block_processing_tier_9", () -> processingAddonBlock("addon_block_processing_tier_9"));
+
+
+    private static Block processingAddonBlock(String name) {
+        String[] split = name.split("_");
+        int i = Integer.parseInt(split[split.length - 1]) - 2;
+        float efficiency = ConfigLoader.getInstance().addonSettings.get(i).processingEfficiency();
+        int chambers = ConfigLoader.getInstance().addonSettings.get(i).processingChambers();
+        return new TierAddonBlock(
+                MachineAddonBlock.AddonSettings.getDefaultSettings()
+                        .withEfficiencyMultiplier(efficiency)
+                        .withChambers(chambers)
+                        .withNeedsSupport(true)
+                        .withBoundingShape(USABLE_ADDON_SHAPE));
+    }
+
+    private static Block capacitorAddonBlock(String name) {
+        String[] split = name.split("_");
+        int i = Integer.parseInt(split[split.length - 1]) - 2;
+        long capacity = ConfigLoader.getInstance().addonSettings.get(i).capacitorCapacity();
+        long rate = ConfigLoader.getInstance().addonSettings.get(i).capacitorRate();
+        return new TierAddonBlock(
+                MachineAddonBlock.AddonSettings.getDefaultSettings()
+                        .withAddedCapacity(capacity)
+                        .withAddedInsert(rate)
+                        .withNeedsSupport(true)
+                        .withBoundingShape(USABLE_ADDON_SHAPE));
+    }
+
+    private static Block acceptorAddonBlock(String name) {
+        String[] split = name.split("_");
+        int i = Integer.parseInt(split[split.length - 1]) - 2;
+        long capacity = ConfigLoader.getInstance().addonSettings.get(i).acceptorCapacity();
+        long rate = ConfigLoader.getInstance().addonSettings.get(i).acceptorRate();
+        return new TierAddonBlock(
+                MachineAddonBlock.AddonSettings.getDefaultSettings()
+                        .withAddedCapacity(capacity)
+                        .withAddedInsert(rate)
+                        .withAcceptEnergy(true)
+                        .withNeedsSupport(true)
+                        .withBoundingShape(USABLE_ADDON_SHAPE));
+    }
+
+
     private static Block efficientSpeedAddonBlock(String name) {
         String[] split = name.split("_");
         int i = Integer.parseInt(split[split.length - 1]) - 2;

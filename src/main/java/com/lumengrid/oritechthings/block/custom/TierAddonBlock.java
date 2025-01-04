@@ -17,7 +17,6 @@ import org.jetbrains.annotations.Nullable;
 import rearth.oritech.block.blocks.addons.MachineAddonBlock;
 
 public class TierAddonBlock extends MachineAddonBlock {
-
     public TierAddonBlock(AddonSettings addonSettings) {
         super(Properties.of().strength(2f).requiresCorrectToolForDrops().lightLevel(state -> state.getValue(ADDON_USED) ? 15 : 0), addonSettings);
     }
@@ -33,24 +32,18 @@ public class TierAddonBlock extends MachineAddonBlock {
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
-
-        //Prima direzione usata per la direzione del blocco
         Direction dir = switch (ctx.getClickedFace()) {
             case DOWN, UP, NORTH -> Direction.NORTH;
             case SOUTH -> Direction.SOUTH;
             case WEST -> Direction.WEST;
             case EAST -> Direction.EAST;
         };
-
-        //Seconda direzione usata per capire se è su una parete, un muro o un pavimento
         Direction face = ctx.getClickedFace();
         AttachFace f = switch (face) {
             case DOWN -> AttachFace.CEILING;
             case UP -> AttachFace.FLOOR;
             case NORTH, EAST, WEST, SOUTH -> AttachFace.WALL;
         };
-
-        //Questo definisce gli stati del blocco quando è piazzato
         return defaultBlockState().setValue(FACING, dir).setValue(FACE, f);
     }
 
@@ -60,11 +53,10 @@ public class TierAddonBlock extends MachineAddonBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+    public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return this.addonSettings.boundingShape()[state.getValue(FACING).ordinal()][state.getValue(FACE).ordinal()];
     }
 
-    // Questo serve per dire al gioco: "Ciccio, guarda che a questo blocco devi assegnare queste proprietà"
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(ADDON_USED, FACING, FACE);
     }

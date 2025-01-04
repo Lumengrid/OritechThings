@@ -3,8 +3,8 @@
   "parent": "oritechthings:block/addon_base",
   "render_type": "cutout",
   "textures": {
-    "0": "oritechthings:block/addon_block_speed",
-    "particle": "oritechthings:block/addon_block_speed"
+    "0": "oritechthings:block/addon_block_acceptor",
+    "particle": "oritechthings:block/addon_block_acceptor"
   },
   "elements": [
     {

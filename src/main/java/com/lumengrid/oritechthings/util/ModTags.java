@@ -8,6 +8,9 @@ import net.minecraft.world.item.Item;
 
 public class ModTags {
     public static class Items {
+        public static final TagKey<Item> TIERED_ADDON_PROCESSING = createTag("tiered_addon_processing");
+        public static final TagKey<Item> TIERED_ADDON_ACCEPTOR = createTag("tiered_addon_acceptor");
+        public static final TagKey<Item> TIERED_ADDON_CAPACITOR = createTag("tiered_addon_capacitor");
         public static final TagKey<Item> TIERED_ADDON_SPEED = createTag("tiered_addon_speed");
         public static final TagKey<Item> TIERED_ADDON_EFFICIENT_SPEED = createTag("tiered_addon_efficient_speed");
         public static final TagKey<Item> TIERED_ADDON_EFFICIENCY = createTag("tiered_addon_efficiency");
