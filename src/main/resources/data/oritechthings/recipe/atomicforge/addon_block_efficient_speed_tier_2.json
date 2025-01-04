@@ -9,10 +9,10 @@
       "item": "oritechthings:addon_block_speed_tier_2"
     },
     {
-      "item": "oritech:machine_efficiency_addon"
+      "item": "oritechthings:addon_block_efficiency_tier_2"
     },
     {
-      "item": "oritech:plastic_sheet"
+      "tag": "c:storage_blocks/electrum"
     }
   ],
   "results": [

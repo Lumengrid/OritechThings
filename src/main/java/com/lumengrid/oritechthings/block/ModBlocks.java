@@ -146,9 +146,11 @@ public class ModBlocks {
         String[] split = name.split("_");
         int i = Integer.parseInt(split[split.length - 1]) - 2;
         float speedMultiplier = ConfigLoader.getInstance().addonSettings.get(i).speedMultiplier();
+        float efficiencyMultiplier = ConfigLoader.getInstance().addonSettings.get(i).efficiencyUp();
         return new TierAddonBlock(
                 MachineAddonBlock.AddonSettings.getDefaultSettings()
                         .withSpeedMultiplier(speedMultiplier)
+                        .withEfficiencyMultiplier(efficiencyMultiplier)
                         .withNeedsSupport(true)
                         .withBoundingShape(USABLE_ADDON_SHAPE), tier);
     }
