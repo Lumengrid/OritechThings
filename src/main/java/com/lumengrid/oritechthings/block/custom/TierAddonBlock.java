@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
@@ -17,8 +18,15 @@ import org.jetbrains.annotations.Nullable;
 import rearth.oritech.block.blocks.addons.MachineAddonBlock;
 
 public class TierAddonBlock extends MachineAddonBlock {
-    public TierAddonBlock(AddonSettings addonSettings) {
+    public static final IntegerProperty TIER = IntegerProperty.create("tier", 2, 9);
+
+    public TierAddonBlock(AddonSettings addonSettings, int tier) {
         super(Properties.of().strength(2f).requiresCorrectToolForDrops().lightLevel(state -> state.getValue(ADDON_USED) ? 15 : 0), addonSettings);
+        this.registerDefaultState(this.stateDefinition.any().setValue(ADDON_USED, false).setValue(TIER, tier));
+    }
+
+    public IntegerProperty getTier() {
+        return TIER;
     }
 
     @Override
@@ -29,6 +37,7 @@ public class TierAddonBlock extends MachineAddonBlock {
             throw new RuntimeException(e);
         }
     }
+
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
@@ -44,6 +53,7 @@ public class TierAddonBlock extends MachineAddonBlock {
             case UP -> AttachFace.FLOOR;
             case NORTH, EAST, WEST, SOUTH -> AttachFace.WALL;
         };
+
         return defaultBlockState().setValue(FACING, dir).setValue(FACE, f);
     }
 
@@ -58,6 +68,6 @@ public class TierAddonBlock extends MachineAddonBlock {
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(ADDON_USED, FACING, FACE);
+        builder.add(ADDON_USED, FACING, FACE, TIER);
     }
 }
