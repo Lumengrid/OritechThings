@@ -4,6 +4,7 @@ import com.lumengrid.oritechthings.block.custom.TierAddonBlock;
 import com.lumengrid.oritechthings.item.ModItems;
 import com.lumengrid.oritechthings.main.ConfigLoader;
 import com.lumengrid.oritechthings.main.OritechThings;
+import com.lumengrid.oritechthings.util.Constants;
 import com.lumengrid.oritechthings.util.ShapeUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
@@ -111,7 +112,7 @@ public class ModBlocks {
                         .withEfficiencyMultiplier(efficiency)
                         .withChambers(chambers)
                         .withNeedsSupport(true)
-                        .withBoundingShape(USABLE_ADDON_SHAPE), tier);
+                        .withBoundingShape(USABLE_ADDON_SHAPE), tier, Constants.AddonType.PROCESSING);
     }
 
     private static Block capacitorAddonBlock(String name, int tier) {
@@ -124,7 +125,7 @@ public class ModBlocks {
                         .withAddedCapacity(capacity)
                         .withAddedInsert(rate)
                         .withNeedsSupport(true)
-                        .withBoundingShape(USABLE_ADDON_SHAPE), tier);
+                        .withBoundingShape(USABLE_ADDON_SHAPE), tier, Constants.AddonType.CAPACITOR);
     }
 
     private static Block acceptorAddonBlock(String name, int tier) {
@@ -138,7 +139,7 @@ public class ModBlocks {
                         .withAddedInsert(rate)
                         .withAcceptEnergy(true)
                         .withNeedsSupport(true)
-                        .withBoundingShape(USABLE_ADDON_SHAPE), tier);
+                        .withBoundingShape(USABLE_ADDON_SHAPE), tier, Constants.AddonType.ACCEPTOR);
     }
 
 
@@ -152,7 +153,7 @@ public class ModBlocks {
                         .withSpeedMultiplier(speedMultiplier)
                         .withEfficiencyMultiplier(efficiencyMultiplier)
                         .withNeedsSupport(true)
-                        .withBoundingShape(USABLE_ADDON_SHAPE), tier);
+                        .withBoundingShape(USABLE_ADDON_SHAPE), tier, Constants.AddonType.EFFICIENT_SPEED);
     }
 
     private static Block speedAddonBlock(String name, int tier) {
@@ -165,7 +166,7 @@ public class ModBlocks {
                         .withSpeedMultiplier(speedMultiplier)
                         .withEfficiencyMultiplier(efficiencyMultiplier)
                         .withNeedsSupport(true)
-                        .withBoundingShape(USABLE_ADDON_SHAPE), tier);
+                        .withBoundingShape(USABLE_ADDON_SHAPE), tier, Constants.AddonType.SPEED);
     }
 
     private static MachineAddonBlock efficiencyAddonBlock(String name, int tier) {
@@ -176,7 +177,7 @@ public class ModBlocks {
                 MachineAddonBlock.AddonSettings.getDefaultSettings()
                         .withEfficiencyMultiplier(efficiencyMultiplier)
                         .withNeedsSupport(true)
-                        .withBoundingShape(USABLE_ADDON_SHAPE), tier);
+                        .withBoundingShape(USABLE_ADDON_SHAPE), tier, Constants.AddonType.EFFICIENCY);
     }
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {

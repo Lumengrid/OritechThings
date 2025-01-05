@@ -1,6 +1,7 @@
 package com.lumengrid.oritechthings.block.custom;
 
 import com.lumengrid.oritechthings.block.entity.TierAddonBlockEntity;
+import com.lumengrid.oritechthings.util.Constants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -16,9 +17,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.codehaus.plexus.util.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import rearth.oritech.block.blocks.addons.MachineAddonBlock;
@@ -27,15 +30,19 @@ import rearth.oritech.util.TooltipHelper;
 import java.util.List;
 
 public class TierAddonBlock extends MachineAddonBlock {
-    public static final IntegerProperty TIER = IntegerProperty.create("tier", 2, 9);
+    public static final EnumProperty<Constants.AddonType> ADDON_TYPE = EnumProperty.create("addon_type", Constants.AddonType.class);
+    public static final IntegerProperty ADDON_TIER = IntegerProperty.create("tier", 2, 9);
 
-    public TierAddonBlock(AddonSettings addonSettings, int tier) {
+    public TierAddonBlock(AddonSettings addonSettings, int tier, Constants.AddonType type) {
         super(Properties.of().strength(2f).requiresCorrectToolForDrops().lightLevel(state -> state.getValue(ADDON_USED) ? 15 : 0), addonSettings);
-        this.registerDefaultState(this.stateDefinition.any().setValue(ADDON_USED, false).setValue(TIER, tier));
+        this.registerDefaultState(this.stateDefinition.any().setValue(ADDON_USED, false).setValue(ADDON_TIER, tier).setValue(ADDON_TYPE, type));
     }
 
-    public IntegerProperty getTier() {
-        return TIER;
+    public IntegerProperty getAddonTier() {
+        return ADDON_TIER;
+    }
+    public EnumProperty<Constants.AddonType> getAddonType() {
+        return ADDON_TYPE;
     }
 
     @Override
@@ -77,32 +84,33 @@ public class TierAddonBlock extends MachineAddonBlock {
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(ADDON_USED, FACING, FACE, TIER);
+        builder.add(ADDON_USED, FACING, FACE, ADDON_TIER, ADDON_TYPE);
     }
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag options) {
+        tooltip.add(Component.literal("Tier " + this.defaultBlockState().getValue(ADDON_TIER)).withStyle(ChatFormatting.AQUA));
         if (Screen.hasControlDown()) {
             if (addonSettings.speedMultiplier() != 1) {
                 var displayedNumber = (int) ((1 - addonSettings.speedMultiplier()) * 100);
-                tooltip.add(Component.translatable("tooltip.oritechthings.tiered_addons.speed_desc").withStyle(ChatFormatting.DARK_GRAY)
+                tooltip.add(Component.translatable("tooltip.oritech.addon_speed_desc").withStyle(ChatFormatting.DARK_GRAY)
                         .append(TooltipHelper.getFormattedValueChangeTooltip(displayedNumber)));
             }
 
             if (addonSettings.efficiencyMultiplier() != 1) {
                 var displayedNumber = (int) ((1 - addonSettings.efficiencyMultiplier()) * 100);
-                tooltip.add(Component.translatable("tooltip.oritechthings.tiered_addons.efficiency_desc").withStyle(ChatFormatting.DARK_GRAY)
+                tooltip.add(Component.translatable("tooltip.oritech.addon_efficiency_desc").withStyle(ChatFormatting.DARK_GRAY)
                         .append(TooltipHelper.getFormattedValueChangeTooltip(displayedNumber)));
             }
 
             if (addonSettings.addedCapacity() != 0) {
                 tooltip.add(
-                        Component.translatable("tooltip.oritechthings.tiered_addons.capacity_desc").withStyle(ChatFormatting.DARK_GRAY)
+                        Component.translatable("tooltip.oritech.addon_capacity_desc").withStyle(ChatFormatting.DARK_GRAY)
                                 .append(TooltipHelper.getFormattedEnergyChangeTooltip(addonSettings.addedCapacity(), " RF")));
             }
 
             if (addonSettings.addedInsert() != 0) {
-                tooltip.add(Component.translatable("tooltip.oritechthings.tiered_addons.transfer_desc").withStyle(ChatFormatting.DARK_GRAY)
+                tooltip.add(Component.translatable("tooltip.oritech.addon_transfer_desc").withStyle(ChatFormatting.DARK_GRAY)
                         .append(TooltipHelper.getFormattedEnergyChangeTooltip(addonSettings.addedInsert(), " RF/t")));
             }
 
@@ -111,7 +119,7 @@ public class TierAddonBlock extends MachineAddonBlock {
                         .append(Component.literal("+" + (addonSettings.chamberCount() - 1)).withStyle(ChatFormatting.GREEN)));
             }
         } else {
-            tooltip.add(Component.translatable("tooltip.oritechthings.tiered_addons.item_extra_info").withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
+            tooltip.add(Component.translatable("tooltip.oritech.item_extra_info").withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
         }
     }
 
