@@ -47,5 +47,11 @@
   "block.oritechthings.addon_block_processing_tier_6": "Processing Addon Tier 6",
   "block.oritechthings.addon_block_processing_tier_7": "Processing Addon Tier 7",
   "block.oritechthings.addon_block_processing_tier_8": "Processing Addon Tier 8",
-  "block.oritechthings.addon_block_processing_tier_9": "Processing Addon Tier 9"
+  "block.oritechthings.addon_block_processing_tier_9": "Processing Addon Tier 9",
+  "tooltip.oritechthings.tiered_addons.speed_desc": "Operation Speed ",
+  "tooltip.oritechthings.tiered_addons.efficiency_desc": "Energy Efficiency ",
+  "tooltip.oritechthings.tiered_addons.capacity_desc": "Energy Capacity ",
+  "tooltip.oritechthings.tiered_addons.transfer_desc": "Energy Transfer Rate ",
+  "tooltip.oritechthings.tiered_addons.chambers_desc": "Additional Chambers ",
+  "tooltip.oritechthings.tiered_addons.item_extra_info": "Hold ctrl for more info"
 }
