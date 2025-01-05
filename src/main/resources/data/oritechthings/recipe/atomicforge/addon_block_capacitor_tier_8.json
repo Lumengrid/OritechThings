@@ -1,0 +1,25 @@
+{
+  "type": "oritech:atomic_forge",
+  "fluidInputAmount": 0,
+  "fluidInputVariant": "minecraft:empty",
+  "fluidOutputAmount": 0,
+  "fluidOutputVariant": "minecraft:empty",
+  "ingredients": [
+    {
+      "item": "oritechthings:addon_block_capacitor_tier_7"
+    },
+    {
+      "item": "oritech:machine_capacitor_addon"
+    },
+    {
+      "item": "oritech:prometheum_ingot"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_capacitor_tier_8"
+    }
+  ],
+  "time": 400
+}

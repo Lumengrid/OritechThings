@@ -1,0 +1,28 @@
+{
+  "type": "oritech:assembler",
+  "fluidInputAmount": 0,
+  "fluidInputVariant": "minecraft:empty",
+  "fluidOutputAmount": 0,
+  "fluidOutputVariant": "minecraft:empty",
+  "ingredients": [
+    {
+      "item": "oritechthings:addon_block_acceptor_tier_4"
+    },
+    {
+      "item": "oritech:machine_acceptor_addon"
+    },
+    {
+      "tag": "c:ingots/energite"
+    },
+    {
+      "item": "oritech:flux_gate"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_acceptor_tier_5"
+    }
+  ],
+  "time": 250
+}
