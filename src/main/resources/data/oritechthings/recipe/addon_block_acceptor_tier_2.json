@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "e": {
+      "item": "oritech:machine_extender"
+    },
+    "a": {
+      "item": "oritech:machine_acceptor_addon"
+    },
+    "b": {
+      "tag": "c:storage_blocks/energite"
+    },
+    "p": {
+      "tag": "c:plates/plastic"
+    },
+    "s": {
+      "tag": "c:ingots/electrum"
+    }
+  },
+  "pattern": [
+    "ppp",
+    "aea",
+    "sbs"
+  ],
+  "result": {
+    "count": 1,
+    "id": "oritechthings:addon_block_acceptor_tier_2"
+  }
+}
