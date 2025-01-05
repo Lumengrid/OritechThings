@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.codehaus.plexus.util.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import rearth.oritech.block.blocks.addons.MachineAddonBlock;
@@ -34,7 +33,7 @@ public class TierAddonBlock extends MachineAddonBlock {
     public static final IntegerProperty ADDON_TIER = IntegerProperty.create("tier", 2, 9);
 
     public TierAddonBlock(AddonSettings addonSettings, int tier, Constants.AddonType type) {
-        super(Properties.of().strength(2f).requiresCorrectToolForDrops().lightLevel(state -> state.getValue(ADDON_USED) ? 15 : 0), addonSettings);
+        super(Properties.of().strength(2f).requiresCorrectToolForDrops().lightLevel(state -> state.getValue(ADDON_USED) ? 10 : 0), addonSettings);
         this.registerDefaultState(this.stateDefinition.any().setValue(ADDON_USED, false).setValue(ADDON_TIER, tier).setValue(ADDON_TYPE, type));
     }
 
@@ -92,13 +91,13 @@ public class TierAddonBlock extends MachineAddonBlock {
         tooltip.add(Component.literal("Tier " + this.defaultBlockState().getValue(ADDON_TIER)).withStyle(ChatFormatting.AQUA));
         if (Screen.hasControlDown()) {
             if (addonSettings.speedMultiplier() != 1) {
-                var displayedNumber = (int) ((1 - addonSettings.speedMultiplier()) * 100);
+                var displayedNumber = (int) ((1 / addonSettings.speedMultiplier()) * 100) - 100;
                 tooltip.add(Component.translatable("tooltip.oritech.addon_speed_desc").withStyle(ChatFormatting.DARK_GRAY)
                         .append(TooltipHelper.getFormattedValueChangeTooltip(displayedNumber)));
             }
 
             if (addonSettings.efficiencyMultiplier() != 1) {
-                var displayedNumber = (int) ((1 - addonSettings.efficiencyMultiplier()) * 100);
+                var displayedNumber = (int) ((1 / addonSettings.efficiencyMultiplier()) * 100) - 100;
                 tooltip.add(Component.translatable("tooltip.oritech.addon_efficiency_desc").withStyle(ChatFormatting.DARK_GRAY)
                         .append(TooltipHelper.getFormattedValueChangeTooltip(displayedNumber)));
             }
