@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "e": {
+      "item": "oritech:machine_extender"
+    },
+    "a": {
+      "item": "oritech:machine_capacitor_addon"
+    },
+    "b": {
+      "tag": "c:storage_blocks/energite"
+    },
+    "p": {
+      "tag": "c:plates/plastic"
+    },
+    "s": {
+      "item": "oritech:energy_pipe"
+    }
+  },
+  "pattern": [
+    "ppp",
+    "aea",
+    "sbs"
+  ],
+  "result": {
+    "count": 1,
+    "id": "oritechthings:addon_block_capacitor_tier_2"
+  }
+}

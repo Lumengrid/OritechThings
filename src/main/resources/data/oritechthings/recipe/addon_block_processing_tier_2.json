@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "e": {
+      "item": "oritech:machine_extender"
+    },
+    "a": {
+      "item": "oritech:machine_processing_addon"
+    },
+    "b": {
+      "tag": "c:storage_blocks/electrum"
+    },
+    "p": {
+      "tag": "c:plates/plastic"
+    },
+    "s": {
+      "item": "minecraft:comparator"
+    }
+  },
+  "pattern": [
+    "ppp",
+    "aea",
+    "sbs"
+  ],
+  "result": {
+    "count": 1,
+    "id": "oritechthings:addon_block_processing_tier_2"
+  }
+}

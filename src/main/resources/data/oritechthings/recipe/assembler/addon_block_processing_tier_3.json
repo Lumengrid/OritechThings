@@ -1,0 +1,28 @@
+{
+  "type": "oritech:assembler",
+  "fluidInputAmount": 0,
+  "fluidInputVariant": "minecraft:empty",
+  "fluidOutputAmount": 0,
+  "fluidOutputVariant": "minecraft:empty",
+  "ingredients": [
+    {
+      "item": "oritechthings:addon_block_processing_tier_2"
+    },
+    {
+      "item": "oritech:machine_processing_addon"
+    },
+    {
+      "tag": "c:ingots/electrum"
+    },
+    {
+      "item": "oritech:magnetic_coil"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_processing_tier_3"
+    }
+  ],
+  "time": 150
+}
