@@ -2,7 +2,9 @@ package com.lumengrid.oritechthings.util;
 
 import com.lumengrid.oritechthings.block.ModBlocks;
 
+import net.minecraft.util.StringRepresentable;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import org.jetbrains.annotations.NotNull;
 
 public class Constants {
 
@@ -78,6 +80,30 @@ public class Constants {
         System.arraycopy(ACCEPTOR, 0, result, SPEED.length + EFFICIENCY.length + EFFICIENT.length + CAPACITOR.length, ACCEPTOR.length);
         System.arraycopy(PROCESSING, 0, result, SPEED.length + EFFICIENCY.length + EFFICIENT.length + CAPACITOR.length+ ACCEPTOR.length, PROCESSING.length);
             return result;
+    }
+
+
+    public enum AddonType implements StringRepresentable {
+        SPEED("speed"),
+        EFFICIENCY("efficiency"),
+        EFFICIENT_SPEED("efficient_speed"),
+        PROCESSING("processing"),
+        ACCEPTOR("acceptor"),
+        CAPACITOR("capacitor");
+
+        private final String name;
+
+        private AddonType(String name) {
+            this.name = name;
+        }
+
+        public String toString() {
+            return this.getSerializedName();
+        }
+
+        public @NotNull String getSerializedName() {
+            return this.name;
+        }
     }
 
 }
