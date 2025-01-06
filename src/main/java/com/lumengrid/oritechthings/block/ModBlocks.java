@@ -21,30 +21,6 @@ import rearth.oritech.util.Geometry;
 import java.util.function.Supplier;
 
 public class ModBlocks {
-
-    public static final VoxelShape ADDON_SHAPE = Shapes.or(
-        Shapes.box(1.0,0, 1.0, 15.0, 2.0, 15.0),
-        Shapes.box(3.0,2.0, 3.0, 13.0, 2.0, 13.0)
-    );
-
-    public static VoxelShape[][] USABLE_ADDON_SHAPE;
-    static {
-        USABLE_ADDON_SHAPE = new VoxelShape[Direction.values().length][AttachFace.values().length];
-
-        for (Direction facing : Direction.values()) {
-            if (facing.getAxis().isHorizontal()) {
-                AttachFace[] faces = AttachFace.values();
-
-                for (AttachFace face : faces) {
-                    USABLE_ADDON_SHAPE[facing.ordinal()][face.ordinal()] = Shapes.or(
-                        Geometry.rotateVoxelShape(ShapeUtil.shapeFromDimension(1, 0, 1, 14, 2, 14), facing, face),
-                        Geometry.rotateVoxelShape(ShapeUtil.shapeFromDimension(3,2, 3, 10, 2, 10), facing, face)
-                    );
-                }
-            }
-        }
-    }
-
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(OritechThings.MOD_ID);
 
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_2 = registerBlock("addon_block_speed_tier_2", () -> speedAddonBlock("addon_block_speed_tier_2", 2));
@@ -112,7 +88,7 @@ public class ModBlocks {
                         .withEfficiencyMultiplier(efficiency)
                         .withChambers(chambers)
                         .withNeedsSupport(true)
-                        .withBoundingShape(USABLE_ADDON_SHAPE), tier, Constants.AddonType.PROCESSING);
+                        .withBoundingShape(generateAddonShape(7)), tier, Constants.AddonType.PROCESSING);
     }
 
     private static Block capacitorAddonBlock(String name, int tier) {
@@ -125,7 +101,7 @@ public class ModBlocks {
                         .withAddedCapacity(capacity)
                         .withAddedInsert(rate)
                         .withNeedsSupport(true)
-                        .withBoundingShape(USABLE_ADDON_SHAPE), tier, Constants.AddonType.CAPACITOR);
+                        .withBoundingShape(generateAddonShape(6)), tier, Constants.AddonType.CAPACITOR);
     }
 
     private static Block acceptorAddonBlock(String name, int tier) {
@@ -139,7 +115,7 @@ public class ModBlocks {
                         .withAddedInsert(rate)
                         .withAcceptEnergy(true)
                         .withNeedsSupport(true)
-                        .withBoundingShape(USABLE_ADDON_SHAPE), tier, Constants.AddonType.ACCEPTOR);
+                        .withBoundingShape(generateAddonShape(8)), tier, Constants.AddonType.ACCEPTOR);
     }
 
 
@@ -153,7 +129,7 @@ public class ModBlocks {
                         .withSpeedMultiplier(speedMultiplier)
                         .withEfficiencyMultiplier(efficiencyMultiplier)
                         .withNeedsSupport(true)
-                        .withBoundingShape(USABLE_ADDON_SHAPE), tier, Constants.AddonType.EFFICIENT_SPEED);
+                        .withBoundingShape(generateAddonShape(2)), tier, Constants.AddonType.EFFICIENT_SPEED);
     }
 
     private static Block speedAddonBlock(String name, int tier) {
@@ -166,7 +142,7 @@ public class ModBlocks {
                         .withSpeedMultiplier(speedMultiplier)
                         .withEfficiencyMultiplier(efficiencyMultiplier)
                         .withNeedsSupport(true)
-                        .withBoundingShape(USABLE_ADDON_SHAPE), tier, Constants.AddonType.SPEED);
+                        .withBoundingShape(generateAddonShape(2)), tier, Constants.AddonType.SPEED);
     }
 
     private static MachineAddonBlock efficiencyAddonBlock(String name, int tier) {
@@ -177,7 +153,25 @@ public class ModBlocks {
                 MachineAddonBlock.AddonSettings.getDefaultSettings()
                         .withEfficiencyMultiplier(efficiencyMultiplier)
                         .withNeedsSupport(true)
-                        .withBoundingShape(USABLE_ADDON_SHAPE), tier, Constants.AddonType.EFFICIENCY);
+                        .withBoundingShape(generateAddonShape(5)), tier, Constants.AddonType.EFFICIENCY);
+    }
+
+    private static VoxelShape[][] generateAddonShape(int y) {
+        VoxelShape[][] shape = new VoxelShape[Direction.values().length][AttachFace.values().length];
+
+        for (Direction facing : Direction.values()) {
+            if (facing.getAxis().isHorizontal()) {
+                AttachFace[] faces = AttachFace.values();
+
+                for (AttachFace face : faces) {
+                    shape[facing.ordinal()][face.ordinal()] = Shapes.or(
+                            Geometry.rotateVoxelShape(ShapeUtil.shapeFromDimension(1, 0, 1, 14, y, 14), facing, face),
+                            Geometry.rotateVoxelShape(ShapeUtil.shapeFromDimension(3,2, 3, 10, y, 10), facing, face)
+                    );
+                }
+            }
+        }
+        return shape;
     }
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
