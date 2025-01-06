@@ -1,6 +1,5 @@
-package com.lumengrid.oritechthings.block.entity;
+package com.lumengrid.oritechthings.entity;
 
-import com.lumengrid.oritechthings.block.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import rearth.oritech.block.entity.addons.AddonBlockEntity;
