@@ -1,5 +1,5 @@
 {
-  "type": "oritech:atomic_forge",
+  "type": "oritech:particle_collision",
   "fluidInputAmount": 0,
   "fluidInputVariant": "minecraft:empty",
   "fluidOutputAmount": 0,
@@ -10,9 +10,6 @@
     },
     {
       "item": "oritechthings:addon_block_efficiency_tier_8"
-    },
-    {
-      "item": "oritech:prometheum_ingot"
     }
   ],
   "results": [
@@ -21,5 +18,5 @@
       "id": "oritechthings:addon_block_efficient_speed_tier_8"
     }
   ],
-  "time": 400
+  "time": 2500
 }

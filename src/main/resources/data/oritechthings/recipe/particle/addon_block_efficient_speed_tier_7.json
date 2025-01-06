@@ -1,5 +1,5 @@
 {
-  "type": "oritech:atomic_forge",
+  "type": "oritech:particle_collision",
   "fluidInputAmount": 0,
   "fluidInputVariant": "minecraft:empty",
   "fluidOutputAmount": 0,
@@ -10,9 +10,6 @@
     },
     {
       "item": "oritechthings:addon_block_efficiency_tier_7"
-    },
-    {
-      "item": "oritech:heisenberg_compensator"
     }
   ],
   "results": [
@@ -21,5 +18,5 @@
       "id": "oritechthings:addon_block_efficient_speed_tier_7"
     }
   ],
-  "time": 350
+  "time": 1000
 }
