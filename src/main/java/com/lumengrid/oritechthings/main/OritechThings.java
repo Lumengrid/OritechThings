@@ -1,6 +1,6 @@
 package com.lumengrid.oritechthings.main;
 
-import com.lumengrid.oritechthings.block.ModBlockEntities;
+import com.lumengrid.oritechthings.entity.ModBlockEntities;
 import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.item.ModCreativeModeTabs;
 import com.lumengrid.oritechthings.item.ModItems;

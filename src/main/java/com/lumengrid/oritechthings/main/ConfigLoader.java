@@ -36,6 +36,9 @@ public class ConfigLoader {
         )
     );
 
+    @Expose
+    public ExoJetPack exoJetPackSettings = new ExoJetPack(true, 10000);
+
     public void load() {
         Gson gson = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation()
@@ -85,5 +88,12 @@ public class ConfigLoader {
             @Expose float processingEfficiency,
             @Expose int processingChambers
     ) {
+    }
+
+    public record ExoJetPack(
+            @Expose boolean enabledCreativeFlight,
+            @Expose long rfThreshold
+    ) {
+
     }
 }

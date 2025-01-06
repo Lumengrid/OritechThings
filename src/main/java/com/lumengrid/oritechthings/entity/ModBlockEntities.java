@@ -1,6 +1,6 @@
-package com.lumengrid.oritechthings.block;
+package com.lumengrid.oritechthings.entity;
 
-import com.lumengrid.oritechthings.block.entity.TierAddonBlockEntity;
+import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.main.OritechThings;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredRegister;

@@ -1,6 +1,6 @@
 package com.lumengrid.oritechthings.block.custom;
 
-import com.lumengrid.oritechthings.block.entity.TierAddonBlockEntity;
+import com.lumengrid.oritechthings.entity.TierAddonBlockEntity;
 import com.lumengrid.oritechthings.util.Constants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
