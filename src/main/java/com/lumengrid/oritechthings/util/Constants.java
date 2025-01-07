@@ -72,7 +72,7 @@ public class Constants {
     public static int size = SPEED.length + EFFICIENCY.length + EFFICIENT.length + CAPACITOR.length + ACCEPTOR.length
             + PROCESSING.length;
 
-    public static DeferredBlock<?>[] getAll() {
+    public static DeferredBlock<?>[] getAllAddons() {
         DeferredBlock<?>[] result = new DeferredBlock<?>[size];
         System.arraycopy(SPEED, 0, result, 0, SPEED.length);
         System.arraycopy(EFFICIENCY, 0, result, SPEED.length, EFFICIENCY.length);

@@ -1,5 +1,6 @@
 package com.lumengrid.oritechthings.datagen;
 
+import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.util.Constants;
 
@@ -25,8 +26,9 @@ public class ModBlockTagProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
 
-        for (DeferredBlock<?> data : Constants.getAll()) {
+        for (DeferredBlock<?> data : Constants.getAllAddons()) {
             tag(BlockTags.MINEABLE_WITH_PICKAXE).add(data.get());
         }
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ACCELERATOR_SPEED_CONTROL.get());
     }
 }
