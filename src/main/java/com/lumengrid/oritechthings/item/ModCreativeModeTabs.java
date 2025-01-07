@@ -21,8 +21,8 @@ public class ModCreativeModeTabs {
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModBlocks.ADDON_BLOCK_SPEED_TIER_8.get()))
                     .title(Component.translatable("itemGroup."+OritechThings.MOD_ID))
                     .displayItems((itemDisplayParameters, output) -> {
-
-                        for (DeferredBlock<?> data : Constants.getAll()) {
+                        output.accept(ModBlocks.ACCELERATOR_SPEED_CONTROL.get());
+                        for (DeferredBlock<?> data : Constants.getAllAddons()) {
                             output.accept(data.get());
                         }
                     }).build());

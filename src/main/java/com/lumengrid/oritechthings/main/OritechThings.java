@@ -26,6 +26,6 @@ public class OritechThings
         ModCreativeModeTabs.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
-        ModBlockEntities.TIER_ADDON_ENTITIES.register(modEventBus);
+        ModBlockEntities.MOD_ENTITIES.register(modEventBus);
     }
 }

@@ -16,7 +16,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
 
-        for(DeferredBlock<?> data: Constants.getAll()){
+        for(DeferredBlock<?> data: Constants.getAllAddons()){
             customItemModel(data.getId().getPath());
         }
     }

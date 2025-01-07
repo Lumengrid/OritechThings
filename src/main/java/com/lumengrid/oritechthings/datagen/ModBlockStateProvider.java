@@ -1,5 +1,6 @@
 package com.lumengrid.oritechthings.datagen;
 
+import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.block.custom.TierAddonBlock;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.util.Constants;
@@ -20,9 +21,10 @@ public class ModBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
 
-        for (DeferredBlock<?> data : Constants.getAll()) {
+        for (DeferredBlock<?> data : Constants.getAllAddons()) {
             addonBlockState(data);
         }
+        simpleBlockItem(ModBlocks.ACCELERATOR_SPEED_CONTROL.get(), cubeAll(ModBlocks.ACCELERATOR_SPEED_CONTROL.get()));
     }
 
     private void addonBlockState(DeferredBlock<?> deferredBlock) {
