@@ -49,5 +49,5 @@
   "block.oritechthings.addon_block_processing_tier_8": "Processing Addon Tier 8",
   "block.oritechthings.addon_block_processing_tier_9": "Processing Addon Tier 9",
   "tooltip.oritechthings.tiered_addons.chambers_desc": "Additional Chambers ",
-  "message.exojetpack.energy_low": "Exo Jetpack - Energy Low"
+  "message.exojetpack.energy_low": "§c⚠ Exo Jetpack - Energy Low ⚠"
 }
