@@ -14,12 +14,16 @@ import rearth.oritech.util.energy.EnergyApi;
 
 @EventBusSubscriber(modid = OritechThings.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class ModEvents {
+
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         if (!event.getEntity().level().isClientSide) {
             Player player = event.getEntity();
-            if (player.isCreative() || player.isSpectator()) return;
-            if (!ConfigLoader.getInstance().exoJetPackSettings.enabledCreativeFlight()) return;
+            if (player.isCreative() || player.isSpectator())
+                return;
+            if (!ConfigLoader.getInstance().exoJetPackSettings.enabledCreativeFlight())
+                return;
             ItemStack armor = player.getInventory().armor.get(2);
 
             if (armor.getItem() == ToolsContent.EXO_JETPACK.asItem()) {
@@ -29,26 +33,22 @@ public class ModEvents {
                 }
                 if (energy <= ConfigLoader.getInstance().exoJetPackSettings.rfThreshold()) {
                     if (player.getAbilities().mayfly) {
-                        player.sendSystemMessage(Component.literal("Exo Jetpack - Energy Low"));
+                        player.displayClientMessage(Component.translatable("message.exojetpack.energy_low"),true);
                     }
-                    disableCreativeFlight(player);
+                    setCreativeFlight(player,false);
                     return;
                 }
                 if (!player.getAbilities().mayfly) {
-                    enableCreativeFlight(player);
+                    setCreativeFlight(player,true);
                 }
             }
         }
     }
 
-    private static void enableCreativeFlight(Player player) {
-        player.getAbilities().mayfly = true;
-        player.onUpdateAbilities();
-    }
-
-    private static void disableCreativeFlight(Player player) {
-        player.getAbilities().flying = false;
-        player.getAbilities().mayfly = false;
+    @SuppressWarnings("deprecation")
+    private static void setCreativeFlight(Player player,Boolean bool) {
+        if(!bool) player.getAbilities().flying = bool;
+        player.getAbilities().mayfly = bool;
         player.onUpdateAbilities();
     }
 }
