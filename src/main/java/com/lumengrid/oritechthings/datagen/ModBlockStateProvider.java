@@ -24,13 +24,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
         for (DeferredBlock<?> data : Constants.getAllAddons()) {
             addonBlockState(data);
         }
-        simpleBlockItem(ModBlocks.ACCELERATOR_SPEED_CONTROL.get(), cubeAll(ModBlocks.ACCELERATOR_SPEED_CONTROL.get()));
+        simpleBlockState(ModBlocks.ACCELERATOR_SPEED_CONTROL);
     }
 
     private void addonBlockState(DeferredBlock<?> deferredBlock) {
-        ResourceLocation path = ResourceLocation
-                .parse(deferredBlock.getId().getNamespace() + ":block/" + deferredBlock.getId().getPath());
-        ModelFile model = model(path);
+        ModelFile model = model(deferredBlock);
         simpleBlockItem(deferredBlock.get(), model);
         getVariantBuilder(deferredBlock.get())
                 .forAllStates(state -> ConfiguredModel.builder()
@@ -41,7 +39,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     }
 
-    private static ModelFile model(ResourceLocation model) {
+    private void simpleBlockState(DeferredBlock<?> deferredBlock) {
+        ModelFile model = model(deferredBlock);
+        simpleBlockItem(deferredBlock.get(), model);
+        getVariantBuilder(deferredBlock.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(model).build());
+    }
+
+    private static ModelFile model(DeferredBlock<?> deferredBlock) {
+        ResourceLocation model = ResourceLocation
+                .parse(deferredBlock.getId().getNamespace() + ":block/" + deferredBlock.getId().getPath());
+
         return new ModelFile.UncheckedModelFile(model);
     }
 }
