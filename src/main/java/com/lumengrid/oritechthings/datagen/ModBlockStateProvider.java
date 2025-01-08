@@ -24,7 +24,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         for (DeferredBlock<?> data : Constants.getAllAddons()) {
             addonBlockState(data);
         }
-        simpleBlockState(ModBlocks.ACCELERATOR_SPEED_CONTROL);
+        simpleBlockState(ModBlocks.ACCELERATOR_SPEED_SENSOR);
     }
 
     private void addonBlockState(DeferredBlock<?> deferredBlock) {

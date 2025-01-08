@@ -1,6 +1,6 @@
 package com.lumengrid.oritechthings.block;
 
-import com.lumengrid.oritechthings.block.custom.AcceleratorSpeedControlBlock;
+import com.lumengrid.oritechthings.block.custom.AcceleratorSpeedSensorBlock;
 import com.lumengrid.oritechthings.block.custom.TierAddonBlock;
 import com.lumengrid.oritechthings.item.ModItems;
 import com.lumengrid.oritechthings.main.ConfigLoader;
@@ -79,8 +79,8 @@ public class ModBlocks {
     public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_8 = processingAddonBuilder(8);
     public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_9 = processingAddonBuilder(9);
 
-    public static final DeferredBlock<Block> ACCELERATOR_SPEED_CONTROL = registerBlock(
-            "accelerator_speed_control", AcceleratorSpeedControlBlock::new);
+    public static final DeferredBlock<Block> ACCELERATOR_SPEED_SENSOR = registerBlock(
+            "accelerator_speed_sensor", AcceleratorSpeedSensorBlock::new);
 
     private static DeferredBlock<Block> processingAddonBuilder(int tier) {
         return registerBlock(

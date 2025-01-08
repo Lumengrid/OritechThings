@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "oritechthings:block/accelerator_speed_control",
-		"particle": "oritechthings:block/accelerator_speed_control"
+		"0": "oritechthings:block/accelerator_speed_sensor",
+		"particle": "oritechthings:block/accelerator_speed_sensor"
 	},
 	"elements": [
 		{

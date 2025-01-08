@@ -25,7 +25,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         for (DeferredBlock<?> data : Constants.getAllAddons()) {
             dropSelf(data.get());
         }
-        dropSelf(ModBlocks.ACCELERATOR_SPEED_CONTROL.get());
+        dropSelf(ModBlocks.ACCELERATOR_SPEED_SENSOR.get());
     }
 
     @Override

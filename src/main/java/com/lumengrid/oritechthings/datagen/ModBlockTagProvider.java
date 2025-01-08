@@ -29,6 +29,6 @@ public class ModBlockTagProvider extends BlockTagsProvider {
         for (DeferredBlock<?> data : Constants.getAllAddons()) {
             tag(BlockTags.MINEABLE_WITH_PICKAXE).add(data.get());
         }
-        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ACCELERATOR_SPEED_CONTROL.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ACCELERATOR_SPEED_SENSOR.get());
     }
 }

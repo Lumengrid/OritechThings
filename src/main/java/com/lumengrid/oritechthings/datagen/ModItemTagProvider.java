@@ -1,5 +1,7 @@
 package com.lumengrid.oritechthings.datagen;
 
+import com.lumengrid.oritechthings.block.ModBlocks;
+import com.lumengrid.oritechthings.item.ModItems;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.util.Constants;
 import com.lumengrid.oritechthings.util.ModTags;
@@ -49,5 +51,8 @@ public class ModItemTagProvider extends ItemTagsProvider {
         for(DeferredBlock<?> data: Constants.PROCESSING){
             tag(ModTags.Items.TIERED_ADDON_PROCESSING).add(data.get().asItem());
         }
+
+        tag(ModTags.Items.PARTICLE_ACCELERATOR).add(ModBlocks.ACCELERATOR_SPEED_SENSOR.get().asItem());
+        tag(ModTags.Items.PARTICLE_ACCELERATOR).add(ModItems.ACCELERATOR_TARGET_DESIGNATOR.get());
     }
 }

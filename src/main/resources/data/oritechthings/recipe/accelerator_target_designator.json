@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "oritech:duratium_ingot"
+    },
+    {
+      "item": "oritech:target_designator"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "oritechthings:accelerator_target_designator"
+  }
+}

@@ -21,10 +21,11 @@ public class ModCreativeModeTabs {
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModBlocks.ADDON_BLOCK_SPEED_TIER_8.get()))
                     .title(Component.translatable("itemGroup."+OritechThings.MOD_ID))
                     .displayItems((itemDisplayParameters, output) -> {
-                        output.accept(ModBlocks.ACCELERATOR_SPEED_CONTROL.get());
+                        output.accept(ModBlocks.ACCELERATOR_SPEED_SENSOR.get());
                         for (DeferredBlock<?> data : Constants.getAllAddons()) {
                             output.accept(data.get());
                         }
+                        output.accept(ModItems.ACCELERATOR_TARGET_DESIGNATOR);
                     }).build());
 
 
