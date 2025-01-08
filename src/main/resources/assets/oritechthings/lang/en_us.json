@@ -48,6 +48,11 @@
   "block.oritechthings.addon_block_processing_tier_7": "Processing Addon Tier 7",
   "block.oritechthings.addon_block_processing_tier_8": "Processing Addon Tier 8",
   "block.oritechthings.addon_block_processing_tier_9": "Processing Addon Tier 9",
+  "block.oritechthings.accelerator_speed_control": "Accelerator Speed Control",
+  "block.oritechthings.accelerator_speed_control.speed_set": " - Speed set to ",
+  "block.oritechthings.accelerator_speed_control.controller_set": " - Controller set to ",
+  "block.oritechthings.accelerator_speed_control.invalid_controller": " - Invalid Controller ",
+  "block.oritechthings.accelerator_speed_control.invalid_controller.to_far": " - Controller to far - Max distance 128 blocks",
   "tooltip.oritechthings.tiered_addons.chambers_desc": "Additional Chambers ",
   "message.exojetpack.energy_low": "§c⚠ Exo Jetpack - Energy Low ⚠"
 }
