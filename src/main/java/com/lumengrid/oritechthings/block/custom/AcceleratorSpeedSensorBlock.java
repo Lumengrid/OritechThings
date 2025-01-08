@@ -49,7 +49,6 @@ public class AcceleratorSpeedSensorBlock extends Block implements EntityBlock {
     protected @NotNull ItemInteractionResult useItemOn(
             @NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult
     ) {
-        System.out.println("useItemOn");
         if (level.isClientSide) return ItemInteractionResult.SUCCESS;
         BlockEntity speedSensor = level.getBlockEntity(pos);
         if(!(speedSensor instanceof AcceleratorSpeedSensorBlockEntity speedSensorEntity)) {
@@ -124,7 +123,6 @@ public class AcceleratorSpeedSensorBlock extends Block implements EntityBlock {
                                 .append(Component.literal(String.valueOf(speed)).withStyle(ChatFormatting.GOLD)));
             }
         }
-        System.out.println("useWithoutItem");
 
         return InteractionResult.SUCCESS_NO_ITEM_USED;
     }
