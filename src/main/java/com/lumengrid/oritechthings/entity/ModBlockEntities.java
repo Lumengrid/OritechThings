@@ -1,7 +1,7 @@
 package com.lumengrid.oritechthings.entity;
 
 import com.lumengrid.oritechthings.block.ModBlocks;
-import com.lumengrid.oritechthings.entity.custom.AcceleratorSpeedControlBlockEntity;
+import com.lumengrid.oritechthings.entity.custom.AcceleratorSpeedSensorBlockEntity;
 import com.lumengrid.oritechthings.entity.custom.TierAddonBlockEntity;
 import com.lumengrid.oritechthings.main.OritechThings;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -14,10 +14,10 @@ public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> MOD_ENTITIES =
             DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, OritechThings.MOD_ID);
 
-    public static final Supplier<BlockEntityType<AcceleratorSpeedControlBlockEntity>> ACCELERATOR_SPEED_CONTROL =
-            MOD_ENTITIES.register("redstone_pulse_block_entity",
-                    () -> BlockEntityType.Builder.of(AcceleratorSpeedControlBlockEntity::new,
-                            ModBlocks.ACCELERATOR_SPEED_CONTROL.get()).build(null));
+    public static final Supplier<BlockEntityType<AcceleratorSpeedSensorBlockEntity>> accelerator_speed_sensor =
+            MOD_ENTITIES.register("accelerator_speed_sensor_block_entity",
+                    () -> BlockEntityType.Builder.of(AcceleratorSpeedSensorBlockEntity::new,
+                            ModBlocks.ACCELERATOR_SPEED_SENSOR.get()).build(null));
 
     @SuppressWarnings("null")
     public static final Supplier<BlockEntityType<TierAddonBlockEntity>> TIER_ADDON =

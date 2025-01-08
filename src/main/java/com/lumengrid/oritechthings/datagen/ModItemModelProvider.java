@@ -1,6 +1,7 @@
 package com.lumengrid.oritechthings.datagen;
 
 import com.lumengrid.oritechthings.block.ModBlocks;
+import com.lumengrid.oritechthings.item.ModItems;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.util.Constants;
 
@@ -20,7 +21,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         for(DeferredBlock<?> data: Constants.getAllAddons()){
             customItemModel(data.getId().getPath());
         }
-        customItemModel(ModBlocks.ACCELERATOR_SPEED_CONTROL.getId().getPath());
+        customItemModel(ModBlocks.ACCELERATOR_SPEED_SENSOR.getId().getPath());
+        basicItem(ModItems.ACCELERATOR_TARGET_DESIGNATOR.get());
     }
 
     private void customItemModel(String blockName) {
