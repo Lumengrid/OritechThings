@@ -4,6 +4,7 @@ import com.lumengrid.oritechthings.entity.ModBlockEntities;
 import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.item.ModCreativeModeTabs;
 import com.lumengrid.oritechthings.item.ModItems;
+import com.lumengrid.oritechthings.menu.ModMenuTypes;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -27,5 +28,6 @@ public class OritechThings
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         ModBlockEntities.MOD_ENTITIES.register(modEventBus);
+        ModMenuTypes.MENUS.register(modEventBus);
     }
 }
