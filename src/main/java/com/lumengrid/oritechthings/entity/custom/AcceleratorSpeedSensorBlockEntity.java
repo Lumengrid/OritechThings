@@ -27,8 +27,10 @@ import rearth.oritech.block.entity.accelerator.AcceleratorParticleLogic;
 import javax.annotation.Nullable;
 
 public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements MenuProvider {
-    private float speedLimit = 0F;
+    private int speedLimit = 1000;
     private boolean enabled = false;
+    private boolean checkGreater = true;
+
     @Nullable
     private BlockPos targetDesignator;
 
@@ -43,16 +45,26 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
             return true;
         }
     };
+
     public AcceleratorSpeedSensorBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.accelerator_speed_sensor.get(), pos, state);
     }
 
-    public float getSpeedLimit() {
+    public int getSpeedLimit() {
         return speedLimit;
     }
 
-    public void increaseSpeedLimit(float amount) {
-        this.speedLimit = Math.max(0, Math.min(speedLimit + amount, 100000F));
+    public void setSpeedLimit(int speed) {
+        speedLimit = speed;
+    }
+
+
+    public boolean isCheckGreater() {
+        return checkGreater;
+    }
+
+    public void setCheckGreater(boolean checkGreater) {
+        this.checkGreater = checkGreater;
         sync();
     }
 
@@ -67,7 +79,7 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
 
     public void sync() {
         setChanged();
-        if(level != null) {
+        if (level != null) {
             level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), AcceleratorSpeedSensorBlock.UPDATE_ALL);
         }
     }
@@ -89,7 +101,7 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+    public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider registries) {
         CompoundTag tag = new CompoundTag();
         saveAdditional(tag, registries);
         return tag;
@@ -97,8 +109,9 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
 
     protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registryLookup) {
         super.saveAdditional(tag, registryLookup);
-        tag.putFloat("SpeedLimit", this.speedLimit);
+        tag.putInt("SpeedLimit", this.speedLimit);
         tag.putBoolean("Enabled", this.enabled);
+        tag.putBoolean("CheckGreater", this.checkGreater);
         if (this.targetDesignator != null) {
             tag.putLong("TargetDesignator", this.targetDesignator.asLong());
         }
@@ -107,8 +120,9 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
 
     protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registryLookup) {
         super.loadAdditional(tag, registryLookup);
-        this.speedLimit = tag.getFloat("SpeedLimit");
+        this.speedLimit = tag.getInt("SpeedLimit");
         this.enabled = tag.getBoolean("Enabled");
+        this.checkGreater = tag.getBoolean("CheckGreater");
         if (tag.contains("TargetDesignator")) {
             this.targetDesignator = BlockPos.of(tag.getLong("TargetDesignator"));
         }
@@ -118,19 +132,37 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState state, T ignoredT) {
         if (level.isClientSide) return;
         if (!(level.getBlockEntity(pos) instanceof AcceleratorSpeedSensorBlockEntity speedControl)) return;
-        if (!speedControl.isEnabled() || speedControl.getTargetDesignator() == null) return;
-        boolean powered = false;
+        if (!speedControl.isEnabled() || speedControl.getTargetDesignator() == null) {
+            setPowered(level, pos, state, false);
+            return;
+        }
         BlockEntity entity = level.getBlockEntity(speedControl.getTargetDesignator());
+        boolean powered = isPowered(speedControl, entity);
+        if (powered != state.getValue(AcceleratorSpeedSensorBlock.POWERED)) {
+            setPowered(level, pos, state, powered);
+        }
+    }
+
+    private static void setPowered(Level level, BlockPos pos, BlockState state, boolean powered) {
+        level.setBlock(pos, state.setValue(AcceleratorSpeedSensorBlock.POWERED, powered), 3);
+        notifyNeighbors(level, pos);
+    }
+
+    private static boolean isPowered(AcceleratorSpeedSensorBlockEntity speedControl, BlockEntity entity) {
+        boolean powered = false;
         if (entity instanceof AcceleratorControllerBlockEntity accelerator) {
             AcceleratorParticleLogic.ActiveParticle part = accelerator.getParticle();
-            if (part != null && part.velocity > speedControl.speedLimit) {
-                powered = true;
+            if (part != null) {
+                if (speedControl.isCheckGreater() && part.velocity > speedControl.speedLimit) {
+                    powered = true;
+                } else {
+                    if (!speedControl.isCheckGreater() && part.velocity < speedControl.speedLimit) {
+                        powered = true;
+                    }
+                }
             }
         }
-        if (powered != state.getValue(AcceleratorSpeedSensorBlock.POWERED)) {
-            level.setBlock(pos, state.setValue(AcceleratorSpeedSensorBlock.POWERED, powered), 3);
-            notifyNeighbors(level, pos);
-        }
+        return powered;
     }
 
     private static void notifyNeighbors(Level level, BlockPos pos) {
@@ -141,13 +173,13 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
     }
 
     @Override
-    public Component getDisplayName() {
+    public @NotNull Component getDisplayName() {
         return Component.translatable("block.oritechthings.accelerator_speed_sensor");
     }
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+    public AbstractContainerMenu createMenu(int i, @NotNull Inventory inventory, @NotNull Player player) {
         return new AcceleratorSpeedSensorMenu(i, inventory, this);
     }
 }
