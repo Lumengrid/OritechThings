@@ -1,9 +1,13 @@
 package com.lumengrid.oritechthings.main;
 
-import com.lumengrid.oritechthings.entity.ModBlockEntities;
+import com.lumengrid.oritechthings.entity.ModEntities;
 import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.item.ModCreativeModeTabs;
 import com.lumengrid.oritechthings.item.ModItems;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -26,6 +30,14 @@ public class OritechThings
         ModCreativeModeTabs.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
-        ModBlockEntities.MOD_ENTITIES.register(modEventBus);
+        ModEntities.MOD_ENTITIES.register(modEventBus);
+    }
+
+    @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    public static class ClientModEvent {
+        @SubscribeEvent
+        public static void onClientSetup(FMLClientSetupEvent event) {
+
+        }
     }
 }

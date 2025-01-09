@@ -2,15 +2,18 @@ package com.lumengrid.oritechthings.entity;
 
 import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.entity.custom.AcceleratorSpeedSensorBlockEntity;
+import com.lumengrid.oritechthings.entity.custom.AmethystFishEntity;
 import com.lumengrid.oritechthings.entity.custom.TierAddonBlockEntity;
 import com.lumengrid.oritechthings.main.OritechThings;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.minecraft.core.registries.BuiltInRegistries;
 
 import java.util.function.Supplier;
 
-public class ModBlockEntities {
+public class ModEntities {
     public static final DeferredRegister<BlockEntityType<?>> MOD_ENTITIES =
             DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, OritechThings.MOD_ID);
 
@@ -18,6 +21,10 @@ public class ModBlockEntities {
             MOD_ENTITIES.register("accelerator_speed_sensor_block_entity",
                     () -> BlockEntityType.Builder.of(AcceleratorSpeedSensorBlockEntity::new,
                             ModBlocks.ACCELERATOR_SPEED_SENSOR.get()).build(null));
+
+    public static final Supplier<EntityType<AmethystFishEntity>> AMETHYST_FISH =
+            MOD_ENTITIES.register("amethyst_fish", () -> EntityType.Builder.of(AmethystFishEntity::new, MobCategory.MONSTER)
+                    .sized(0.75f, 0.35f).build("amethyst_fish"));
 
     @SuppressWarnings("null")
     public static final Supplier<BlockEntityType<TierAddonBlockEntity>> TIER_ADDON =

@@ -3,6 +3,7 @@ package com.lumengrid.oritechthings.block.custom;
 import com.lumengrid.oritechthings.entity.custom.AcceleratorSpeedSensorBlockEntity;
 import com.lumengrid.oritechthings.item.ModItems;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -161,6 +162,10 @@ public class AcceleratorSpeedSensorBlock extends Block implements EntityBlock {
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context, List<Component> tooltip, @NotNull TooltipFlag options) {
-        tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_speed_sensor"));
+        if (Screen.hasControlDown()) {
+            tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_speed_sensor"));
+        } else {
+            tooltip.add(Component.translatable("tooltip.oritech.item_extra_info").withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
+        }
     }
 }

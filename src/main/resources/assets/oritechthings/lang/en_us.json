@@ -59,5 +59,6 @@
   "block.oritechthings.accelerator_speed_sensor.invalid_controller": "\n⚠ Invalid Target Particle Accelerator ⚠",
   "block.oritechthings.accelerator_speed_sensor.invalid_controller.to_far": "\n⚠ Target Particle Accelerator to far - Max distance 128 blocks ⚠",
   "tooltip.oritechthings.tiered_addons.chambers_desc": "Additional Chambers ",
+  "tooltip.oritechthings.accelerator_target_designator": "Usable to store the position of a Particle Accelerator",
   "message.exojetpack.energy_low": "§c⚠ Exo Jetpack - Energy Low ⚠"
 }
