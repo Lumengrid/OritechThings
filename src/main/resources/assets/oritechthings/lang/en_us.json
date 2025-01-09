@@ -49,7 +49,6 @@
   "block.oritechthings.addon_block_processing_tier_8": "Processing Addon Tier 8",
   "block.oritechthings.addon_block_processing_tier_9": "Processing Addon Tier 9",
   "item.oritechthings.accelerator_target_designator": "Particle Accelerator Target Designator",
-  "tooltip.oritechthings.accelerator_speed_sensor": "\nLeft Click with Empty hand to see configuration\nSet Speed Limit Right Click with Empty hand +100 - Shifting +1000\nEnable/Disable use a Redstone Torch\nSet Particle Accelerator with Particle Accelerator Target Designator item",
   "block.oritechthings.accelerator_speed_sensor": "Particle Accelerator Speed Sensor",
   "block.oritechthings.accelerator_speed_sensor.speed_set": "\nSpeed set to ",
   "block.oritechthings.accelerator_speed_sensor.enable": "\nEnabled",
