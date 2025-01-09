@@ -13,7 +13,7 @@ import rearth.oritech.item.tools.util.OritechEnergyItem;
 import rearth.oritech.util.energy.EnergyApi;
 
 @EventBusSubscriber(modid = OritechThings.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
-public class ModEvents {
+public class GameBusEvents {
 
     @SuppressWarnings("deprecation")
     @SubscribeEvent

@@ -2,6 +2,7 @@ package com.lumengrid.oritechthings.block.custom;
 
 import com.lumengrid.oritechthings.entity.custom.AcceleratorSpeedSensorBlockEntity;
 import com.lumengrid.oritechthings.item.ModItems;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,17 +13,16 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -33,9 +33,8 @@ import rearth.oritech.block.entity.accelerator.AcceleratorControllerBlockEntity;
 import rearth.oritech.init.ComponentContent;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
-public class AcceleratorSpeedSensorBlock extends Block implements EntityBlock {
+public class AcceleratorSpeedSensorBlock extends BaseEntityBlock {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public AcceleratorSpeedSensorBlock() {
@@ -45,25 +44,26 @@ public class AcceleratorSpeedSensorBlock extends Block implements EntityBlock {
         this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, false));
     }
 
+    public AcceleratorSpeedSensorBlock(BlockBehaviour.Properties p) {
+        this();
+    }
+
     @Override
     protected @NotNull ItemInteractionResult useItemOn(
-            @NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult
+            @NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level,
+            @NotNull BlockPos pos, @NotNull Player player,
+            @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult
     ) {
         if (level.isClientSide) return ItemInteractionResult.SUCCESS;
         BlockEntity speedSensor = level.getBlockEntity(pos);
         if(!(speedSensor instanceof AcceleratorSpeedSensorBlockEntity speedSensorEntity)) {
-            System.out.println("useItemOn not on a AcceleratorSpeedSensorBlock");
             return ItemInteractionResult.SUCCESS;
         }
-        if (stack.is(Items.REDSTONE_TORCH)) {
-            speedSensorEntity.setEnabled(!speedSensorEntity.isEnabled());
-            player.sendSystemMessage(Component.translatable("block.oritechthings.accelerator_speed_sensor." + (speedSensorEntity.isEnabled() ? "enable" : "disable"))
-                    .withStyle(speedSensorEntity.isEnabled() ? ChatFormatting.GREEN : ChatFormatting.RED));
-            return ItemInteractionResult.SUCCESS;
-        }
+
         if (!stack.is(ModItems.ACCELERATOR_TARGET_DESIGNATOR)) {
             return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
         }
+
         BlockPos targetPos = stack.get(ComponentContent.TARGET_POSITION.get());
         BlockEntity blockEntity = targetPos == null ? null : level.getBlockEntity(targetPos);
         if(targetPos == null || !(blockEntity instanceof AcceleratorControllerBlockEntity)) {
@@ -85,44 +85,18 @@ public class AcceleratorSpeedSensorBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public void attack(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player) {
-        if (!level.isClientSide() && player.getMainHandItem().isEmpty()) {
-            BlockEntity speedControl = level.getBlockEntity(pos);
-            if(!(speedControl instanceof AcceleratorSpeedSensorBlockEntity speedControlEntity)) {
-                System.out.println("attack not on a AcceleratorSpeedSensorBlock");
-                return;
-            }
-            player.sendSystemMessage(
-                            Component.translatable("block.oritechthings.accelerator_speed_sensor." + (speedControlEntity.isEnabled() ? "enable" : "disable"))
-                                    .withStyle(speedControlEntity.isEnabled() ? ChatFormatting.GREEN : ChatFormatting.RED)
-                            .append(Component.translatable("block.oritechthings.accelerator_speed_sensor.speed_set").withStyle(ChatFormatting.WHITE)
-                                    .append(Component.literal(String.valueOf(speedControlEntity.getSpeedLimit())).withStyle(ChatFormatting.GOLD)))
-                            .append(
-                                    speedControlEntity.getTargetDesignator() == null
-                                            ?
-                                            Component.translatable("block.oritechthings.accelerator_speed_sensor.controller_not_set").withStyle(ChatFormatting.RED)
-                                            :
-                                            Component.translatable("block.oritechthings.accelerator_speed_sensor.controller_set").withStyle(ChatFormatting.WHITE)
-                                                .append(Component.literal(speedControlEntity.getTargetDesignator().toShortString()).withStyle(ChatFormatting.BLUE))));
-        }
-    }
-
-
-    @Override
     protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hitResult) {
-        if(!level.isClientSide()) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if(blockEntity instanceof AcceleratorSpeedSensorBlockEntity acceleratorEntity) {
-                float speed = acceleratorEntity.getSpeedLimit();
-                float toAdd = (player.isShiftKeyDown() || player.isCrouching()) ? 1000F : 100F;
-                if (speed + toAdd > 20000F) speed = 0F;
-                speed += toAdd;
-                acceleratorEntity.setSpeedLimit(speed);
-                level.playSound(player, pos, SoundEvents.ALLAY_AMBIENT_WITHOUT_ITEM, SoundSource.BLOCKS, 1f, 1f);
-                player.sendSystemMessage(Component.translatable("block.oritechthings.accelerator_speed_sensor.speed_set")
-                                .append(Component.literal(String.valueOf(speed)).withStyle(ChatFormatting.GOLD)));
-            }
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS_NO_ITEM_USED;
         }
+
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+
+        if (!(blockEntity instanceof AcceleratorSpeedSensorBlockEntity)) {
+            return InteractionResult.SUCCESS_NO_ITEM_USED;
+        }
+
+        player.openMenu(state.getMenuProvider(level, pos), p -> p.writeBlockPos(pos));
 
         return InteractionResult.SUCCESS_NO_ITEM_USED;
     }
@@ -160,7 +134,12 @@ public class AcceleratorSpeedSensorBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context, List<Component> tooltip, @NotNull TooltipFlag options) {
-        tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_speed_sensor"));
+    protected RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return simpleCodec(AcceleratorSpeedSensorBlock::new);
     }
 }
