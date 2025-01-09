@@ -1,72 +1,81 @@
 package com.lumengrid.oritechthings.client.screen;
 
+import com.lumengrid.oritechthings.client.screen.component.ToggleButton;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.menu.AcceleratorSpeedSensorMenu;
 import com.lumengrid.oritechthings.network.packet.UpdateSpeedSensorC2SPacket;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-import java.text.DecimalFormat;
-import java.util.List;
-
 public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<AcceleratorSpeedSensorMenu> {
-
+    private final Component title = Component.translatable("gui.oritechthings.accelerator_speed_sensor.title");
     public static ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(OritechThings.MOD_ID, "textures/gui/speed_sensor.png");
 
     public AcceleratorSpeedSensorScreen(AcceleratorSpeedSensorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
     }
-
-    private static final List<SpeedButton> BUTTONS = List.of(
-        new SpeedButton(25, 34, -10f, -500f),
-        new SpeedButton(61, 34, -5f, -100f),
-        new SpeedButton(97, 34, 5f, 100f),
-        new SpeedButton(133, 34, 10, 500f)
-    );
+    @Override
+    protected void renderLabels(GuiGraphics gui, int mouseX, int mouseY) {
+        gui.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 0XFFFFFF);
+    }
 
     @Override
     protected void init() {
         super.init();
-
         inventoryLabelY = 10000;
-        titleLabelY = 10000;
 
-        for (SpeedButton but : BUTTONS) {
-            addWidget(
-                Button.builder(Component.empty(), (b) -> {
-                        PacketDistributor.sendToServer(
-                            new UpdateSpeedSensorC2SPacket(
-                                menu.be.getBlockPos(),
-                                Screen.hasShiftDown() ? but.max : but.min,
-                                menu.be.isEnabled()
-                            )
-                        );
-                    }).pos(leftPos + but.x, topPos + but.y)
-                    .size(18, 18)
-                    .build()
-            );
+        // < > TOGGLE
+        addRenderableWidget(new ToggleButton(
+                leftPos + 40, topPos + 46, 17, 17,
+                Component.literal(menu.be.isCheckGreater() ? ">" : "<"),
+                button -> {
+                    boolean newState = !menu.be.isCheckGreater();
+                    PacketDistributor.sendToServer(new UpdateSpeedSensorC2SPacket(menu.be.getBlockPos(), menu.be.getSpeedLimit(), menu.be.isEnabled(), newState));
+                    button.setMessage(Component.literal(newState ? ">" : "<"));
+                },
+                menu.be.isEnabled(),
+                0xFF000000,
+                0xFF000000
+        ));
+
+        // SPEED INPUT
+        EditBox speedInput = new EditBox(this.font, this.leftPos + 60, this.topPos + 45,
+                45, 20, Component.literal("Speed Input"));
+        speedInput.setMaxLength(5);
+        speedInput.setFilter(s -> s.matches("\\d*") && !s.isEmpty());
+        speedInput.setValue(String.valueOf(menu.be.getSpeedLimit()));
+        speedInput.setResponder(this::onSpeedEntered);
+        addRenderableWidget(speedInput);
+
+        // ON OFF TOGGLE
+        addRenderableWidget(new ToggleButton(
+                leftPos + 130, topPos + 45, 30, 18,
+                Component.literal(menu.be.isEnabled() ? "ON" : "OFF"),
+                button -> {
+                    boolean newState = !menu.be.isEnabled();
+                    PacketDistributor.sendToServer(new UpdateSpeedSensorC2SPacket(menu.be.getBlockPos(), menu.be.getSpeedLimit(), newState, menu.be.isCheckGreater()));
+                    button.setMessage(Component.literal(newState ? "ON" : "OFF"));
+                },
+                menu.be.isEnabled(),
+                0xFF93c47d,
+                0xFFe06666
+        ));
+    }
+
+    private void onSpeedEntered(String input) {
+        try {
+            int value = Integer.parseInt(input);
+            value = Math.max(0, Math.min(value, 20000));
+            PacketDistributor.sendToServer(new UpdateSpeedSensorC2SPacket(menu.be.getBlockPos(), value, menu.be.isEnabled(), menu.be.isCheckGreater()));
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage());
         }
-
-        addWidget(
-            Button.builder(
-                Component.empty(),
-                (b) -> PacketDistributor.sendToServer(
-                    new UpdateSpeedSensorC2SPacket(
-                        menu.be.getBlockPos(),
-                        0,
-                        !menu.be.isEnabled()
-                    )
-                )
-            ).pos(leftPos + 150, topPos + 64)
-                .size(18, 18)
-                .build()
-        );
     }
 
     @Override
@@ -75,91 +84,45 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
         int y = (height - imageHeight) / 2;
 
         guiGraphics.blit(
-            BACKGROUND,
-            x,
-            y,
-            0,
-            0,
-            176,
-            166,
-            256,
-            256
-        );
-
-        // Speed Buttons
-        for (SpeedButton but : BUTTONS) {
-            guiGraphics.blit(
                 BACKGROUND,
-                leftPos + but.x,
-                topPos + but.y,
-                but.max <= 0? 176: 194,
+                x,
+                y,
                 0,
-                18,
-                18,
+                0,
+                176,
+                166,
                 256,
                 256
+        );
+        renderParticleAcceleratorMessage(guiGraphics);
+    }
+
+    private void renderParticleAcceleratorMessage(GuiGraphics guiGraphics) {
+        guiGraphics.drawString(
+                this.font,
+                Component.translatable("gui.oritechthings.accelerator_speed_sensor.controller"),
+                leftPos + 10,
+                topPos + 20,
+                0xFFFFFF
+        );
+        if (menu.be.getTargetDesignator() == null) {
+            guiGraphics.drawString(
+                    this.font,
+                    Component.translatable("gui.oritechthings.accelerator_speed_sensor.controller_not_set")
+                            .withStyle(style -> style.withColor(0xFF5555).withBold(true)),
+                    leftPos + 100,
+                    topPos + 32,
+                    0xFF5555
             );
-        }
-
-        // Speed Amount
-        DecimalFormat df = new DecimalFormat();
-        df.setMaximumFractionDigits(0);
-
-        String text = df.format(menu.be.getSpeedLimit());
-
-        guiGraphics.drawCenteredString(
-            font,
-            text,
-            leftPos + 86,
-            topPos + 66,
-            0xFF555555
-        );
-
-        //On - Off Button
-        guiGraphics.blit(
-            BACKGROUND,
-            leftPos + 151,
-            topPos + 64,
-            menu.be.isEnabled()? 176: 194,
-            18,
-            18,
-            18,
-            256,
-            256
-        );
-    }
-
-    @Override
-    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-        renderTooltip(pGuiGraphics, pMouseX, pMouseY);
-    }
-
-    @Override
-    protected void renderTooltip(GuiGraphics guiGraphics, int x, int y) {
-        super.renderTooltip(guiGraphics, x, y);
-
-        DecimalFormat df = new DecimalFormat();
-        df.setMaximumFractionDigits(0);
-
-        for (SpeedButton but : BUTTONS) {
-            if (!isMouseHovering(leftPos + but.x, topPos + but.y, 18, 18, x, y)) {
-                continue;
-            }
-            
-            String text = df.format(Screen.hasShiftDown() ? but.max : but.min);
-            guiGraphics.renderTooltip(
-                font,
-                Component.literal(text),
-                x,
-                y
+        } else {
+            BlockPos target = menu.be.getTargetDesignator();
+            guiGraphics.drawString(
+                    this.font,
+                    Component.literal(target.toShortString()).withStyle(style -> style.withColor(0x0000FF)),
+                    leftPos + 40,
+                    topPos + 32,
+                    0x0000FF
             );
         }
     }
-
-    public static boolean isMouseHovering(int x, int y, int width, int height, int mouseX, int mouseY) {
-        return mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-    }
-
-    public record SpeedButton(int x, int y, float min, float max){}
 }

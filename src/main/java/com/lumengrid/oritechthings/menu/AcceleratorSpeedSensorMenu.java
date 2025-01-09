@@ -9,9 +9,7 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class AcceleratorSpeedSensorMenu extends AbstractContainerMenu {
 
@@ -47,12 +45,12 @@ public class AcceleratorSpeedSensorMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int pIndex) {
+    public @NotNull ItemStack quickMoveStack(@NotNull Player playerIn, int pIndex) {
         return slots.get(pIndex).getItem();
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
+    public boolean stillValid(@NotNull Player pPlayer) {
         return stillValid(ContainerLevelAccess.create(level, be.getBlockPos()),
             pPlayer, ModBlocks.ACCELERATOR_SPEED_SENSOR.get());
     }
