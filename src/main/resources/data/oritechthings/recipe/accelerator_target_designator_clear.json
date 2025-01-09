@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "oritechthings:accelerator_target_designator"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "oritechthings:accelerator_target_designator"
+  }
+}
