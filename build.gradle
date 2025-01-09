@@ -140,6 +140,7 @@ dependencies {
 
     implementation "curse.maven:rhino-416294:6000610"
     implementation "curse.maven:kubejs-238086:5810100"
+    implementation "curse.maven:jade-324717:6011258"
 
     implementation "curse.maven:jei-238222:5846880"
 }
