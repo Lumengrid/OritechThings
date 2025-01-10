@@ -22,9 +22,13 @@ public class ModCreativeModeTabs {
                     .title(Component.translatable("itemGroup."+OritechThings.MOD_ID))
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModBlocks.ACCELERATOR_SPEED_SENSOR.get());
+                        output.accept(ModBlocks.INFESTED_AMETHYST_BLOCK.get());
+
+                        //addons
                         for (DeferredBlock<?> data : Constants.getAllAddons()) {
                             output.accept(data.get());
                         }
+
                         output.accept(ModItems.ACCELERATOR_TARGET_DESIGNATOR);
                         output.accept(ModItems.AMETHYST_FISH_SPAWN_EGG);
                     }).build());

@@ -20,11 +20,15 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-
         for (DeferredBlock<?> data : Constants.getAllAddons()) {
             addonBlockState(data);
         }
         simpleBlockState(ModBlocks.ACCELERATOR_SPEED_SENSOR);
+        blockWithItem(ModBlocks.INFESTED_AMETHYST_BLOCK);
+    }
+
+    private void blockWithItem(DeferredBlock<?> deferredBlock) {
+        simpleBlockWithItem(deferredBlock.get(), cubeAll(deferredBlock.get()));
     }
 
     private void addonBlockState(DeferredBlock<?> deferredBlock) {
