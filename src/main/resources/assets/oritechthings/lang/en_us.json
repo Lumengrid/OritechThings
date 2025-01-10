@@ -50,6 +50,8 @@
   "block.oritechthings.addon_block_processing_tier_9": "Processing Addon Tier 9",
   "item.oritechthings.accelerator_target_designator": "Particle Accelerator Target Designator",
   "block.oritechthings.accelerator_speed_sensor": "Particle Accelerator Speed Sensor",
+  "entity.oritechthings.amethyst_fish": "Amethyst Fish",
+  "item.oritechthings.amethyst_fish_spawn_egg": "Amethyst Fish Spawn Egg",
   "gui.oritechthings.accelerator_speed_sensor.title": "Speed Sensor",
   "gui.oritechthings.accelerator_speed_sensor.controller_not_set": "NOT SET !",
   "gui.oritechthings.accelerator_speed_sensor.controller": "Particle Accelerator ",
