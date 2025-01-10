@@ -1,9 +1,10 @@
 package com.lumengrid.oritechthings.main;
 
-import com.lumengrid.oritechthings.entity.ModEntities;
 import com.lumengrid.oritechthings.block.ModBlocks;
+import com.lumengrid.oritechthings.entity.ModEntities;
 import com.lumengrid.oritechthings.item.ModCreativeModeTabs;
 import com.lumengrid.oritechthings.item.ModItems;
+import com.lumengrid.oritechthings.menu.ModMenuTypes;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -31,7 +32,9 @@ public class OritechThings
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         ModEntities.MOD_ENTITIES.register(modEventBus);
+        ModMenuTypes.MENUS.register(modEventBus);
     }
+
 
     @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvent {
