@@ -103,9 +103,6 @@ public class AmethystFishEntity extends Monster {
         if (level.getDifficulty() == Difficulty.PEACEFUL) {
             return false;
         }
-        if (level.getLightEmission(pos) >= 10) {
-            return false;
-        }
         return checkMobSpawnRules(amethystFish, level, spawnType, pos, random);
     }
 }

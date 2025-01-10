@@ -1,6 +1,7 @@
 package com.lumengrid.oritechthings.block;
 
 import com.lumengrid.oritechthings.block.custom.AcceleratorSpeedSensorBlock;
+import com.lumengrid.oritechthings.block.custom.InfestedAmethystBlock;
 import com.lumengrid.oritechthings.block.custom.TierAddonBlock;
 import com.lumengrid.oritechthings.item.ModItems;
 import com.lumengrid.oritechthings.main.ConfigLoader;
@@ -12,7 +13,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -82,6 +85,10 @@ public class ModBlocks {
     public static final DeferredBlock<Block> ACCELERATOR_SPEED_SENSOR = registerBlock(
             "accelerator_speed_sensor", AcceleratorSpeedSensorBlock::new);
 
+    public static final DeferredBlock<Block> INFESTED_AMETHYST_BLOCK = registerBlock(
+            "infested_amethyst_block", () -> new InfestedAmethystBlock(Blocks.AMETHYST_BLOCK,
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).strength(1.5F).sound(SoundType.AMETHYST))
+    );
     private static DeferredBlock<Block> processingAddonBuilder(int tier) {
         return registerBlock(
                 NameUtil.genAddonName(NameUtil.Type.PROCESSING, tier), () -> new TierAddonBlock(
