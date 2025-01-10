@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tiered Addons Wiki</title>
+    <style>
+        body {
+            font-family: 'Minecraft', Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: #2c2c2c;
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            background-color: #f0f0f0;
+            padding: 10px;
+            z-index: 100;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            background-color: #4a4a4a;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .nav-button:hover {
+            background-color: #666;
+        }
+
+        .addon-section {
+            margin-bottom: 40px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .addon-type {
+            color: #2c2c2c;
+            border-bottom: 2px solid #4a4a4a;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tier-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .tier-card {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            background-color: #f9f9f9;
+        }
+
+        .tier-title {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .image-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+      .image-container img {
+            max-width: 150px;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.5); /* Zoom factor */
+            z-index: 1;
+        }
+
+        .description {
+            color: #666;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>Tiered Addons Wiki</h1>
+    <p>A comprehensive guide to all addon tiers and their recipes</p>
+</div>
+
+<nav class="nav">
+    <a href="#speed" class="nav-button">Speed</a>
+    <a href="#efficiency" class="nav-button">Efficiency</a>
+    <a href="#efficient_speed" class="nav-button">Efficient Speed</a>
+    <a href="#capacitor" class="nav-button">Capacitor</a>
+    <a href="#acceptor" class="nav-button">Acceptor</a>
+    <a href="#processing" class="nav-button">Processing</a>
+</nav>
+
+<div id="speed" class="addon-section">
+    <h2 class="addon-type">Speed Addons</h2>
+    <div class="tier-grid">
+        <div class="tier-card" id="speed-tier-2">
+            <h3 class="tier-title">Tier 2</h3>
+            <div class="image-container">
+                <img src="speed/speed_tier_2.png" alt="Speed Addon Tier 2">
+                <img src="speed/speed_tier_2_crafting.png" alt="Speed Addon Tier 2 Crafting">
+                <img src="speed/speed_tier_2_recipe.png" alt="Speed Addon Tier 2 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="speed-tier-3">
+            <h3 class="tier-title">Tier 3</h3>
+            <div class="image-container">
+                <img src="speed/speed_tier_3.png" alt="Speed Addon Tier 3">
+                <img src="speed/speed_tier_3_recipe.png" alt="Speed Addon Tier 3 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="speed-tier-4">
+            <h3 class="tier-title">Tier 4</h3>
+            <div class="image-container">
+                <img src="speed/speed_tier_4.png" alt="Speed Addon Tier 4">
+                <img src="speed/speed_tier_4_recipe.png" alt="Speed Addon Tier 4 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="speed-tier-5">
+            <h3 class="tier-title">Tier 5</h3>
+            <div class="image-container">
+                <img src="speed/speed_tier_5.png" alt="Speed Addon Tier 5">
+                <img src="speed/speed_tier_5_recipe.png" alt="Speed Addon Tier 5 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="speed-tier-6">
+            <h3 class="tier-title">Tier 6</h3>
+            <div class="image-container">
+                <img src="speed/speed_tier_6.png" alt="Speed Addon Tier 6">
+                <img src="speed/speed_tier_6_recipe.png" alt="Speed Addon Tier 6 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="speed-tier-7">
+            <h3 class="tier-title">Tier 7</h3>
+            <div class="image-container">
+                <img src="speed/speed_tier_7.png" alt="Speed Addon Tier 7">
+                <img src="speed/speed_tier_7_recipe.png" alt="Speed Addon Tier 7 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="speed-tier-8">
+            <h3 class="tier-title">Tier 8</h3>
+            <div class="image-container">
+                <img src="speed/speed_tier_8.png" alt="Speed Addon Tier 8">
+                <img src="speed/speed_tier_8_recipe.png" alt="Speed Addon Tier 8 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="speed-tier-9">
+            <h3 class="tier-title">Tier 9</h3>
+            <div class="image-container">
+                <img src="speed/speed_tier_9.png" alt="Speed Addon Tier 9">
+                <img src="speed/speed_tier_9_recipe.png" alt="Speed Addon Tier 9 Recipe">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="efficiency" class="addon-section">
+    <h2 class="addon-type">Efficiency Addons</h2>
+    <div class="tier-grid">
+        <div class="tier-card" id="efficiency-tier-2">
+            <h3 class="tier-title">Tier 2</h3>
+            <div class="image-container">
+                <img src="efficiency/efficiency_tier_2.png" alt="Efficiency Addon Tier 2">
+                <img src="efficiency/efficiency_tier_2_crafting.png" alt="Efficiency Addon Tier 2 Crafting">
+                <img src="efficiency/efficiency_tier_2_recipe.png" alt="Efficiency Addon Tier 2 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="efficiency-tier-3">
+            <h3 class="tier-title">Tier 3</h3>
+            <div class="image-container">
+                <img src="efficiency/efficiency_tier_3.png" alt="Efficiency Addon Tier 3">
+                <img src="efficiency/efficiency_tier_3_recipe.png" alt="Efficiency Addon Tier 3 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="efficiency-tier-4">
+            <h3 class="tier-title">Tier 4</h3>
+            <div class="image-container">
+                <img src="efficiency/efficiency_tier_4.png" alt="Efficiency Addon Tier 4">
+                <img src="efficiency/efficiency_tier_4_recipe.png" alt="Efficiency Addon Tier 4 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="efficiency-tier-5">
+            <h3 class="tier-title">Tier 5</h3>
+            <div class="image-container">
+                <img src="efficiency/efficiency_tier_5.png" alt="Efficiency Addon Tier 5">
+                <img src="efficiency/efficiency_tier_5_recipe.png" alt="Efficiency Addon Tier 5 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="efficiency-tier-6">
+            <h3 class="tier-title">Tier 6</h3>
+            <div class="image-container">
+                <img src="efficiency/efficiency_tier_6.png" alt="Efficiency Addon Tier 6">
+                <img src="efficiency/efficiency_tier_6_recipe.png" alt="Efficiency Addon Tier 6 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="efficiency-tier-7">
+            <h3 class="tier-title">Tier 7</h3>
+            <div class="image-container">
+                <img src="efficiency/efficiency_tier_7.png" alt="Efficiency Addon Tier 7">
+                <img src="efficiency/efficiency_tier_7_recipe.png" alt="Efficiency Addon Tier 7 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="efficiency-tier-8">
+            <h3 class="tier-title">Tier 8</h3>
+            <div class="image-container">
+                <img src="efficiency/efficiency_tier_8.png" alt="Efficiency Addon Tier 8">
+                <img src="efficiency/efficiency_tier_8_recipe.png" alt="Efficiency Addon Tier 8 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="efficiency-tier-9">
+            <h3 class="tier-title">Tier 9</h3>
+            <div class="image-container">
+                <img src="efficiency/efficiency_tier_9.png" alt="Efficiency Addon Tier 9">
+                <img src="efficiency/efficiency_tier_9_recipe.png" alt="Efficiency Addon Tier 9 Recipe">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="efficient_speed" class="addon-section">
+    <h2 class="addon-type">Efficient Speed Addons</h2>
+    <div class="tier-grid">
+        <div class="tier-card" id="efficient_speed-tier-2">
+            <h3 class="tier-title">Tier 2</h3>
+            <div class="image-container">
+                <img src="efficient_speed/efficient_speed_tier_2.png" alt="Efficient Speed Addon Tier 2">
+                <img src="efficient_speed/efficient_speed_tier_2_recipe.png" alt="Efficient Speed Addon Tier 2 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="efficient_speed-tier-3">
+            <h3 class="tier-title">Tier 3</h3>
+            <div class="image-container">
+                <img src="efficient_speed/efficient_speed_tier_3.png" alt="Efficient Speed Addon Tier 3">
+                <img src="efficient_speed/efficient_speed_tier_3_recipe.png" alt="Efficient Speed Addon Tier 3 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="efficient_speed-tier-4">
+            <h3 class="tier-title">Tier 4</h3>
+            <div class="image-container">
+                <img src="efficient_speed/efficient_speed_tier_4.png" alt="Efficient Speed Addon Tier 4">
+                <img src="efficient_speed/efficient_speed_tier_4_recipe.png" alt="Efficient Speed Addon Tier 4 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="efficient_speed-tier-5">
+            <h3 class="tier-title">Tier 5</h3>
+            <div class="image-container">
+                <img src="efficient_speed/efficient_speed_tier_5.png" alt="Efficient Speed Addon Tier 5">
+                <img src="efficient_speed/efficient_speed_tier_5_recipe.png" alt="Efficient Speed Addon Tier 5 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="efficient_speed-tier-6">
+            <h3 class="tier-title">Tier 6</h3>
+            <div class="image-container">
+                <img src="efficient_speed/efficient_speed_tier_6.png" alt="Efficient Speed Addon Tier 6">
+                <img src="efficient_speed/efficient_speed_tier_6_recipe.png" alt="Efficient Speed Addon Tier 6 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="efficient_speed-tier-7">
+            <h3 class="tier-title">Tier 7</h3>
+            <div class="image-container">
+                <img src="efficient_speed/efficient_speed_tier_7.png" alt="Efficient Speed Addon Tier 7">
+                <img src="efficient_speed/efficient_speed_tier_7_recipe.png" alt="Efficient Speed Addon Tier 7 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="efficient_speed-tier-8">
+            <h3 class="tier-title">Tier 8</h3>
+            <div class="image-container">
+                <img src="efficient_speed/efficient_speed_tier_8.png" alt="Efficient Speed Addon Tier 8">
+                <img src="efficient_speed/efficient_speed_tier_8_recipe.png" alt="Efficient Speed Addon Tier 8 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="efficient_speed-tier-9">
+            <h3 class="tier-title">Tier 9</h3>
+            <div class="image-container">
+                <img src="efficient_speed/efficient_speed_tier_9.png" alt="Efficient Speed Addon Tier 9">
+                <img src="efficient_speed/efficient_speed_tier_9_recipe.png" alt="Efficient Speed Addon Tier 9 Recipe">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="capacitor" class="addon-section">
+    <h2 class="addon-type">Capacitor Addons</h2>
+    <div class="tier-grid">
+        <div class="tier-card" id="capacitor-tier-2">
+            <h3 class="tier-title">Tier 2</h3>
+            <div class="image-container">
+                <img src="capacitor/capacitor_tier_2.png" alt="Capacitor Addon Tier 2">
+                <img src="capacitor/capacitor_tier_2_crafting.png" alt="Capacitor Addon Tier 2 Crafting">
+                <img src="capacitor/capacitor_tier_2_recipe.png" alt="Capacitor Addon Tier 2 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="capacitor-tier-3">
+            <h3 class="tier-title">Tier 3</h3>
+            <div class="image-container">
+                <img src="capacitor/capacitor_tier_3.png" alt="Capacitor Addon Tier 3">
+                <img src="capacitor/capacitor_tier_3_recipe.png" alt="Capacitor Addon Tier 3 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="capacitor-tier-4">
+            <h3 class="tier-title">Tier 4</h3>
+            <div class="image-container">
+                <img src="capacitor/capacitor_tier_4.png" alt="Capacitor Addon Tier 4">
+                <img src="capacitor/capacitor_tier_4_recipe.png" alt="Capacitor Addon Tier 4 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="capacitor-tier-5">
+            <h3 class="tier-title">Tier 5</h3>
+            <div class="image-container">
+                <img src="capacitor/capacitor_tier_5.png" alt="Capacitor Addon Tier 5">
+                <img src="capacitor/capacitor_tier_5_recipe.png" alt="Capacitor Addon Tier 5 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="capacitor-tier-6">
+            <h3 class="tier-title">Tier 6</h3>
+            <div class="image-container">
+                <img src="capacitor/capacitor_tier_6.png" alt="Capacitor Addon Tier 6">
+                <img src="capacitor/capacitor_tier_6_recipe.png" alt="Capacitor Addon Tier 6 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="capacitor-tier-7">
+            <h3 class="tier-title">Tier 7</h3>
+            <div class="image-container">
+                <img src="capacitor/capacitor_tier_7.png" alt="Capacitor Addon Tier 7">
+                <img src="capacitor/capacitor_tier_7_recipe.png" alt="Capacitor Addon Tier 7 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="capacitor-tier-8">
+            <h3 class="tier-title">Tier 8</h3>
+            <div class="image-container">
+                <img src="capacitor/capacitor_tier_8.png" alt="Capacitor Addon Tier 8">
+                <img src="capacitor/capacitor_tier_8_recipe.png" alt="Capacitor Addon Tier 8 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="capacitor-tier-9">
+            <h3 class="tier-title">Tier 9</h3>
+            <div class="image-container">
+                <img src="capacitor/capacitor_tier_9.png" alt="Capacitor Addon Tier 9">
+                <img src="capacitor/capacitor_tier_9_recipe.png" alt="Capacitor Addon Tier 9 Recipe">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="acceptor" class="addon-section">
+    <h2 class="addon-type">Acceptor Addons</h2>
+    <div class="tier-grid">
+        <div class="tier-card" id="acceptor-tier-2">
+            <h3 class="tier-title">Tier 2</h3>
+            <div class="image-container">
+                <img src="acceptor/acceptor_tier_2.png" alt="Acceptor Addon Tier 2">
+                <img src="acceptor/acceptor_tier_2_crafting.png" alt="Acceptor Addon Tier 2 Crafting">
+                <img src="acceptor/acceptor_tier_2_recipe.png" alt="Acceptor Addon Tier 2 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="acceptor-tier-3">
+            <h3 class="tier-title">Tier 3</h3>
+            <div class="image-container">
+                <img src="acceptor/acceptor_tier_3.png" alt="Acceptor Addon Tier 3">
+                <img src="acceptor/acceptor_tier_3_recipe.png" alt="Acceptor Addon Tier 3 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="acceptor-tier-4">
+            <h3 class="tier-title">Tier 4</h3>
+            <div class="image-container">
+                <img src="acceptor/acceptor_tier_4.png" alt="Acceptor Addon Tier 4">
+                <img src="acceptor/acceptor_tier_4_recipe.png" alt="Acceptor Addon Tier 4 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="acceptor-tier-5">
+            <h3 class="tier-title">Tier 5</h3>
+            <div class="image-container">
+                <img src="acceptor/acceptor_tier_5.png" alt="Acceptor Addon Tier 5">
+                <img src="acceptor/acceptor_tier_5_recipe.png" alt="Acceptor Addon Tier 5 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="acceptor-tier-6">
+            <h3 class="tier-title">Tier 6</h3>
+            <div class="image-container">
+                <img src="acceptor/acceptor_tier_6.png" alt="Acceptor Addon Tier 6">
+                <img src="acceptor/acceptor_tier_6_recipe.png" alt="Acceptor Addon Tier 6 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="acceptor-tier-7">
+            <h3 class="tier-title">Tier 7</h3>
+            <div class="image-container">
+                <img src="acceptor/acceptor_tier_7.png" alt="Acceptor Addon Tier 7">
+                <img src="acceptor/acceptor_tier_7_recipe.png" alt="Acceptor Addon Tier 7 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="acceptor-tier-8">
+            <h3 class="tier-title">Tier 8</h3>
+            <div class="image-container">
+                <img src="acceptor/acceptor_tier_8.png" alt="Acceptor Addon Tier 8">
+                <img src="acceptor/acceptor_tier_8_recipe.png" alt="Acceptor Addon Tier 8 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="acceptor-tier-9">
+            <h3 class="tier-title">Tier 9</h3>
+            <div class="image-container">
+                <img src="acceptor/acceptor_tier_9.png" alt="Acceptor Addon Tier 9">
+                <img src="acceptor/acceptor_tier_9_recipe.png" alt="Acceptor Addon Tier 9 Recipe">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="processing" class="addon-section">
+    <h2 class="addon-type">Processing Addons</h2>
+    <div class="tier-grid">
+        <div class="tier-card" id="processing-tier-2">
+            <h3 class="tier-title">Tier 2</h3>
+            <div class="image-container">
+                <img src="processing/processing_tier_2.png" alt="Processing Addon Tier 2">
+                <img src="processing/processing_tier_2_crafting.png" alt="Processing Addon Tier 2 Crafting">
+                <img src="processing/processing_tier_2_recipe.png" alt="Processing Addon Tier 2 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="processing-tier-3">
+            <h3 class="tier-title">Tier 3</h3>
+            <div class="image-container">
+                <img src="processing/processing_tier_3.png" alt="Processing Addon Tier 3">
+                <img src="processing/processing_tier_3_recipe.png" alt="Processing Addon Tier 3 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="processing-tier-4">
+            <h3 class="tier-title">Tier 4</h3>
+            <div class="image-container">
+                <img src="processing/processing_tier_4.png" alt="Processing Addon Tier 4">
+                <img src="processing/processing_tier_4_recipe.png" alt="Processing Addon Tier 4 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="processing-tier-5">
+            <h3 class="tier-title">Tier 5</h3>
+            <div class="image-container">
+                <img src="processing/processing_tier_5.png" alt="Processing Addon Tier 5">
+                <img src="processing/processing_tier_5_recipe.png" alt="Processing Addon Tier 5 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="processing-tier-6">
+            <h3 class="tier-title">Tier 6</h3>
+            <div class="image-container">
+                <img src="processing/processing_tier_6.png" alt="Processing Addon Tier 6">
+                <img src="processing/processing_tier_6_recipe.png" alt="Processing Addon Tier 6 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="processing-tier-7">
+            <h3 class="tier-title">Tier 7</h3>
+            <div class="image-container">
+                <img src="processing/processing_tier_7.png" alt="Processing Addon Tier 7">
+                <img src="processing/processing_tier_7_recipe.png" alt="Processing Addon Tier 7 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="processing-tier-8">
+            <h3 class="tier-title">Tier 8</h3>
+            <div class="image-container">
+                <img src="processing/processing_tier_8.png" alt="Processing Addon Tier 8">
+                <img src="processing/processing_tier_8_recipe.png" alt="Processing Addon Tier 8 Recipe">
+            </div>
+        </div>
+
+        <div class="tier-card" id="processing-tier-9">
+            <h3 class="tier-title">Tier 9</h3>
+            <div class="image-container">
+                <img src="processing/processing_tier_9.png" alt="Processing Addon Tier 9">
+                <img src="processing/processing_tier_9_recipe.png" alt="Processing Addon Tier 9 Recipe">
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
