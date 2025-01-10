@@ -1,5 +1,6 @@
 package com.lumengrid.oritechthings.entity.client;
 
+import com.lumengrid.oritechthings.entity.custom.AmethystFishEntity;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -8,12 +9,11 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-public class AmethystFishModel<T extends Entity> extends HierarchicalModel<T> {
+public class AmethystFishModel<T extends AmethystFishEntity> extends HierarchicalModel<T> {
     private final ModelPart root;
     private final ModelPart[] bodyParts = new ModelPart[7];
     private final ModelPart[] bodyLayers = new ModelPart[3];

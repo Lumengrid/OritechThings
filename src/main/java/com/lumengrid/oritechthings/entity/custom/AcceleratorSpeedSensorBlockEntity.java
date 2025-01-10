@@ -1,7 +1,7 @@
 package com.lumengrid.oritechthings.entity.custom;
 
 import com.lumengrid.oritechthings.block.custom.AcceleratorSpeedSensorBlock;
-import com.lumengrid.oritechthings.entity.ModBlockEntities;
+import com.lumengrid.oritechthings.entity.ModEntities;
 import com.lumengrid.oritechthings.menu.AcceleratorSpeedSensorMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -47,7 +47,7 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
     };
 
     public AcceleratorSpeedSensorBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.accelerator_speed_sensor.get(), pos, state);
+        super(ModEntities.accelerator_speed_sensor.get(), pos, state);
     }
 
     public int getSpeedLimit() {

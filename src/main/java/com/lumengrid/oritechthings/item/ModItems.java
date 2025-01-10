@@ -15,6 +15,6 @@ public class ModItems {
             () -> new AcceleratorTargetDesignator(new Item.Properties().stacksTo(1)));
 
     public static final DeferredItem<Item> AMETHYST_FISH_SPAWN_EGG = ITEMS.register("amethyst_fish_spawn_egg",
-            () -> new DeferredSpawnEggItem(ModEntities.AMETHYST_FISH, 0x31afaf, 0xffac00,
+            () -> new DeferredSpawnEggItem(ModEntities.AMETHYST_FISH, 0xed47a8, 0xfa92cf,
                     new Item.Properties()));
 }
