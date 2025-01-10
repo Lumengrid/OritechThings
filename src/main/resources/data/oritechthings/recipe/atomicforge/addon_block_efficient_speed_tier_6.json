@@ -1,5 +1,5 @@
 {
-  "type": "oritech:particle_collision",
+  "type": "oritech:atomic_forge",
   "fluidInputAmount": 0,
   "fluidInputVariant": "minecraft:empty",
   "fluidOutputAmount": 0,
@@ -10,6 +10,9 @@
     },
     {
       "item": "oritechthings:addon_block_efficiency_tier_6"
+    },
+    {
+      "item": "oritech:advanced_computing_engine"
     }
   ],
   "results": [
@@ -18,5 +21,5 @@
       "id": "oritechthings:addon_block_efficient_speed_tier_6"
     }
   ],
-  "time": 500
+  "time": 300
 }
