@@ -50,8 +50,27 @@ public class ModEntityLootTableProvider extends EntityLootSubProvider {
                                 LootPool.lootPool()
                                         .setRolls(ConstantValue.exactly(1.0F))
                                         .add(
+                                                LootItem.lootTableItem(Items.AMETHYST_SHARD)
+                                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
+                                                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
+                                                        .when(LootItemRandomChanceCondition.randomChance(0.5F))
+                                        )
+                        )
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(
+                                                LootItem.lootTableItem(Items.AMETHYST_BLOCK)
+                                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(-3.0F, 1.0F)))
+                                                        .when(LootItemRandomChanceCondition.randomChance(0.2F))
+                                        ).when(LootItemKilledByPlayerCondition.killedByPlayer())
+                        )
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(
                                                 LootItem.lootTableItem(Items.BUDDING_AMETHYST)
-                                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(-1.0F, 1.0F)))
+                                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(-5.0F, 1.0F)))
                                                         .when(LootItemRandomChanceCondition.randomChance(0.1F))
                                         ).when(LootItemKilledByPlayerCondition.killedByPlayer())
                         )

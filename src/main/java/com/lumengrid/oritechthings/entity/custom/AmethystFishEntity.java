@@ -3,10 +3,12 @@ package com.lumengrid.oritechthings.entity.custom;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -15,15 +17,15 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class AmethystFishEntity extends Monster {
     public AmethystFishEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
+        this.xpReward = 2;
     }
 
     @Override
@@ -92,5 +94,18 @@ public class AmethystFishEntity extends Monster {
     public void setYBodyRot(float offset) {
         this.setYRot(offset);
         super.setYBodyRot(offset);
+    }
+
+
+    public static boolean checkAmethystFishSpawnRules(
+            EntityType<AmethystFishEntity> amethystFish, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random
+    ) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) {
+            return false;
+        }
+        if (level.getLightEmission(pos) >= 10) {
+            return false;
+        }
+        return checkMobSpawnRules(amethystFish, level, spawnType, pos, random);
     }
 }

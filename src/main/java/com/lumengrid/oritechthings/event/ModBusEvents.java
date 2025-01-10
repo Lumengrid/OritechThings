@@ -5,7 +5,6 @@ import com.lumengrid.oritechthings.entity.custom.AmethystFishEntity;
 import com.lumengrid.oritechthings.main.ConfigReloadListener;
 import com.lumengrid.oritechthings.main.OritechThings;
 import net.minecraft.world.entity.SpawnPlacementTypes;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -30,7 +29,7 @@ public class ModBusEvents {
     @SubscribeEvent
     public static void registerSpawnPlacements(RegisterSpawnPlacementsEvent event) {
         event.register(ModEntities.AMETHYST_FISH.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Monster::checkMonsterSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+                AmethystFishEntity::checkAmethystFishSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 
     @SubscribeEvent
