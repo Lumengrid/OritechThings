@@ -19,9 +19,7 @@ public class ModPlacedFeatures {
     public static List<PlacementModifier> replacePlacement(int pChance, PlacementModifier pHeightRange) {
         return List.of(
                 RarityFilter.onAverageOnceEvery(pChance),
-                InSquarePlacement.spread(),
-                pHeightRange,
-                BiomeFilter.biome()
+                pHeightRange
         );
     }
 
@@ -31,7 +29,7 @@ public class ModPlacedFeatures {
                 context,
                 INFESTED_AMETHYST_BLOCK_PLACED_KEY,
                 configuredFeatures.getOrThrow(ModConfiguredFeatures.INFESTED_AMETHYST_BLOCK_KEY),
-                replacePlacement(20, HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(80)))
+                replacePlacement(1, HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(320)))
         );
     }
 
