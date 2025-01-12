@@ -1,0 +1,13 @@
+name: Feature Request
+description: You have a new idea to suggest
+labels: [enhancement]
+assignees: DevDyna
+body:
+  - type: textarea
+    id: large-text-box
+    attributes:
+      label: Description
+      description: Describe what you want that was on this project
+      placeholder: 
+    validations:
+      required: true

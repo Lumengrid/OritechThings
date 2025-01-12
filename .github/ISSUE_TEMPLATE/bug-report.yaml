@@ -1,0 +1,54 @@
+name: Bug Report
+description: You found a bug
+labels: [bug]
+body:
+  - type: checkboxes
+    id: check-base
+    attributes:
+      label: Base
+      description: Stuff that need to be checked!
+      options:
+        - label: I have checked all other issues on this project
+          required: true
+        - label: I'am using the latest version of this project released
+          required: true
+
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      description: Where it happen?
+      options:
+        - Singleplayer/Local | NO LAN
+        - Multiplayer        | LAN
+        - Multiplayer        | Dedicated server
+    validations:
+      required: true
+          
+  - type: input
+    id: text-box
+    attributes:
+      label: Mod-loader Version
+      placeholder: neoforge-1.0
+      description: 
+    validations:
+      required: true
+
+  - type: textarea
+    id: large-text-box
+    attributes:
+      label: Description
+      description: Describe what happen?
+      placeholder: 
+    validations:
+      required: true
+
+  - type: textarea
+    id: large-text-box-2
+    attributes:
+      label: How to reproduce
+      description: All steps to reproduce this issue
+      placeholder: 
+    validations:
+      required: false

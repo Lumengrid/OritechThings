@@ -1,0 +1,12 @@
+name: Question
+description: Just a simple question
+labels: [question]
+body:
+  - type: textarea
+    id: large-text-box
+    attributes:
+      label: Free Text Area..
+      description: 
+      placeholder: ..where unicorns live safe on a world without problems!
+    validations:
+      required: true 
