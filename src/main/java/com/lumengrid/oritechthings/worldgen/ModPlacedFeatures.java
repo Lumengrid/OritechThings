@@ -14,9 +14,6 @@ import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import java.util.List;
 
 public class ModPlacedFeatures {
-
-    public static final ResourceKey<PlacedFeature> INFESTED_AMETHYST_BLOCK_PLACED_KEY = registerKey("infested_amethyst_block_placed");
-
     public static List<PlacementModifier> replacePlacement(int pChance, PlacementModifier pHeightRange) {
         return List.of(
                 RarityFilter.onAverageOnceEvery(pChance),

@@ -28,9 +28,6 @@ public class InfestedAmethystBlock extends InfestedBlock {
                 MobSpawnType.SPAWNER, pos, RandomSource.create())) {
             return;
         }
-        if (level.random.nextFloat() >= 0.5f) {
-            return;
-        }
         AmethystFishEntity amethystFish = ModEntities.AMETHYST_FISH.get().create(level);
         if (amethystFish != null) {
             amethystFish.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
