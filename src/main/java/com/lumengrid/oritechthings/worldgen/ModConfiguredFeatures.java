@@ -1,33 +1,19 @@
 package com.lumengrid.oritechthings.worldgen;
 
-import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.main.OritechThings;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 
 public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> INFESTED_AMETHYST_BLOCK_KEY = registerKey("infested_amethyst_block");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
-        BlockState infestedAmethystBlockState = ModBlocks.INFESTED_AMETHYST_BLOCK.get().defaultBlockState();
-        register(context, INFESTED_AMETHYST_BLOCK_KEY, Feature.ORE,
-                new OreConfiguration(
-                    new BlockMatchTest(
-                        Blocks.AMETHYST_BLOCK
-                    ),
-                    infestedAmethystBlockState,
-                    64,
-                    0
-                ));
+
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
