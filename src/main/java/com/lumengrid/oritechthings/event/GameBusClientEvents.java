@@ -13,9 +13,6 @@ public class GameBusClientEvents {
 
     @SubscribeEvent
     public static void clientSetup(final RegisterMenuScreensEvent event) {
-        event.register(
-            ModMenuTypes.SPEED_SENSOR_MENU.get(), AcceleratorSpeedSensorScreen::new
-        );
+        event.register(ModMenuTypes.SPEED_SENSOR_MENU.get(), AcceleratorSpeedSensorScreen::new);
     }
-
 }
