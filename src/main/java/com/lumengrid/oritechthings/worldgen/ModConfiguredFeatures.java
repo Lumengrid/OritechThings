@@ -10,10 +10,10 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 public class ModConfiguredFeatures {
-    public static final ResourceKey<ConfiguredFeature<?, ?>> INFESTED_AMETHYST_BLOCK_KEY = registerKey("infested_amethyst_block");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> CUSTOM_GEODE = registerKey("custom_geode");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
-
+        register(context, CUSTOM_GEODE, Feature.GEODE, CustomGeodeFeature.config());
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
