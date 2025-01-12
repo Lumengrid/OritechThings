@@ -10,10 +10,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 public class ModConfiguredFeatures {
-    public static final ResourceKey<ConfiguredFeature<?, ?>> INFESTED_AMETHYST_BLOCK_KEY = registerKey("infested_amethyst_block");
-
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
-
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
