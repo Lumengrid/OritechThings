@@ -2,8 +2,6 @@ package com.lumengrid.oritechthings.item.custom;
 
 import com.lumengrid.oritechthings.block.custom.AcceleratorSpeedSensorBlock;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
