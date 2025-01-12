@@ -12,6 +12,7 @@ public class ModBiomeModifiers {
 
     }
 
+    @SuppressWarnings("unused")
     private static ResourceKey<BiomeModifier> registerKey(String name) {
         return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ResourceLocation.fromNamespaceAndPath(OritechThings.MOD_ID, name));
     }

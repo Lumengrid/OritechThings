@@ -25,10 +25,12 @@ public class ModPlacedFeatures {
 
     }
 
+    @SuppressWarnings("unused")
     private static ResourceKey<PlacedFeature> registerKey(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(OritechThings.MOD_ID, name));
     }
 
+    @SuppressWarnings("unused")
     private static void register(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> configuration,
                                  List<PlacementModifier> modifiers) {
         context.register(key, new PlacedFeature(configuration, List.copyOf(modifiers)));
