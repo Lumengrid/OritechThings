@@ -24,7 +24,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
             addonBlockState(data);
         }
         simpleBlockState(ModBlocks.ACCELERATOR_SPEED_SENSOR);
-        blockwithparentModel(ModBlocks.INFESTED_AMETHYST_BLOCK);
+        blockwithparentModel(ModBlocks.INFESTED_AMETHYST_BLOCK,"block/amethyst_block");
     }
 
     @SuppressWarnings("unused")
@@ -32,9 +32,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlockWithItem(deferredBlock.get(), cubeAll(deferredBlock.get()));
     }
 
-    private void blockwithparentModel(DeferredBlock<?> deferredBlock) {
+    private void blockwithparentModel(DeferredBlock<?> deferredBlock,String parent) {
         simpleBlockWithItem(deferredBlock.get(),
-                models().withExistingParent(deferredBlock.getRegisteredName(), this.mcLoc("block/amethyst_block")));
+                models().withExistingParent(deferredBlock.getRegisteredName(), this.mcLoc(parent)));
     }
 
     private void addonBlockState(DeferredBlock<?> deferredBlock) {
