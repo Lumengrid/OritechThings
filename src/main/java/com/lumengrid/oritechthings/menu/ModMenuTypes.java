@@ -15,6 +15,9 @@ public class ModMenuTypes {
     public static final DeferredHolder<MenuType<?>, MenuType<AcceleratorSpeedSensorMenu>> SPEED_SENSOR_MENU =
             registerMenuType(AcceleratorSpeedSensorMenu::new, "speed_sensor_menu");
 
+    public static final DeferredHolder<MenuType<?>, MenuType<FramePlacerMenu>> FRAME_PLACER_MENU =
+            registerMenuType(FramePlacerMenu::new, "frame_placer_menu");
+
     private static <T extends AbstractContainerMenu> DeferredHolder<MenuType<?>,MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IMenuTypeExtension.create(factory));
     }
