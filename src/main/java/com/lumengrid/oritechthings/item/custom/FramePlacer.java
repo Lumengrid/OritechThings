@@ -1,8 +1,11 @@
 package com.lumengrid.oritechthings.item.custom;
 
-import com.lumengrid.oritechthings.menu.FramePlacerMenuProvider;
+import com.lumengrid.oritechthings.client.screen.FramePlacerScreen;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -54,9 +57,12 @@ public class FramePlacer extends Item {
             return InteractionResult.FAIL;
         }
         Vec3i backRelative = new Vec3i(entity.getFrameOffset(), 0, 0);
-        BlockPos searchStart = (BlockPos) Geometry.offsetToWorldPosition(targetState.getValue(FACING), backRelative, pos);
-        System.out.println("frame entity detected " + searchStart);
-        player.openMenu(new FramePlacerMenuProvider(pos));
+        Direction facing = targetState.getValue(FACING);
+        BlockPos searchStart = (BlockPos) Geometry.offsetToWorldPosition(facing, backRelative, pos);
+        Minecraft mc = Minecraft.getInstance();
+        mc.execute(() -> {
+            mc.setScreen(new FramePlacerScreen(searchStart, facing.getOpposite()));
+        });
         return InteractionResult.SUCCESS;
     }
 

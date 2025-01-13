@@ -1,7 +1,6 @@
 package com.lumengrid.oritechthings.event;
 
 import com.lumengrid.oritechthings.client.screen.AcceleratorSpeedSensorScreen;
-import com.lumengrid.oritechthings.client.screen.FramePlacerScreen;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.menu.ModMenuTypes;
 import net.neoforged.api.distmarker.Dist;
@@ -15,6 +14,5 @@ public class GameBusClientEvents {
     @SubscribeEvent
     public static void clientSetup(final RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.SPEED_SENSOR_MENU.get(), AcceleratorSpeedSensorScreen::new);
-        event.register(ModMenuTypes.FRAME_PLACER_MENU.get(), FramePlacerScreen::new);
     }
 }

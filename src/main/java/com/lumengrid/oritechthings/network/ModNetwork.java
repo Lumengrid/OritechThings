@@ -1,6 +1,7 @@
 package com.lumengrid.oritechthings.network;
 
 import com.lumengrid.oritechthings.main.OritechThings;
+import com.lumengrid.oritechthings.network.packet.FramePlacerPacket;
 import com.lumengrid.oritechthings.network.packet.UpdateSpeedSensorC2SPacket;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -18,6 +19,12 @@ public class ModNetwork {
             UpdateSpeedSensorC2SPacket.TYPE,
             UpdateSpeedSensorC2SPacket.STREAM_CODEC,
             UpdateSpeedSensorC2SPacket::handleDataOnServer
+        );
+
+        registrar.playToServer(
+                FramePlacerPacket.TYPE,
+                FramePlacerPacket.STREAM_CODEC,
+                FramePlacerPacket::handleDataOnServer
         );
     }
 
