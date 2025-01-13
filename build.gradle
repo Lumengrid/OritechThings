@@ -141,6 +141,9 @@ dependencies {
     implementation "curse.maven:rhino-416294:6000610"
     implementation "curse.maven:kubejs-238086:5810100"
     implementation "curse.maven:jade-324717:6011258"
+    implementation "curse.maven:trashcans-394535:5891067"
+    implementation "curse.maven:supermarticonfig-438332:5546996"
+    implementation "curse.maven:supermarticore-454372:6076757"
 
     implementation "curse.maven:jei-238222:5846880"
 }

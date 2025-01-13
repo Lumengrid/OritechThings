@@ -62,8 +62,9 @@
   "tooltip.oritechthings.tiered_addons.chambers_desc": "Additional Chambers ",
   "tooltip.oritechthings.accelerator_target_designator": "Usable to store the position of a Particle Accelerator",
   "item.oritechthings.frame_placer": "Frame Placer",
+  "message.oritechthings.frame_placer.missing_frame": "⚠ Frame Placer - Missing Frame ⚠",
   "tooltip.oritechthings.frame_placer": "Use it on an Frame compatible Machine \nlike the Destroyer to auto build a Frame structure",
   "message.exojetpack.energy_low": "§c⚠ Exo Jetpack - Energy Low ⚠",
-  "message.oritechthings.frame_placer.wrong_machine": "§c⚠ Machine not Frame compatible ⚠",
+  "message.oritechthings.frame_placer.wrong_machine": "§c⚠ Not a Frame compatible Machine ⚠",
   "message.oritechthings.frame_placer.not_assembled": "§c⚠ Machine not Assembled yet ⚠"
 }
