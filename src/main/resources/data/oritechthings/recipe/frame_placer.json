@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "oritech:machine_frame_block"
+    },
+    {
+      "item": "oritech:motor"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "oritechthings:frame_placer"
+  }
+}
