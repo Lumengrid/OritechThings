@@ -19,7 +19,7 @@ public class ModRendererTypes extends RenderType {
         BLOCK_LINES = create("lumen_block_lines", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.LINES, 256, false, false,
                 CompositeState.builder()
                         .setShaderState(RENDERTYPE_LINES_SHADER)
-                        .setLineState(new RenderStateShard.LineStateShard(OptionalDouble.of(5.0F)))  // thickness
+                        .setLineState(new RenderStateShard.LineStateShard(OptionalDouble.of(7.0F)))  // thickness
                         .setLayeringState(VIEW_OFFSET_Z_LAYERING)
                         .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
                         .setOutputState(ITEM_ENTITY_TARGET)

@@ -1,6 +1,6 @@
 package com.lumengrid.oritechthings.item.custom;
 
-import com.lumengrid.oritechthings.block.custom.AcceleratorSpeedSensorBlock;
+import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.entity.custom.AcceleratorSpeedSensorBlockEntity;
 import com.lumengrid.oritechthings.main.ModDataComponents;
 import net.minecraft.ChatFormatting;
@@ -45,7 +45,7 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
         BlockState clickedBlockState = level.getBlockState(clickedPos);
         if (clickedBlockState.getBlock() instanceof MachineCoreBlock && clickedBlockState.getValue(MachineCoreBlock.USED)) {
             BlockEntity machineEntity = MachineCoreBlock.getControllerEntity(level, context.getClickedPos());
-            if (machineEntity instanceof LaserArmBlockEntity) {
+            if (machineEntity instanceof LaserArmBlockEntity || machineEntity instanceof DronePortEntity) {
                 clickedPos = context.getClickedPos().below();
                 clickedBlockState = level.getBlockState(clickedPos);
             }
@@ -68,7 +68,7 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
                 return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
             }
         }
-        if (clickedBlockState.getBlock() instanceof AcceleratorSpeedSensorBlock) {
+        if (clickedBlockState.getBlock().equals(ModBlocks.ACCELERATOR_SPEED_SENSOR.get())) {
             if (clickedEntity instanceof AcceleratorSpeedSensorBlockEntity) {
                 return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
             }
@@ -99,12 +99,8 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
                 }
                 success = laserEntity.setTargetFromDesignator(targetPos);
             }
-            case DronePortEntity dronePortEntity -> {
-                success = dronePortEntity.setTargetFromDesignator(targetPos);
-            }
-            case AcceleratorSpeedSensorBlockEntity speedSensorEntity -> {
-                success = speedSensorEntity.setTargetDesignator(targetPos, player);
-            }
+            case DronePortEntity dronePortEntity -> success = dronePortEntity.setTargetFromDesignator(targetPos);
+            case AcceleratorSpeedSensorBlockEntity speedSensorEntity -> success = speedSensorEntity.setTargetDesignator(targetPos, player);
             default -> {}
         }
         Objects.requireNonNull(player).sendSystemMessage(
