@@ -44,9 +44,9 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
         Player player = context.getPlayer();
         BlockState clickedBlockState = level.getBlockState(clickedPos);
         if (clickedBlockState.getBlock() instanceof MachineCoreBlock && clickedBlockState.getValue(MachineCoreBlock.USED)) {
-            BlockEntity machineEntity = MachineCoreBlock.getControllerEntity(level, context.getClickedPos());
-            if (machineEntity instanceof LaserArmBlockEntity || machineEntity instanceof DronePortEntity) {
-                clickedPos = context.getClickedPos().below();
+            BlockEntity machineEntity = MachineCoreBlock.getControllerEntity(level, clickedPos);
+            if (machineEntity instanceof LaserArmBlockEntity) {
+                clickedPos = clickedPos.below();
                 clickedBlockState = level.getBlockState(clickedPos);
             }
         }
@@ -60,11 +60,6 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
         }
         if (clickedBlockState.getBlock().equals(BlockContent.LASER_ARM_BLOCK)) {
             if (clickedEntity instanceof LaserArmBlockEntity) {
-                return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
-            }
-        }
-        if (clickedBlockState.getBlock().equals(BlockContent.DRONE_PORT_BLOCK)) {
-            if (clickedEntity instanceof DronePortEntity) {
                 return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
             }
         }
