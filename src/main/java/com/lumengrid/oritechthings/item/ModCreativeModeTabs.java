@@ -30,7 +30,7 @@ public class ModCreativeModeTabs {
                         }
 
                         output.accept(ModItems.FRAME_PLACER);
-                        output.accept(ModItems.ACCELERATOR_TARGET_DESIGNATOR);
+                        output.accept(ModItems.ADVANCED_TARGET_DESIGNATOR);
                         output.accept(ModItems.AMETHYST_FISH_SPAWN_EGG);
                     }).build());
 

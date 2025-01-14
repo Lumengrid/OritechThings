@@ -32,6 +32,7 @@ public class OritechThings
 
         ModCreativeModeTabs.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
+        ModDataComponents.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         ModEntities.MOD_BLOCK_ENTITIES.register(modEventBus);
         ModEntities.MOD_MOB_ENTITIES.register(modEventBus);

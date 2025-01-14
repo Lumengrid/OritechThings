@@ -53,6 +53,5 @@ public class ModItemTagProvider extends ItemTagsProvider {
         }
 
         tag(ModTags.Items.PARTICLE_ACCELERATOR).add(ModBlocks.ACCELERATOR_SPEED_SENSOR.get().asItem());
-        tag(ModTags.Items.PARTICLE_ACCELERATOR).add(ModItems.ACCELERATOR_TARGET_DESIGNATOR.get());
     }
 }

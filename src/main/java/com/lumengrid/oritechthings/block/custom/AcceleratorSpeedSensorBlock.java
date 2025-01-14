@@ -1,19 +1,11 @@
 package com.lumengrid.oritechthings.block.custom;
 
 import com.lumengrid.oritechthings.entity.custom.AcceleratorSpeedSensorBlockEntity;
-import com.lumengrid.oritechthings.item.ModItems;
 import com.mojang.serialization.MapCodec;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -29,8 +21,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
-import rearth.oritech.block.entity.accelerator.AcceleratorControllerBlockEntity;
-import rearth.oritech.init.ComponentContent;
 
 import javax.annotation.Nullable;
 
@@ -46,42 +36,6 @@ public class AcceleratorSpeedSensorBlock extends BaseEntityBlock {
 
     public AcceleratorSpeedSensorBlock(BlockBehaviour.Properties p) {
         this();
-    }
-
-    @Override
-    protected @NotNull ItemInteractionResult useItemOn(
-            @NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level,
-            @NotNull BlockPos pos, @NotNull Player player,
-            @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult
-    ) {
-        if (level.isClientSide) return ItemInteractionResult.SUCCESS;
-        BlockEntity speedSensor = level.getBlockEntity(pos);
-        if(!(speedSensor instanceof AcceleratorSpeedSensorBlockEntity speedSensorEntity)) {
-            return ItemInteractionResult.SUCCESS;
-        }
-
-        if (!stack.is(ModItems.ACCELERATOR_TARGET_DESIGNATOR)) {
-            return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
-        }
-
-        BlockPos targetPos = stack.get(ComponentContent.TARGET_POSITION.get());
-        BlockEntity blockEntity = targetPos == null ? null : level.getBlockEntity(targetPos);
-        if(targetPos == null || !(blockEntity instanceof AcceleratorControllerBlockEntity)) {
-            player.sendSystemMessage(Component.translatable("block.oritechthings.accelerator_speed_sensor.invalid_controller").withStyle(ChatFormatting.RED));
-            return ItemInteractionResult.SUCCESS;
-        }
-        int distance = targetPos.distManhattan(pos);
-        if (distance > 128) {
-            player.sendSystemMessage(Component.translatable("block.oritechthings.accelerator_speed_sensor.invalid_controller.to_far")
-                            .append(Component.literal(" (" + distance + ")").withStyle(ChatFormatting.ITALIC)) .withStyle(ChatFormatting.RED));
-            return ItemInteractionResult.SUCCESS;
-        }
-        speedSensorEntity.setTargetDesignator(targetPos);
-        speedSensorEntity.setEnabled(true);
-        level.playSound(player, pos, SoundEvents.ALLAY_AMBIENT_WITH_ITEM, SoundSource.BLOCKS, 1f, 1f);
-        player.sendSystemMessage(Component.translatable("block.oritechthings.accelerator_speed_sensor.controller_set")
-                        .append(Component.literal(targetPos.toShortString()).withStyle(ChatFormatting.BLUE)));
-        return ItemInteractionResult.SUCCESS;
     }
 
     @Override

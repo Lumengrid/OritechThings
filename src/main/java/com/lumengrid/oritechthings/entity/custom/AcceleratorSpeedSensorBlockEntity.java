@@ -3,6 +3,7 @@ package com.lumengrid.oritechthings.entity.custom;
 import com.lumengrid.oritechthings.block.custom.AcceleratorSpeedSensorBlock;
 import com.lumengrid.oritechthings.entity.ModEntities;
 import com.lumengrid.oritechthings.menu.AcceleratorSpeedSensorMenu;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -11,6 +12,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -25,6 +28,7 @@ import rearth.oritech.block.entity.accelerator.AcceleratorControllerBlockEntity;
 import rearth.oritech.block.entity.accelerator.AcceleratorParticleLogic;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements MenuProvider {
     private int speedLimit = 1000;
@@ -89,9 +93,26 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
         return targetDesignator;
     }
 
-    public void setTargetDesignator(@Nullable BlockPos targetDesignator) {
-        this.targetDesignator = targetDesignator;
+    public boolean setTargetDesignator(@Nullable BlockPos targetPos, Player player) {
+        BlockEntity blockEntity = targetPos == null ? null : Objects.requireNonNull(level).getBlockEntity(targetPos);
+        if(targetPos == null || !(blockEntity instanceof AcceleratorControllerBlockEntity)) {
+            player.sendSystemMessage(Component.translatable("block.oritechthings.accelerator_speed_sensor.invalid_controller").withStyle(ChatFormatting.RED));
+            return false;
+        }
+        int distance = targetPos.distManhattan(this.getBlockPos());
+        if (distance > 128) {
+            player.sendSystemMessage(Component.translatable("block.oritechthings.accelerator_speed_sensor.invalid_controller.to_far")
+                    .append(Component.literal(" (" + distance + ")").withStyle(ChatFormatting.ITALIC)) .withStyle(ChatFormatting.RED));
+            return false;
+        }
+        this.targetDesignator = targetPos;
+        this.setEnabled(true);
+        level.playSound(player, this.getBlockPos(), SoundEvents.ALLAY_AMBIENT_WITH_ITEM, SoundSource.BLOCKS, 1f, 1f);
+        player.sendSystemMessage(Component.translatable("block.oritechthings.accelerator_speed_sensor.controller_set")
+                .append(Component.literal(targetPos.toShortString()).withStyle(ChatFormatting.BLUE)));
         sync();
+
+        return true;
     }
 
     @Nullable
