@@ -3,7 +3,10 @@
   "category": "misc",
   "ingredients": [
     {
-      "item": "oritechthings:accelerator_target_designator"
+      "item": "oritech:silicon"
+    },
+    {
+      "item": "oritech:target_designator"
     }
   ],
   "result": {

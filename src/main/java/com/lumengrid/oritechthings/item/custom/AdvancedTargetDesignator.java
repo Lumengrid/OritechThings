@@ -53,17 +53,16 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
         BlockEntity clickedEntity = level.getBlockEntity(clickedPos);
         BlockPos targetPos = null;
         ResourceKey<Level> targetDimension = null;
-        if (context.getItemInHand().has(ComponentContent.TARGET_POSITION.get())) {
-            targetPos = context.getItemInHand().get(ComponentContent.TARGET_POSITION.get());
-            targetDimension = context.getItemInHand().get(ModDataComponents.TARGET_DIMENSION.get());
+        ItemStack itemInHand = context.getItemInHand();
+        if (itemInHand.has(ComponentContent.TARGET_POSITION.get())) {
+            targetPos = itemInHand.get(ComponentContent.TARGET_POSITION.get());
+            targetDimension = itemInHand.get(ModDataComponents.TARGET_DIMENSION.get());
         }
-
         if (clickedBlockState.getBlock().equals(BlockContent.LASER_ARM_BLOCK)) {
             if (clickedEntity instanceof LaserArmBlockEntity) {
                 return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
             }
         }
-
         if (clickedBlockState.getBlock().equals(BlockContent.DRONE_PORT_BLOCK)) {
             if (clickedEntity instanceof DronePortEntity) {
                 return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
@@ -75,13 +74,11 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
             }
         }
         if (!clickedBlockState.getBlock().equals(Blocks.AIR)) {
-            context.getItemInHand().set(ComponentContent.TARGET_POSITION.get(), context.getClickedPos());
-            context.getItemInHand().set(ModDataComponents.TARGET_DIMENSION.get(), level.dimension());
+            itemInHand.set(ComponentContent.TARGET_POSITION.get(), context.getClickedPos());
+            itemInHand.set(ModDataComponents.TARGET_DIMENSION.get(), level.dimension());
             Objects.requireNonNull(player).sendSystemMessage(Component.translatable("message.oritech.target_designator.position_stored"));
-            return InteractionResult.SUCCESS;
         }
-        context.getItemInHand().set(ComponentContent.TARGET_POSITION.get(), null);
-        context.getItemInHand().set(ModDataComponents.TARGET_DIMENSION.get(), null);
+
         return InteractionResult.SUCCESS;
     }
 
