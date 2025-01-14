@@ -23,6 +23,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         }
         customItemModel(ModBlocks.ACCELERATOR_SPEED_SENSOR.getId().getPath());
         basicItem(ModItems.ACCELERATOR_TARGET_DESIGNATOR.get());
+        basicItem(ModItems.ADVANCED_TARGET_DESIGNATOR.get());
         basicItem(ModItems.FRAME_PLACER.get());
         withExistingParent(ModItems.AMETHYST_FISH_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
     }
