@@ -81,7 +81,7 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
         boolean success = false;
         //put before this the target dimension
         if (targetDimension != actualDimension) {
-            Objects.requireNonNull(player).sendSystemMessage(Component.translatable("message.oritech.target_designator.position_invalid"));
+            Objects.requireNonNull(player).sendSystemMessage(Component.translatable("message.oritechthings.advanced_target_designator.different_dimension"));
             return InteractionResult.FAIL;
         }
         switch (entity) {
@@ -101,7 +101,7 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
         Objects.requireNonNull(player).sendSystemMessage(
                 Component.translatable(
                         success ? "message.oritech.target_designator.position_saved"
-                                : "message.oritech.target_designator.position_invalid"));
+                                : "message.oritechthings.advanced_target_designator.position_invalid"));
 
         return success ? InteractionResult.SUCCESS : InteractionResult.FAIL;
     }
