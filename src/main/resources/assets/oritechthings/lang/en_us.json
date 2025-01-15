@@ -66,5 +66,7 @@
   "tooltip.oritechthings.frame_placer": "Shift Right Click on an Frame compatible Machine \nlike the Destroyer to auto build a Frame structure",
   "message.exojetpack.energy_low": "§c⚠ Exo Jetpack - Energy Low ⚠",
   "message.oritechthings.frame_placer.wrong_machine": "§c⚠ Not a Frame compatible Machine ⚠",
-  "message.oritechthings.frame_placer.not_assembled": "§c⚠ Machine not Assembled yet ⚠"
+  "message.oritechthings.frame_placer.not_assembled": "§c⚠ Machine not Assembled yet ⚠",
+  "message.oritechthings.advanced_target_designator.position_invalid": "⚠ Invalid position ⚠",
+  "message.oritechthings.advanced_target_designator.different_dimension": "⚠ Different Dimension ⚠"
 }
