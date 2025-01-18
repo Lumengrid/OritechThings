@@ -40,6 +40,10 @@ public class GameBusEvents {
                 if (!player.getAbilities().mayfly) {
                     setCreativeFlight(player, true);
                 }
+            } else {
+                if (player.getAbilities().mayfly) {
+                    setCreativeFlight(player, false);
+                }
             }
         }
     }
