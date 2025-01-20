@@ -1,7 +1,6 @@
 name: Feature Request
 description: You have a new idea to suggest
 labels: [enhancement]
-assignees: DevDyna
 body:
   - type: textarea
     id: large-text-box
