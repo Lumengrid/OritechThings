@@ -24,7 +24,6 @@ public class GameBusEvents {
             if (!ConfigLoader.getInstance().exoJetPackSettings.enabledCreativeFlight())
                 return;
             ItemStack armor = player.getInventory().armor.get(2);
-
             if (armor.getItem() == ToolsContent.EXO_JETPACK.asItem()) {
                 long energy = 0;
                 if (EnergyApi.ITEM != null && armor.getItem() instanceof OritechEnergyItem energyItem) {
@@ -39,6 +38,10 @@ public class GameBusEvents {
                 }
                 if (!player.getAbilities().mayfly) {
                     setCreativeFlight(player, true);
+                }
+            } else {
+                if (player.getAbilities().mayfly) {
+                    setCreativeFlight(player, false);
                 }
             }
         }
