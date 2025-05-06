@@ -26,6 +26,8 @@ import org.jetbrains.annotations.Nullable;
 import rearth.oritech.block.blocks.addons.MachineAddonBlock;
 import rearth.oritech.util.TooltipHelper;
 
+import static com.lumengrid.oritechthings.main.OritechThings.MOD_ID;
+
 import java.util.List;
 
 public class TierAddonBlock extends MachineAddonBlock {
@@ -87,8 +89,11 @@ public class TierAddonBlock extends MachineAddonBlock {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag options) {
-        tooltip.add(Component.literal("Tier " + this.defaultBlockState().getValue(ADDON_TIER)).withStyle(ChatFormatting.AQUA));
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip,
+            TooltipFlag options) {
+
+        tooltip.add(Component.translatable("tooltip." + MOD_ID + ".tier_addon").withStyle(ChatFormatting.AQUA).append(
+                Component.literal(this.defaultBlockState().getValue(ADDON_TIER).toString()).withStyle(ChatFormatting.AQUA)));
         if (Screen.hasControlDown()) {
             if (addonSettings.speedMultiplier() != 1) {
                 var displayedNumber = (int) ((1 / addonSettings.speedMultiplier()) * 100) - 100;
