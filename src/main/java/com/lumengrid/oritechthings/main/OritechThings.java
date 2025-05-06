@@ -33,11 +33,10 @@ public class OritechThings
         ConfigLoader.getInstance().load();
 
         ModCreativeModeTabs.register(modEventBus);
-        ModBlocks.BLOCKS.register(modEventBus);
+        ModBlocks.register(modEventBus);
         ModDataComponents.register(modEventBus);
-        ModItems.ITEMS.register(modEventBus);
-        ModEntities.MOD_BLOCK_ENTITIES.register(modEventBus);
-        ModEntities.MOD_MOB_ENTITIES.register(modEventBus);
+        ModItems.register(modEventBus);
+        ModEntities.register(modEventBus);
         ModMenuTypes.MENUS.register(modEventBus);
     }
 
