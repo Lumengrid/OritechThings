@@ -163,7 +163,7 @@ public class FramePlacerScreen extends Screen {
         this.abortButton.render(guiGraphics, mx, my, partialTicks);
         this.confirmButton.render(guiGraphics, mx, my, partialTicks);
 
-        guiGraphics.drawCenteredString(this.font, Component.translatable("message."+MOD_ID+".frame_placer.frame_size").append(String.valueOf(frameCountRequired)),
+        guiGraphics.drawCenteredString(this.font, Component.translatable("message."+MOD_ID+".frame_placer.blocks_required").append(String.valueOf(frameCountRequired)),
                 this.width / 2, this.height / 2 - 80, Color.WHITE.getRGB());
     }
 
