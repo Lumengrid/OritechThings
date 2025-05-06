@@ -14,6 +14,8 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+import static com.lumengrid.oritechthings.main.OritechThings.MOD_ID;
+
 import java.awt.*;
 
 @OnlyIn(Dist.CLIENT)
@@ -59,7 +61,7 @@ public class FramePlacerScreen extends Screen {
                 Component.literal("+"), button -> incrementY(), Color.GRAY.getRGB(), Color.WHITE.getRGB(), Color.BLACK.getRGB());
 
         this.offsetSlider = new Slider(width / 2 - widthSlider / 2, height / 2, widthSlider, 14, 1,
-                63, Component.literal("Offset "), offsetValue, slider -> this.offsetValue = slider.getValueInt());
+                63, Component.translatable("message."+MOD_ID+".frame_placer.offset"), offsetValue, slider -> this.offsetValue = slider.getValueInt());
         this.offsetDecrementButton = new CustomButton(this.offsetSlider.getX() - 20, this.offsetSlider.getY(), 20, 14,
                 Component.literal("-"), button -> decrementOffset(), Color.GRAY.getRGB(), Color.WHITE.getRGB(), Color.BLACK.getRGB());
         this.offsetIncrementButton = new CustomButton(this.offsetSlider.getX() + widthSlider + 2, this.offsetSlider.getY(), 20, 14,
@@ -67,11 +69,11 @@ public class FramePlacerScreen extends Screen {
 
         // Abort and Confirm Buttons
         this.abortButton = new CustomButton(this.width / 2 - 60, this.height / 2 + 40, 50, 20,
-                Component.literal("Abort"), button -> abort(),
+                Component.translatable("message."+MOD_ID+".frame_placer.abort"), button -> abort(),
                 Color.RED.getRGB(), Color.WHITE.getRGB(), Color.BLACK.getRGB());
 
         this.confirmButton = new CustomButton(this.width / 2 + 10, this.height / 2 + 40, 50, 20,
-                Component.literal("Confirm"), button -> confirmDimensions(),
+                Component.translatable("message."+MOD_ID+".frame_placer.confirm"), button -> confirmDimensions(),
                 Color.GREEN.getRGB(), Color.WHITE.getRGB(), Color.BLACK.getRGB());
         updateFrameCount();
         this.addWidget(xSlider);
@@ -148,7 +150,7 @@ public class FramePlacerScreen extends Screen {
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mx, int my, float partialTicks) {
         super.render(guiGraphics, mx, my, partialTicks);
-        guiGraphics.drawCenteredString(this.font, "Set Dimensions for the Frame", this.width / 2, this.height / 2 - 60, Color.GREEN.getRGB());
+        guiGraphics.drawCenteredString(this.font, Component.translatable("message."+MOD_ID+".frame_placer.frame_size"), this.width / 2, this.height / 2 - 60, Color.GREEN.getRGB());
         this.xSlider.render(guiGraphics, mx, my, partialTicks);
         this.ySlider.render(guiGraphics, mx, my, partialTicks);
         this.offsetSlider.render(guiGraphics, mx, my, partialTicks);
@@ -161,7 +163,7 @@ public class FramePlacerScreen extends Screen {
         this.abortButton.render(guiGraphics, mx, my, partialTicks);
         this.confirmButton.render(guiGraphics, mx, my, partialTicks);
 
-        guiGraphics.drawCenteredString(this.font, "Frame Blocks Required: " + frameCountRequired,
+        guiGraphics.drawCenteredString(this.font, Component.translatable("message."+MOD_ID+".frame_placer.frame_size").append(String.valueOf(frameCountRequired)),
                 this.width / 2, this.height / 2 - 80, Color.WHITE.getRGB());
     }
 
