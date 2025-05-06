@@ -67,17 +67,17 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
 
                 addRenderableWidget(new ToggleButton(
                                 leftPos + 130, topPos + 45, 30, 18,
-                                Component
-                                                .translatable("tooltip." + MOD_ID + ".state."
-                                                                + (menu.be.isEnabled() ? "on" : "off")),
+                                menu.be.isEnabled()
+                                                ? Component.translatable("tooltip." + MOD_ID + ".state.on")
+                                                : Component.translatable("tooltip." + MOD_ID + ".state.off"),
                                 button -> {
                                         boolean newState = !menu.be.isEnabled();
                                         PacketDistributor.sendToServer(new UpdateSpeedSensorC2SPacket(
                                                         menu.be.getBlockPos(),
                                                         menu.be.getSpeedLimit(), newState, menu.be.isCheckGreater()));
-                                        button.setMessage(Component
-                                                        .translatable("tooltip." + MOD_ID + ".state."
-                                                                        + (menu.be.isEnabled() ? "on" : "off")));
+                                        button.setMessage(menu.be.isEnabled()
+                                                        ? Component.translatable("tooltip." + MOD_ID + ".state.on")
+                                                        : Component.translatable("tooltip." + MOD_ID + ".state.off"));
                                 },
                                 menu.be.isEnabled(),
                                 0xFF93c47d,
