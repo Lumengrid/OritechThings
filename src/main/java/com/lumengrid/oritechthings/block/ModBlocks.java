@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import rearth.oritech.block.blocks.addons.MachineAddonBlock;
@@ -27,7 +28,14 @@ import java.util.function.Supplier;
 
 public class ModBlocks {
 
-    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(OritechThings.MOD_ID);
+        public static void register(IEventBus bus){
+                OTHER.register(bus);
+                ADDONS.register(bus);
+        }
+        
+    public static final DeferredRegister.Blocks OTHER = DeferredRegister.createBlocks(OritechThings.MOD_ID);
+    public static final DeferredRegister.Blocks ADDONS = DeferredRegister.createBlocks(OritechThings.MOD_ID);
+    
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_2 = speedAddonBuilder(2);
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_3 = speedAddonBuilder(3);
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_4 = speedAddonBuilder(4);
@@ -83,14 +91,14 @@ public class ModBlocks {
     public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_9 = processingAddonBuilder(9);
 
     public static final DeferredBlock<Block> ACCELERATOR_SPEED_SENSOR = registerBlock(
-            "accelerator_speed_sensor", AcceleratorSpeedSensorBlock::new);
+            "particle_accelerator_speed_sensor", AcceleratorSpeedSensorBlock::new);
 
     public static final DeferredBlock<Block> INFESTED_AMETHYST_BLOCK = registerBlock(
             "infested_amethyst_block", () -> new InfestedAmethystBlock(Blocks.AMETHYST_BLOCK,
                     BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).strength(1.5F).sound(SoundType.AMETHYST))
     );
     private static DeferredBlock<Block> processingAddonBuilder(int tier) {
-        return registerBlock(
+        return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.PROCESSING, tier), () -> new TierAddonBlock(
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
                                 .withEfficiencyMultiplier(
@@ -104,7 +112,7 @@ public class ModBlocks {
     }
 
     private static DeferredBlock<Block> capacitorAddonBuilder(int tier) {
-        return registerBlock(
+        return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.CAPACITOR, tier), () -> new TierAddonBlock(
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
                                 .withAddedCapacity(
@@ -116,7 +124,7 @@ public class ModBlocks {
     }
 
     private static DeferredBlock<Block> acceptorAddonBuilder(int tier) {
-        return registerBlock(
+        return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.ACCEPTOR, tier), () -> new TierAddonBlock(
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
                                 .withAddedCapacity(
@@ -129,7 +137,7 @@ public class ModBlocks {
     }
 
     private static DeferredBlock<Block> efficientSpeedAddonBuilder(int tier) {
-        return registerBlock(
+        return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.EFFICIENT + NameUtil.Type.SPEED, tier), () -> new TierAddonBlock(
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
                                 .withSpeedMultiplier(
@@ -142,7 +150,7 @@ public class ModBlocks {
     }
 
     private static DeferredBlock<Block> speedAddonBuilder(int tier) {
-        return registerBlock(
+        return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.SPEED, tier), () -> new TierAddonBlock(
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
                                 .withSpeedMultiplier(
@@ -155,7 +163,7 @@ public class ModBlocks {
     }
 
     private static DeferredBlock<Block> efficiencyAddonBuilder(int tier) {
-        return registerBlock(
+        return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.EFFICIENCY, tier), () -> new TierAddonBlock(
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
                                 .withEfficiencyMultiplier(
@@ -182,13 +190,24 @@ public class ModBlocks {
         return shape;
     }
 
+    private static <T extends Block> DeferredBlock<T> registerAddon(String name, Supplier<T> block) {
+        DeferredBlock<T> toReturn = ADDONS.register(name, block);
+        registerBlockItem(name, toReturn,ModItems.ADDONS);
+        return toReturn;
+    }
+
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
-        DeferredBlock<T> toReturn = BLOCKS.register(name, block);
+        DeferredBlock<T> toReturn = OTHER.register(name, block);
         registerBlockItem(name, toReturn);
         return toReturn;
     }
 
     private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block) {
-        ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+        ModItems.BLOCKITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
+
+    private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block,DeferredRegister.Items items) {
+        items.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+    }
+
 }
