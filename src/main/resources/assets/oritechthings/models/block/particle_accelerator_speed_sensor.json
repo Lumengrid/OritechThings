@@ -3,8 +3,8 @@
 	"parent": "block/cube",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "oritechthings:block/accelerator_speed_sensor",
-		"particle": "oritechthings:block/accelerator_speed_sensor"
+		"0": "oritechthings:block/particle_accelerator_speed_sensor",
+		"particle": "oritechthings:block/particle_accelerator_speed_sensor"
 	},
 	"elements": [
 		{
