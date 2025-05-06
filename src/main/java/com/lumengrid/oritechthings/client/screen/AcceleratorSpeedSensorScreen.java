@@ -12,9 +12,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
-
+@SuppressWarnings("null")
 public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<AcceleratorSpeedSensorMenu> {
-    private final Component title = Component.translatable("gui.oritechthings.accelerator_speed_sensor.title");
+    private final Component title = Component.translatable("gui.oritechthings.particle_accelerator_speed_sensor.title");
     public static ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(OritechThings.MOD_ID, "textures/gui/speed_sensor.png");
 
     public AcceleratorSpeedSensorScreen(AcceleratorSpeedSensorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
@@ -97,10 +97,11 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
         renderParticleAcceleratorMessage(guiGraphics);
     }
 
+    
     private void renderParticleAcceleratorMessage(GuiGraphics guiGraphics) {
         guiGraphics.drawString(
                 this.font,
-                Component.translatable("gui.oritechthings.accelerator_speed_sensor.controller"),
+                Component.translatable("gui.oritechthings.particle_accelerator_speed_sensor.controller"),
                 leftPos + 10,
                 topPos + 20,
                 0xFFFFFF
@@ -108,7 +109,7 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
         if (menu.be.getTargetDesignator() == null) {
             guiGraphics.drawString(
                     this.font,
-                    Component.translatable("gui.oritechthings.accelerator_speed_sensor.controller_not_set")
+                    Component.translatable("gui.oritechthings.particle_accelerator_speed_sensor.controller_not_set")
                             .withStyle(style -> style.withColor(0xFF5555).withBold(true)),
                     leftPos + 100,
                     topPos + 32,
