@@ -27,8 +27,11 @@ public class ModBlockTagProvider extends BlockTagsProvider {
     protected void addTags(HolderLookup.@NotNull Provider provider) {
 
         for (DeferredBlock<?> data : Constants.getAllAddons()) {
-            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(data.get());
+            tag(ModTags.Blocks.ADDONS).add(data.get());
         }
+
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(ModTags.Blocks.ADDONS);
+
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ACCELERATOR_SPEED_SENSOR.get());
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.INFESTED_AMETHYST_BLOCK.get());
 

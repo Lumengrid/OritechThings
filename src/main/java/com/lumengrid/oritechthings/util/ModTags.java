@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.Block;
 
 public class ModTags {
     public static class Items {
-        public static final TagKey<Item> TIERED_ADDON_PROCESSING = createTag("tiered_addon_processing");
+        public static final TagKey<Item> ADDONS = createItemTag("addons");
         public static final TagKey<Item> TIERED_ADDON_PROCESSING = createItemTag("tiered_addon_processing");
         public static final TagKey<Item> TIERED_ADDON_ACCEPTOR = createItemTag("tiered_addon_acceptor");
         public static final TagKey<Item> TIERED_ADDON_CAPACITOR = createItemTag("tiered_addon_capacitor");
@@ -22,6 +22,7 @@ public class ModTags {
     }
 
     public static class Blocks {
+        public static final TagKey<Block> ADDONS = createBlockTag("addons");
         public static final TagKey<Block> TIERED_ADDON_PROCESSING = createBlockTag("tiered_addon_processing");
         public static final TagKey<Block> TIERED_ADDON_ACCEPTOR = createBlockTag("tiered_addon_acceptor");
         public static final TagKey<Block> TIERED_ADDON_CAPACITOR = createBlockTag("tiered_addon_capacitor");
