@@ -1,7 +1,6 @@
 package com.lumengrid.oritechthings.datagen;
 
 import com.lumengrid.oritechthings.block.ModBlocks;
-import com.lumengrid.oritechthings.item.ModItems;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.util.Constants;
 import com.lumengrid.oritechthings.util.ModTags;
@@ -24,9 +23,12 @@ public class ModItemTagProvider extends ItemTagsProvider {
         super(output, lookupProvider, blockTags, OritechThings.MOD_ID, existingFileHelper);
     }
 
-    @SuppressWarnings("null")
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
+
+        for (DeferredBlock<?> data : Constants.getAllAddons()) {
+            tag(ModTags.Items.ADDONS).add(data.get().asItem());
+        }
 
         for(DeferredBlock<?> data: Constants.EFFICIENCY){
             tag(ModTags.Items.TIERED_ADDON_EFFICIENCY).add(data.get().asItem());
