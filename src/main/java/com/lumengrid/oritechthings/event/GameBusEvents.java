@@ -31,7 +31,7 @@ public class GameBusEvents {
                 }
                 if (energy <= ConfigLoader.getInstance().exoJetPackSettings.rfThreshold()) {
                     if (player.getAbilities().mayfly) {
-                        player.displayClientMessage(Component.translatable("message.exojetpack.energy_low"), true);
+                        player.displayClientMessage(Component.translatable("message.exo_jetpack.energy_low"), true);
                     }
                     setCreativeFlight(player, false);
                     return;
