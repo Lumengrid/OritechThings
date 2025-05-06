@@ -1,5 +1,7 @@
 package com.lumengrid.oritechthings.client.screen;
 
+import static com.lumengrid.oritechthings.main.OritechThings.MOD_ID;
+
 import com.lumengrid.oritechthings.client.screen.component.ToggleButton;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.menu.AcceleratorSpeedSensorMenu;
@@ -9,6 +11,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -46,7 +49,7 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
 
         // SPEED INPUT
         EditBox speedInput = new EditBox(this.font, this.leftPos + 60, this.topPos + 45,
-                45, 20, Component.literal("Speed Input"));
+                45, 20, Component.translatable("gui.oritechthings.particle_accelerator_speed_sensor.speed_input"));
         speedInput.setMaxLength(5);
         speedInput.setFilter(s -> s.matches("\\d*") && !s.isEmpty());
         speedInput.setValue(String.valueOf(menu.be.getSpeedLimit()));
@@ -54,13 +57,17 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
         addRenderableWidget(speedInput);
 
         // ON OFF TOGGLE
+        MutableComponent toggleButton = Component
+                .translatable("tooltip." + MOD_ID + ".state." + (menu.be.isEnabled() ? "on" : "off"));
+
         addRenderableWidget(new ToggleButton(
                 leftPos + 130, topPos + 45, 30, 18,
-                Component.literal(menu.be.isEnabled() ? "ON" : "OFF"),
+                toggleButton,
                 button -> {
                     boolean newState = !menu.be.isEnabled();
-                    PacketDistributor.sendToServer(new UpdateSpeedSensorC2SPacket(menu.be.getBlockPos(), menu.be.getSpeedLimit(), newState, menu.be.isCheckGreater()));
-                    button.setMessage(Component.literal(newState ? "ON" : "OFF"));
+                    PacketDistributor.sendToServer(new UpdateSpeedSensorC2SPacket(menu.be.getBlockPos(),
+                            menu.be.getSpeedLimit(), newState, menu.be.isCheckGreater()));
+                    button.setMessage(toggleButton);
                 },
                 menu.be.isEnabled(),
                 0xFF93c47d,
