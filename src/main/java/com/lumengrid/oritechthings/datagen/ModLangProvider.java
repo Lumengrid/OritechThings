@@ -37,7 +37,7 @@ public class ModLangProvider extends LanguageProvider {
                 DataGenUtil.formatted(e.getRegisteredName())));
 
         var AspeedSensor = MOD_ID + "." + DataGenUtil.getName(ModBlocks.ACCELERATOR_SPEED_SENSOR);
-
+        
         add("gui." + AspeedSensor + ".title", "Speed Sensor");
         add("gui." + AspeedSensor + ".controller_not_set", "NOT SET !");
         add("gui." + AspeedSensor + ".controller", "Particle Accelerator ");
