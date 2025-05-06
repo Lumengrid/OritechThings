@@ -93,22 +93,23 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
         return targetDesignator;
     }
 
+    @SuppressWarnings("null")
     public boolean setTargetDesignator(@Nullable BlockPos targetPos, Player player) {
         BlockEntity blockEntity = targetPos == null ? null : Objects.requireNonNull(level).getBlockEntity(targetPos);
         if(targetPos == null || !(blockEntity instanceof AcceleratorControllerBlockEntity)) {
-            player.sendSystemMessage(Component.translatable("block.oritechthings.accelerator_speed_sensor.invalid_controller").withStyle(ChatFormatting.RED));
+            player.sendSystemMessage(Component.translatable("block.oritechthings.particle_accelerator_speed_sensor.invalid_controller").withStyle(ChatFormatting.RED));
             return false;
         }
         int distance = targetPos.distManhattan(this.getBlockPos());
         if (distance > 128) {
-            player.sendSystemMessage(Component.translatable("block.oritechthings.accelerator_speed_sensor.invalid_controller.to_far")
+            player.sendSystemMessage(Component.translatable("block.oritechthings.particle_accelerator_speed_sensor.invalid_controller.to_far")
                     .append(Component.literal(" (" + distance + ")").withStyle(ChatFormatting.ITALIC)) .withStyle(ChatFormatting.RED));
             return false;
         }
         this.targetDesignator = targetPos;
         this.setEnabled(true);
         level.playSound(player, this.getBlockPos(), SoundEvents.ALLAY_AMBIENT_WITH_ITEM, SoundSource.BLOCKS, 1f, 1f);
-        player.sendSystemMessage(Component.translatable("block.oritechthings.accelerator_speed_sensor.controller_set")
+        player.sendSystemMessage(Component.translatable("block.oritechthings.particle_accelerator_speed_sensor.controller_set")
                 .append(Component.literal(targetPos.toShortString()).withStyle(ChatFormatting.BLUE)));
         sync();
 
@@ -157,6 +158,7 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
             setPowered(level, pos, state, false);
             return;
         }
+        @SuppressWarnings("null")
         BlockEntity entity = level.getBlockEntity(speedControl.getTargetDesignator());
         boolean powered = isPowered(speedControl, entity);
         if (powered != state.getValue(AcceleratorSpeedSensorBlock.POWERED)) {
@@ -195,7 +197,7 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.translatable("block.oritechthings.accelerator_speed_sensor");
+        return Component.translatable("block.oritechthings.particle_accelerator_speed_sensor");
     }
 
     @Nullable
