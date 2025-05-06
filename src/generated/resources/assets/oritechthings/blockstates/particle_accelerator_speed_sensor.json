@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "oritechthings:block/particle_accelerator_speed_sensor"
+    },
+    "powered=true": {
+      "model": "oritechthings:block/particle_accelerator_speed_sensor"
+    }
+  }
+}
