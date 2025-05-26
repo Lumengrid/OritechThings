@@ -19,26 +19,31 @@ import java.util.concurrent.CompletableFuture;
 @EventBusSubscriber(modid = OritechThings.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
 
-    @SubscribeEvent
-    public static void gatherData(GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        PackOutput packOutput = generator.getPackOutput();
-        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
-        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+        @SubscribeEvent
+        public static void gatherData(GatherDataEvent event) {
+                DataGenerator generator = event.getGenerator();
+                PackOutput packOutput = generator.getPackOutput();
+                ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
+                CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        generator.addProvider(event.includeServer(),
-                new LootTableProvider(packOutput, Collections.emptySet(), List.of(
-                        new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new, LootContextParamSets.BLOCK),
-                        new LootTableProvider.SubProviderEntry(ModEntityLootTableProvider::new, LootContextParamSets.ENTITY)
-                ), lookupProvider));
+                // server
+                BlockTagsProvider blockTagsProvider = new ModBlockTagProvider(packOutput, lookupProvider,
+                                existingFileHelper);
+                generator.addProvider(event.includeServer(), new ModDatapackProvider(packOutput, lookupProvider));
+                generator.addProvider(event.includeServer(), blockTagsProvider);
+                generator.addProvider(event.includeServer(), new ModItemTagProvider(packOutput, lookupProvider,
+                                blockTagsProvider.contentsGetter(), existingFileHelper));
+                generator.addProvider(event.includeServer(),
+                                new LootTableProvider(packOutput, Collections.emptySet(), List.of(
+                                                new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new,
+                                                                LootContextParamSets.BLOCK),
+                                                new LootTableProvider.SubProviderEntry(ModEntityLootTableProvider::new,
+                                                                LootContextParamSets.ENTITY)),
+                                                lookupProvider));
 
-        BlockTagsProvider blockTagsProvider = new ModBlockTagProvider(packOutput, lookupProvider, existingFileHelper);
-        generator.addProvider(event.includeServer(), blockTagsProvider);
-        generator.addProvider(event.includeServer(), new ModItemTagProvider(packOutput, lookupProvider,
-                blockTagsProvider.contentsGetter(), existingFileHelper));
-
-        generator.addProvider(event.includeClient(), new ModItemModelProvider(packOutput, existingFileHelper));
-        generator.addProvider(event.includeClient(), new ModBlockStateProvider(packOutput, existingFileHelper));
-        generator.addProvider(event.includeServer(), new ModDatapackProvider(packOutput, lookupProvider));
-    }
+                // client
+                generator.addProvider(event.includeClient(), new ModLangProvider(packOutput));
+                generator.addProvider(event.includeClient(), new ModItemModelProvider(packOutput, existingFileHelper));
+                generator.addProvider(event.includeClient(), new ModBlockStateProvider(packOutput, existingFileHelper));
+        }
 }

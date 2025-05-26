@@ -6,6 +6,9 @@ bin
 .classpath
 .project
 
+# vscode
+/.vscode
+
 # idea
 out
 *.ipr
@@ -16,7 +19,8 @@ out
 # gradle
 build
 .gradle
-generated/
+/src/generated/resources/.cache
+
 # other
 eclipse
 run
@@ -24,4 +28,4 @@ runs
 run-data
 
 repo
-/.vscode
+
