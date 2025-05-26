@@ -10,7 +10,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import rearth.oritech.init.ToolsContent;
 import rearth.oritech.item.tools.util.OritechEnergyItem;
-import rearth.oritech.util.energy.EnergyApi;
 
 @EventBusSubscriber(modid = OritechThings.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class GameBusEvents {
@@ -26,7 +25,7 @@ public class GameBusEvents {
             ItemStack armor = player.getInventory().armor.get(2);
             if (armor.getItem() == ToolsContent.EXO_JETPACK.asItem()) {
                 long energy = 0;
-                if (EnergyApi.ITEM != null && armor.getItem() instanceof OritechEnergyItem energyItem) {
+                if (armor.getItem() instanceof OritechEnergyItem energyItem) {
                     energy = energyItem.getStoredEnergy(armor);
                 }
                 if (energy <= ConfigLoader.getInstance().exoJetPackSettings.rfThreshold()) {
