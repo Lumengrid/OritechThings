@@ -137,6 +137,8 @@ dependencies {
     implementation "curse.maven:geckolib-388172:6024484"
 
     implementation "curse.maven:oritech-1030830:6558345"
+    implementation "curse.maven:ftlibrary-404465:6466106"
+    implementation "curse.maven:ftpessential-410811:6179042"
 
     implementation "curse.maven:rhino-416294:6000610"
     implementation "curse.maven:kubejs-238086:5810100"
