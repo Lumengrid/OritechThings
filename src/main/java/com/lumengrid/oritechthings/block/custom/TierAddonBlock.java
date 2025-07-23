@@ -96,13 +96,13 @@ public class TierAddonBlock extends MachineAddonBlock {
                 Component.literal(this.defaultBlockState().getValue(ADDON_TIER).toString()).withStyle(ChatFormatting.AQUA)));
         if (Screen.hasControlDown()) {
             if (addonSettings.speedMultiplier() != 1) {
-                var displayedNumber = (int) ((1 / addonSettings.speedMultiplier()) * 100) - 100;
+                var displayedNumber = Math.round((1 - addonSettings.speedMultiplier()) * 100);
                 tooltip.add(Component.translatable("tooltip.oritech.addon_speed_desc").withStyle(ChatFormatting.DARK_GRAY)
                         .append(TooltipHelper.getFormattedValueChangeTooltip(displayedNumber)));
             }
 
             if (addonSettings.efficiencyMultiplier() != 1) {
-                var displayedNumber = (int) ((1 / addonSettings.efficiencyMultiplier()) * 100) - 100;
+                var displayedNumber = Math.round((1 - addonSettings.efficiencyMultiplier()) * 100);
                 tooltip.add(Component.translatable("tooltip.oritech.addon_efficiency_desc").withStyle(ChatFormatting.DARK_GRAY)
                         .append(TooltipHelper.getFormattedValueChangeTooltip(displayedNumber)));
             }
