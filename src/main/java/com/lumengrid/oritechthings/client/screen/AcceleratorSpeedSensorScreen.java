@@ -55,9 +55,9 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
 
                 // SPEED INPUT
                 EditBox speedInput = new EditBox(this.font, this.leftPos + 60, this.topPos + 45,
-                                45, 20, Component.translatable(
+                                55, 20, Component.translatable(
                                                 "gui.oritechthings.particle_accelerator_speed_sensor.speed_input"));
-                speedInput.setMaxLength(5);
+                speedInput.setMaxLength(6);
                 speedInput.setFilter(s -> s.matches("\\d*") && !s.isEmpty());
                 speedInput.setValue(String.valueOf(menu.be.getSpeedLimit()));
                 speedInput.setResponder(this::onSpeedEntered);
@@ -87,7 +87,7 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
         private void onSpeedEntered(String input) {
                 try {
                         int value = Integer.parseInt(input);
-                        value = Math.max(0, Math.min(value, 20000));
+                        value = Math.max(0, Math.min(value, 999999));
                         PacketDistributor.sendToServer(new UpdateSpeedSensorC2SPacket(menu.be.getBlockPos(), value,
                                         menu.be.isEnabled(), menu.be.isCheckGreater()));
                 } catch (NumberFormatException e) {
