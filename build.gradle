@@ -136,7 +136,7 @@ dependencies {
     implementation "curse.maven:owolib-532610:5945693"
     implementation "curse.maven:geckolib-388172:6024484"
 
-    implementation "curse.maven:oritech-1030830:6807350"
+    implementation "curse.maven:oritech-1030830:7038010"
     implementation "curse.maven:ftlibrary-404465:6466106"
     implementation "curse.maven:ftpessential-410811:6179042"
 
@@ -146,6 +146,7 @@ dependencies {
     implementation "curse.maven:trashcans-394535:5891067"
     implementation "curse.maven:supermarticonfig-438332:5546996"
     implementation "curse.maven:supermarticore-454372:6076757"
+    implementation "curse.maven:chunkloaders-402924:5550217"
 
     implementation "curse.maven:jei-238222:5846880"
 }
