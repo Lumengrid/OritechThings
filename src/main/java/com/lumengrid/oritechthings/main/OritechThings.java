@@ -22,6 +22,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 
 @SuppressWarnings("unused")
 @Mod(OritechThings.MOD_ID)
@@ -43,7 +44,7 @@ public class OritechThings
     }
 
 
-    @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
     public static class ClientModEvent {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
