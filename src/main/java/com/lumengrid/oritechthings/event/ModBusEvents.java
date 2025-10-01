@@ -2,7 +2,6 @@ package com.lumengrid.oritechthings.event;
 
 import com.lumengrid.oritechthings.entity.ModEntities;
 import com.lumengrid.oritechthings.entity.custom.AmethystFishEntity;
-import com.lumengrid.oritechthings.main.ConfigReloadListener;
 import com.lumengrid.oritechthings.main.OritechThings;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -32,8 +31,4 @@ public class ModBusEvents {
                 AmethystFishEntity::checkAmethystFishSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 
-    @SubscribeEvent
-    public static void addReloadListener(RegisterClientReloadListenersEvent event) {
-        event.registerReloadListener(new ConfigReloadListener());
-    }
 }

@@ -4,7 +4,7 @@ import com.lumengrid.oritechthings.block.custom.AcceleratorSpeedSensorBlock;
 import com.lumengrid.oritechthings.block.custom.InfestedAmethystBlock;
 import com.lumengrid.oritechthings.block.custom.TierAddonBlock;
 import com.lumengrid.oritechthings.item.ModItems;
-import com.lumengrid.oritechthings.main.ConfigLoader;
+import com.lumengrid.oritechthings.main.ConfigHelper;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.util.Constants;
 import com.lumengrid.oritechthings.util.Constants.NameUtil;
@@ -99,78 +99,87 @@ public class ModBlocks {
     );
     private static DeferredBlock<Block> processingAddonBuilder(int tier) {
         return registerAddon(
-                NameUtil.genAddonName(NameUtil.Type.PROCESSING, tier), () -> new TierAddonBlock(
-                        MachineAddonBlock.AddonSettings.getDefaultSettings()
-                                .withEfficiencyMultiplier(
-                                        ConfigLoader.getInstance().addonSettings.get(tier - 2).processingEfficiency())
-                                .withChambers(
-                                        ConfigLoader.getInstance().addonSettings.get(tier - 2).processingChambers())
-                                .withNeedsSupport(true)
-                                .withBoundingShape(generateAddonShape(7)),
-                        tier, Constants.AddonType.PROCESSING));
+                NameUtil.genAddonName(NameUtil.Type.PROCESSING, tier), () -> {
+                    var addonInfo = ConfigHelper.getAddonInfo(tier - 2);
+                    return new TierAddonBlock(
+                            MachineAddonBlock.AddonSettings.getDefaultSettings()
+                                    .withEfficiencyMultiplier(addonInfo.processingEfficiency())
+                                    .withChambers(addonInfo.processingChambers())
+                                    .withNeedsSupport(true)
+                                    .withBoundingShape(generateAddonShape(7)),
+                            tier, Constants.AddonType.PROCESSING);
+                });
 
     }
 
     private static DeferredBlock<Block> capacitorAddonBuilder(int tier) {
         return registerAddon(
-                NameUtil.genAddonName(NameUtil.Type.CAPACITOR, tier), () -> new TierAddonBlock(
-                        MachineAddonBlock.AddonSettings.getDefaultSettings()
-                                .withAddedCapacity(
-                                        ConfigLoader.getInstance().addonSettings.get(tier - 2).capacitorCapacity())
-                                .withAddedInsert(ConfigLoader.getInstance().addonSettings.get(tier - 2).capacitorRate())
-                                .withNeedsSupport(true)
-                                .withBoundingShape(generateAddonShape(6)),
-                        tier, Constants.AddonType.CAPACITOR));
+                NameUtil.genAddonName(NameUtil.Type.CAPACITOR, tier), () -> {
+                    var addonInfo = ConfigHelper.getAddonInfo(tier - 2);
+                    return new TierAddonBlock(
+                            MachineAddonBlock.AddonSettings.getDefaultSettings()
+                                    .withAddedCapacity(addonInfo.capacitorCapacity())
+                                    .withAddedInsert(addonInfo.capacitorRate())
+                                    .withNeedsSupport(true)
+                                    .withBoundingShape(generateAddonShape(6)),
+                            tier, Constants.AddonType.CAPACITOR);
+                });
     }
 
     private static DeferredBlock<Block> acceptorAddonBuilder(int tier) {
         return registerAddon(
-                NameUtil.genAddonName(NameUtil.Type.ACCEPTOR, tier), () -> new TierAddonBlock(
-                        MachineAddonBlock.AddonSettings.getDefaultSettings()
-                                .withAddedCapacity(
-                                        ConfigLoader.getInstance().addonSettings.get(tier - 2).acceptorCapacity())
-                                .withAddedInsert(ConfigLoader.getInstance().addonSettings.get(tier - 2).acceptorRate())
-                                .withAcceptEnergy(true)
-                                .withNeedsSupport(true)
-                                .withBoundingShape(generateAddonShape(8)),
-                        tier, Constants.AddonType.ACCEPTOR));
+                NameUtil.genAddonName(NameUtil.Type.ACCEPTOR, tier), () -> {
+                    var addonInfo = ConfigHelper.getAddonInfo(tier - 2);
+                    return new TierAddonBlock(
+                            MachineAddonBlock.AddonSettings.getDefaultSettings()
+                                    .withAddedCapacity(addonInfo.acceptorCapacity())
+                                    .withAddedInsert(addonInfo.acceptorRate())
+                                    .withAcceptEnergy(true)
+                                    .withNeedsSupport(true)
+                                    .withBoundingShape(generateAddonShape(8)),
+                            tier, Constants.AddonType.ACCEPTOR);
+                });
     }
 
     private static DeferredBlock<Block> efficientSpeedAddonBuilder(int tier) {
         return registerAddon(
-                NameUtil.genAddonName(NameUtil.Type.EFFICIENT + NameUtil.Type.SPEED, tier), () -> new TierAddonBlock(
-                        MachineAddonBlock.AddonSettings.getDefaultSettings()
-                                .withSpeedMultiplier(
-                                        ConfigLoader.getInstance().addonSettings.get(tier - 2).speedMultiplier())
-                                .withEfficiencyMultiplier(
-                                        ConfigLoader.getInstance().addonSettings.get(tier - 2).efficiencyUp())
-                                .withNeedsSupport(true)
-                                .withBoundingShape(generateAddonShape(2)),
-                        tier, Constants.AddonType.EFFICIENT_SPEED));
+                NameUtil.genAddonName(NameUtil.Type.EFFICIENT + NameUtil.Type.SPEED, tier), () -> {
+                    var addonInfo = ConfigHelper.getAddonInfo(tier - 2);
+                    return new TierAddonBlock(
+                            MachineAddonBlock.AddonSettings.getDefaultSettings()
+                                    .withSpeedMultiplier(addonInfo.speedMultiplier())
+                                    .withEfficiencyMultiplier(addonInfo.efficiencyUp())
+                                    .withNeedsSupport(true)
+                                    .withBoundingShape(generateAddonShape(2)),
+                            tier, Constants.AddonType.EFFICIENT_SPEED);
+                });
     }
 
     private static DeferredBlock<Block> speedAddonBuilder(int tier) {
         return registerAddon(
-                NameUtil.genAddonName(NameUtil.Type.SPEED, tier), () -> new TierAddonBlock(
-                        MachineAddonBlock.AddonSettings.getDefaultSettings()
-                                .withSpeedMultiplier(
-                                        ConfigLoader.getInstance().addonSettings.get(tier - 2).speedMultiplier())
-                                .withEfficiencyMultiplier(
-                                        ConfigLoader.getInstance().addonSettings.get(tier - 2).efficiencyDown())
-                                .withNeedsSupport(true)
-                                .withBoundingShape(generateAddonShape(2)),
-                        tier, Constants.AddonType.SPEED));
+                NameUtil.genAddonName(NameUtil.Type.SPEED, tier), () -> {
+                    var addonInfo = ConfigHelper.getAddonInfo(tier - 2);
+                    return new TierAddonBlock(
+                            MachineAddonBlock.AddonSettings.getDefaultSettings()
+                                    .withSpeedMultiplier(addonInfo.speedMultiplier())
+                                    .withEfficiencyMultiplier(addonInfo.efficiencyDown())
+                                    .withNeedsSupport(true)
+                                    .withBoundingShape(generateAddonShape(2)),
+                            tier, Constants.AddonType.SPEED);
+                });
     }
 
     private static DeferredBlock<Block> efficiencyAddonBuilder(int tier) {
         return registerAddon(
-                NameUtil.genAddonName(NameUtil.Type.EFFICIENCY, tier), () -> new TierAddonBlock(
-                        MachineAddonBlock.AddonSettings.getDefaultSettings()
-                                .withEfficiencyMultiplier(
-                                        ConfigLoader.getInstance().addonSettings.get(tier - 2).efficiencyUp())
-                                .withNeedsSupport(true)
-                                .withBoundingShape(generateAddonShape(5)),
-                        tier, Constants.AddonType.EFFICIENCY));
+                NameUtil.genAddonName(NameUtil.Type.EFFICIENCY, tier), () -> {
+                    var addonInfo = ConfigHelper.getAddonInfo(tier - 2);
+                    return new TierAddonBlock(
+                            MachineAddonBlock.AddonSettings.getDefaultSettings()
+                                    .withEfficiencyMultiplier(addonInfo.efficiencyUp())
+                                    .withNeedsSupport(true)
+                                    .withBoundingShape(generateAddonShape(5)),
+                            tier, Constants.AddonType.EFFICIENCY);
+                });
     }
 
     private static VoxelShape[][] generateAddonShape(int y) {

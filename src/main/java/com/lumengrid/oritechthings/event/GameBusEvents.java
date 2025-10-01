@@ -1,6 +1,6 @@
 package com.lumengrid.oritechthings.event;
 
-import com.lumengrid.oritechthings.main.ConfigLoader;
+import com.lumengrid.oritechthings.main.ConfigHelper;
 import com.lumengrid.oritechthings.main.OritechThings;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -30,7 +30,7 @@ public class GameBusEvents {
                 wasWearingJetpack.remove(playerId);
                 return;
             }
-            if (!ConfigLoader.getInstance().exoJetPackSettings.enabledCreativeFlight()) {
+            if (!ConfigHelper.getExoJetPackSettings().enabledCreativeFlight()) {
                 wasWearingJetpack.remove(playerId);
                 return;
             }
@@ -44,7 +44,7 @@ public class GameBusEvents {
                 if (currentArmor.getItem() instanceof OritechEnergyItem energyItem) {
                     energy = energyItem.getStoredEnergy(currentArmor);
                 }
-                if (energy <= ConfigLoader.getInstance().exoJetPackSettings.rfThreshold()) {
+                if (energy <= ConfigHelper.getExoJetPackSettings().rfThreshold()) {
                     if (player.getAbilities().mayfly) {
                         player.displayClientMessage(Component.translatable("message.exo_jetpack.energy_low"), true);
                     }
