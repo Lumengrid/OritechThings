@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@EventBusSubscriber(modid = OritechThings.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = OritechThings.MOD_ID)
 public class GameBusEvents {
     private static final Map<UUID, Boolean> wasWearingJetpack = new HashMap<>();
 

@@ -85,6 +85,51 @@ public class ModLangProvider extends LanguageProvider {
         add("tooltip." + MOD_ID + ".accelerator_target_designator",
                 "Usable to store the position of a Particle Accelerator");
 
+        // Configuration translations
+        add("configuration." + MOD_ID + ".title", "Oritech Things Configuration");
+        
+        // ExoJetPack Settings
+        add("configuration." + MOD_ID + ".exoJetPack", "ExoJetPack Settings");
+        add(MOD_ID + ".configuration.exoJetPack", "ExoJetPack Settings");
+        add("configuration." + MOD_ID + ".exoJetPack.enabledCreativeFlight", "Enable Creative Flight");
+        add("configuration." + MOD_ID + ".exoJetPack.enabledCreativeFlight.tooltip", "Enable creative flight for ExoJetPack when worn");
+        add("configuration." + MOD_ID + ".exoJetPack.rfThreshold", "RF Threshold");
+        add("configuration." + MOD_ID + ".exoJetPack.rfThreshold.tooltip", "Minimum RF energy required for ExoJetPack creative flight");
+        
+        // Tier Settings
+        for (int i = 0; i < 8; i++) {
+            add("configuration." + MOD_ID + ".tier" + i, "Addons Tier " + (i + 2) + " settings");
+            add(MOD_ID + ".configuration.tier" + i, "Addons Tier " + (i + 2) + " settings");
+        }
+        
+        // Configuration Parameters
+        add("configuration." + MOD_ID + ".speedMultiplier", "Speed Multiplier");
+        add("configuration." + MOD_ID + ".speedMultiplier.tooltip", "Multiplier for processing speed addons");
+        
+        add("configuration." + MOD_ID + ".efficiencyDown", "Efficiency Down");
+        add("configuration." + MOD_ID + ".efficiencyDown.tooltip", "Efficiency penalty for speed addons");
+        
+        add("configuration." + MOD_ID + ".efficiencyUp", "Efficiency Up");
+        add("configuration." + MOD_ID + ".efficiencyUp.tooltip", "Efficiency bonus for efficiency addons");
+        
+        add("configuration." + MOD_ID + ".capacitorCapacity", "Capacitor Capacity");
+        add("configuration." + MOD_ID + ".capacitorCapacity.tooltip", "Additional energy storage capacity");
+        
+        add("configuration." + MOD_ID + ".capacitorRate", "Capacitor Rate");
+        add("configuration." + MOD_ID + ".capacitorRate.tooltip", "Additional energy input/output rate");
+        
+        add("configuration." + MOD_ID + ".acceptorCapacity", "Acceptor Capacity");
+        add("configuration." + MOD_ID + ".acceptorCapacity.tooltip", "Additional energy acceptor storage capacity");
+        
+        add("configuration." + MOD_ID + ".acceptorRate", "Acceptor Rate");
+        add("configuration." + MOD_ID + ".acceptorRate.tooltip", "Additional energy acceptor input/output rate");
+        
+        add("configuration." + MOD_ID + ".processingEfficiency", "Processing Efficiency");
+        add("configuration." + MOD_ID + ".processingEfficiency.tooltip", "Efficiency multiplier for processing operations");
+        
+        add("configuration." + MOD_ID + ".processingChambers", "Processing Chambers");
+        add("configuration." + MOD_ID + ".processingChambers.tooltip", "Number of processing chambers for parallel operations");
+
     }
 
 }

@@ -32,10 +32,10 @@ public class ModBlocks {
                 OTHER.register(bus);
                 ADDONS.register(bus);
         }
-        
+
     public static final DeferredRegister.Blocks OTHER = DeferredRegister.createBlocks(OritechThings.MOD_ID);
     public static final DeferredRegister.Blocks ADDONS = DeferredRegister.createBlocks(OritechThings.MOD_ID);
-    
+
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_2 = speedAddonBuilder(2);
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_3 = speedAddonBuilder(3);
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_4 = speedAddonBuilder(4);
@@ -109,7 +109,6 @@ public class ModBlocks {
                                     .withBoundingShape(generateAddonShape(7)),
                             tier, Constants.AddonType.PROCESSING);
                 });
-
     }
 
     private static DeferredBlock<Block> capacitorAddonBuilder(int tier) {

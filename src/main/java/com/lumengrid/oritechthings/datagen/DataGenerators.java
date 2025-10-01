@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = OritechThings.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = OritechThings.MOD_ID)
 public class DataGenerators {
 
         @SubscribeEvent
@@ -43,6 +43,8 @@ public class DataGenerators {
 
                 // client
                 generator.addProvider(event.includeClient(), new ModLangProvider(packOutput));
+                generator.addProvider(event.includeClient(), new ModLangProviderZhCn(packOutput));
+                generator.addProvider(event.includeClient(), new ModLangProviderRuRu(packOutput));
                 generator.addProvider(event.includeClient(), new ModItemModelProvider(packOutput, existingFileHelper));
                 generator.addProvider(event.includeClient(), new ModBlockStateProvider(packOutput, existingFileHelper));
         }

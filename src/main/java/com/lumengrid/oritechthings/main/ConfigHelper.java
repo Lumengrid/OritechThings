@@ -7,12 +7,12 @@ public class ConfigHelper {
     
     public static ExoJetPack getExoJetPackSettings() {
         try {
-            return new ExoJetPack(
-                Config.EXO_JETPACK_ENABLED.get(),
-                Config.EXO_JETPACK_RF_THRESHOLD.get()
-            );
+            boolean enabled = Config.EXO_JETPACK_ENABLED.get();
+            long threshold = Config.EXO_JETPACK_RF_THRESHOLD.get();
+            return new ExoJetPack(enabled, threshold);
         } catch (IllegalStateException e) {
-            // Config not loaded yet, return default values
+            OritechThings.LOGGER.warn("Default Config: getExoJetPackSettings");
+            OritechThings.LOGGER.warn(e.toString());
             return new ExoJetPack(true, 10000L);
         }
     }
@@ -114,13 +114,13 @@ public class ConfigHelper {
                 }
             };
         } catch (IllegalStateException e) {
-            // Config not loaded yet, return default values based on tier
+            OritechThings.LOGGER.warn("Default Config: getAddonInfo");
+            OritechThings.LOGGER.warn(e.toString());
             return getDefaultAddonInfo(tier);
         }
     }
     
     private static AddonInfo getDefaultAddonInfo(int tier) {
-        // Return default values that match the original ConfigLoader values
         return switch (tier) {
             case 0 -> new AddonInfo(0f, 1.40f, 0.60f, 4_000_000L, 2_000L, 1_000_000L, 4000L, 2f, 2);
             case 1 -> new AddonInfo(-0.5f, 1.60f, 0.40f, 6_000_000L, 3_000L, 1_500_000L, 6000L, 2.5f, 3);
@@ -130,7 +130,7 @@ public class ConfigHelper {
             case 5 -> new AddonInfo(-2.5f, 2.40f, -0.40f, 14_000_000L, 7_000L, 3_500_000L, 14000L, 4.5f, 7);
             case 6 -> new AddonInfo(-3f, 2.60f, -0.6f, 16_000_000L, 8_000L, 4_000_000L, 14000L, 5f, 8);
             case 7 -> new AddonInfo(-3.5f, 2.80f, -0.8f, 18_000_000L, 9_000L, 4_500_000L, 18000L, 5.5f, 9);
-            default -> getDefaultAddonInfo(0); // Fallback to tier 0
+            default -> getDefaultAddonInfo(0);
         };
     }
 }
