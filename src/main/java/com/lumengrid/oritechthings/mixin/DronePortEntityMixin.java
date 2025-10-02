@@ -200,12 +200,6 @@ public class DronePortEntityMixin {
             return false;
         }
 
-        int distance = targetPos.distManhattan(self.getBlockPos());
-        if (distance < 50) {
-            statusMessage = "message.oritechthings.drone.invalid_distance_cross_dimensional";
-            return false;
-        }
-
         BlockEntity targetEntity = targetLevel.getBlockEntity(targetPos);
         if (!(targetEntity instanceof DronePortEntity)) {
             statusMessage = "message.oritechthings.drone.target_not_drone_port";
