@@ -60,17 +60,14 @@ public class DronePortEntityMixin {
      */
     @Inject(method = "checkPositionCard", at = @At("HEAD"), cancellable = true)
     private void checkPositionCard(CallbackInfo ci) {
-        System.out.println("JOMO checkPositionCard");
         DronePortEntity self = (DronePortEntity) (Object) this;
         var source = cardInventory.getItem(0);
 
         if (source != null && !source.isEmpty() && source.has(ModDataComponents.TARGET_DIMENSION.get())) {
-            System.out.println("JOMO checkPositionCard IF");
             var targetDimension = source.get(ModDataComponents.TARGET_DIMENSION.get());
-            assert targetDimension != null;
-            System.out.println("JOMO targetDimension" + targetDimension.toString());
             assert self.getLevel() != null;
-            boolean isCrossDimensional = !this.targetDimension.equals(self.getLevel().dimension());
+            assert targetDimension != null;
+            boolean isCrossDimensional = !targetDimension.equals(self.getLevel().dimension());
             if (isCrossDimensional) {
                 var targetPos = source.get(ComponentContent.TARGET_POSITION.get());
                 boolean success = setCrossDimensionalTarget(targetPos, targetDimension);
@@ -83,8 +80,6 @@ public class DronePortEntityMixin {
 
                 ci.cancel();
             }
-        } else {
-            System.out.println("JOMO checkPositionCard ELSE");
         }
     }
     
