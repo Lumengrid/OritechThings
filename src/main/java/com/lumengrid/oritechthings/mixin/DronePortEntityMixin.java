@@ -7,11 +7,15 @@ import com.lumengrid.oritechthings.api.CrossDimensionalDrone;
 import dev.architectury.fluid.FluidStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -270,6 +274,102 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
         return baseEnergyUsage + ConfigLoader.getInstance().dimensionalDroneSettings.energyToCross();
     }
     
+    /**
+     * Create special particle effects for cross-dimensional transfers
+     */
+    @Unique
+    private void triggerCrossDimensionalEffects(DronePortEntity self) {
+        if (!(self.getLevel() instanceof ServerLevel serverLevel)) return;
+        
+        BlockPos pos = self.getBlockPos();
+        double x = pos.getX() + 0.5;
+        double y = pos.getY() + 1.0;
+        double z = pos.getZ() + 0.5;
+        
+        // Create an intense portal vortex effect
+        for (int i = 0; i < 120; i++) {
+            double angle = (i * 0.2) + (serverLevel.getGameTime() * 0.15);
+            double radius = 2.0 + Math.sin(i * 0.1) * 0.5;
+            double offsetY = Math.sin(i * 0.3) * 1.5;
+            
+            double offsetX = Math.cos(angle) * radius;
+            double offsetZ = Math.sin(angle) * radius;
+            
+            // Dense portal particles for the dimensional rift effect
+            serverLevel.sendParticles(ParticleTypes.PORTAL,
+                x + offsetX, y + offsetY, z + offsetZ,
+                3, 0.1, 0.1, 0.1, 0.2);
+        }
+        
+        // Create a secondary inner vortex
+        for (int i = 0; i < 80; i++) {
+            double angle = -(i * 0.4) + (serverLevel.getGameTime() * 0.2);
+            double radius = 1.0 + Math.cos(i * 0.15) * 0.3;
+            double offsetY = Math.cos(i * 0.2) * 1.0;
+            
+            double offsetX = Math.cos(angle) * radius;
+            double offsetZ = Math.sin(angle) * radius;
+            
+            // Reverse spiral with more portal particles
+            serverLevel.sendParticles(ParticleTypes.PORTAL,
+                x + offsetX, y + offsetY, z + offsetZ,
+                2, 0.05, 0.05, 0.05, 0.3);
+        }
+        
+        // Add warped/crimson spore particles for otherworldly effect
+        for (int i = 0; i < 40; i++) {
+            double offsetX = (serverLevel.random.nextDouble() - 0.5) * 4.0;
+            double offsetY = serverLevel.random.nextDouble() * 3.0;
+            double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 4.0;
+            
+            serverLevel.sendParticles(ParticleTypes.WARPED_SPORE,
+                x + offsetX, y + offsetY, z + offsetZ,
+                1, 0.0, 0.1, 0.0, 0.1);
+                
+            serverLevel.sendParticles(ParticleTypes.CRIMSON_SPORE,
+                x + offsetX, y + offsetY, z + offsetZ,
+                1, 0.0, 0.1, 0.0, 0.1);
+        }
+        
+        // Add soul fire flame particles for mystical energy
+        for (int i = 0; i < 25; i++) {
+            double offsetX = (serverLevel.random.nextDouble() - 0.5) * 3.0;
+            double offsetY = serverLevel.random.nextDouble() * 2.5;
+            double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 3.0;
+            
+            serverLevel.sendParticles(ParticleTypes.SOUL_FIRE_FLAME,
+                x + offsetX, y + offsetY, z + offsetZ,
+                1, 0.0, 0.2, 0.0, 0.1);
+        }
+        
+        // Add reverse portal particles shooting upward
+        for (int i = 0; i < 30; i++) {
+            double offsetX = (serverLevel.random.nextDouble() - 0.5) * 2.5;
+            double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 2.5;
+            
+            serverLevel.sendParticles(ParticleTypes.REVERSE_PORTAL,
+                x + offsetX, y, z + offsetZ,
+                1, 0.0, 0.5, 0.0, 0.2);
+        }
+        
+        // Add electric spark effect with end rod particles
+        for (int i = 0; i < 20; i++) {
+            double offsetX = (serverLevel.random.nextDouble() - 0.5) * 3.5;
+            double offsetY = serverLevel.random.nextDouble() * 2.0;
+            double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 3.5;
+            
+            serverLevel.sendParticles(ParticleTypes.END_ROD,
+                x + offsetX, y + offsetY, z + offsetZ,
+                1, 0.0, 0.3, 0.0, 0.4);
+        }
+        
+        // Play multiple layered sound effects for dramatic impact
+        serverLevel.playSound(null, pos, SoundEvents.PORTAL_TRAVEL, SoundSource.BLOCKS, 1.2f, 0.7f);
+        serverLevel.playSound(null, pos, SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.BLOCKS, 1.0f, 0.8f);
+        serverLevel.playSound(null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.8f, 1.2f);
+        serverLevel.playSound(null, pos, SoundEvents.END_PORTAL_SPAWN, SoundSource.BLOCKS, 0.6f, 1.5f);
+    }
+    
     @Unique
     private boolean sendCrossDimensionalDrone() {
         DronePortEntity self = (DronePortEntity) (Object) this;
@@ -301,7 +401,9 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
         lastSentAt = self.getLevel().getGameTime();
         energyStorage.amount -= calculateCrossDimensionalEnergyUsage();
 
-        self.triggerAnim("machine", "takeoff");
+        triggerCrossDimensionalEffects(self);
+        
+        self.triggerAnim("machine", "landing");
         targetPort.setChanged();
         self.setChanged();
 
