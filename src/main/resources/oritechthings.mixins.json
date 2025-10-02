@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "refmap": "oritechthings.refmap.json",
+  "package": "com.lumengrid.oritechthings.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "DronePortEntityMixin"
+  ],
+  "client": [],
+  "server": [],
+  "minVersion": "0.8"
+}
