@@ -2,7 +2,9 @@ package com.lumengrid.oritechthings.item.custom;
 
 import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.entity.custom.AcceleratorSpeedSensorBlockEntity;
+import com.lumengrid.oritechthings.main.ConfigLoader;
 import com.lumengrid.oritechthings.main.ModDataComponents;
+import com.lumengrid.oritechthings.api.CrossDimensionalDrone;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -38,6 +40,10 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
     public @NotNull InteractionResult useOn(UseOnContext context) {
         if (context.getLevel().isClientSide()) {
             return InteractionResult.SUCCESS;
+        }
+        var crossDimensionEnabled = ConfigLoader.getInstance().dimensionalDroneSettings.enabled();
+        if (!crossDimensionEnabled) {
+            return super.useOn(context);
         }
         BlockPos clickedPos = context.getClickedPos();
         Level level = context.getLevel();
@@ -85,7 +91,8 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
     private InteractionResult setTargetFromDesignator(BlockEntity entity, BlockPos targetPos, ResourceKey<Level> targetDimension, Player player, ResourceKey<Level> actualDimension) {
         boolean success = false;
         if (entity instanceof DronePortEntity dronePortEntity) {
-            // success = dronePortEntity.setCrossDimensionalTarget(targetPos, targetDimension);
+            var crossDimensionalDrone = (CrossDimensionalDrone) dronePortEntity;
+            success = crossDimensionalDrone.oritechthings$setCrossDimensionalTarget(targetPos, targetDimension);
         } else {
             if (targetDimension != actualDimension) {
                 Objects.requireNonNull(player).sendSystemMessage(Component.translatable("message.oritechthings.advanced_target_designator.different_dimension"));
@@ -101,9 +108,7 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
                     }
                     success = laserEntity.setTargetFromDesignator(targetPos);
                 }
-                case AcceleratorSpeedSensorBlockEntity speedSensorEntity -> {
-                    success = speedSensorEntity.setTargetDesignator(targetPos, player);
-                }
+                case AcceleratorSpeedSensorBlockEntity speedSensorEntity -> success = speedSensorEntity.setTargetDesignator(targetPos, player);
                 default -> {
                 }
             }
@@ -123,9 +128,11 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
             return;
         }
         BlockPos position = stack.get(ComponentContent.TARGET_POSITION.get());
-        ResourceKey<Level> dimension = stack.get(ModDataComponents.TARGET_DIMENSION.get());
-        tooltip.add(Component.translatable("tooltip.oritech.target_designator.set_to", Objects.requireNonNull(position).toShortString())
-                .append(Component.literal(getDimensionName(dimension)).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.BOLD)));
+        if (ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
+            ResourceKey<Level> dimension = stack.get(ModDataComponents.TARGET_DIMENSION.get());
+            tooltip.add(Component.translatable("tooltip.oritech.target_designator.set_to", Objects.requireNonNull(position).toShortString())
+                    .append(Component.literal(getDimensionName(dimension)).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.BOLD)));
+        }
     }
 
     private String getDimensionName(ResourceKey<Level> dimensionKey) {
