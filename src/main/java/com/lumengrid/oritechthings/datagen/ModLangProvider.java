@@ -81,9 +81,15 @@ public class ModLangProvider extends LanguageProvider {
         add("message." + TargetDesignator + ".position_invalid", "⚠ Invalid position ⚠");
         add("message." + TargetDesignator + ".different_dimension", "⚠ Different Dimension ⚠");
 
-        // (?) deprecated (?)
         add("tooltip." + MOD_ID + ".accelerator_target_designator",
                 "Usable to store the position of a Particle Accelerator");
+
+        // drone cross-dimensional messages
+        add("message." + MOD_ID + ".drone.server_unavailable", "§c⚠ Server unavailable for cross-dimensional transfer ⚠");
+        add("message." + MOD_ID + ".drone.dimension_unavailable", "§c⚠ Target dimension is not available ⚠");
+        add("message." + MOD_ID + ".drone.target_not_drone_port", "§c⚠ Target position does not contain a Drone Port ⚠");
+        add("message." + MOD_ID + ".drone.target_invalid_block", "§c⚠ Target block is not a valid Drone Port ⚠");
+        add("message." + MOD_ID + ".drone.cross_dimensional_target_set", "§a✓ Cross-dimensional target successfully set");
 
     }
 
