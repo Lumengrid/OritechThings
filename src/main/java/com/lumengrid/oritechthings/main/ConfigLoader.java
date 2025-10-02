@@ -39,6 +39,9 @@ public class ConfigLoader {
     @Expose
     public ExoJetPack exoJetPackSettings = new ExoJetPack(true, 10000);
 
+    @Expose
+    public DimensionalDrone dimensionalDroneSettings = new DimensionalDrone(true, 10000);
+
     public void load() {
         Gson gson = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation()
@@ -93,6 +96,14 @@ public class ConfigLoader {
     public record ExoJetPack(
             @Expose boolean enabledCreativeFlight,
             @Expose long rfThreshold
+    ) {
+
+    }
+
+
+    public record DimensionalDrone(
+            @Expose boolean enabled,
+            @Expose int energyToCross
     ) {
 
     }

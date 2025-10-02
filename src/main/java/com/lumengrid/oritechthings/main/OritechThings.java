@@ -26,7 +26,7 @@ import net.neoforged.fml.common.Mod;
 public class OritechThings
 {
     public static final String MOD_ID = "oritechthings";
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public OritechThings(IEventBus modEventBus, ModContainer modContainer)
     {
@@ -41,7 +41,7 @@ public class OritechThings
     }
 
 
-    @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
     public static class ClientModEvent {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {

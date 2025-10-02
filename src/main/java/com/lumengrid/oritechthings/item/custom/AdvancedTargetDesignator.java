@@ -63,6 +63,11 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
                 return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
             }
         }
+        if (clickedBlockState.getBlock().equals(BlockContent.DRONE_PORT_BLOCK)) {
+            if (clickedEntity instanceof DronePortEntity) {
+                return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
+            }
+        }
         if (clickedBlockState.getBlock().equals(ModBlocks.ACCELERATOR_SPEED_SENSOR.get())) {
             if (clickedEntity instanceof AcceleratorSpeedSensorBlockEntity) {
                 return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
@@ -79,24 +84,29 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
 
     private InteractionResult setTargetFromDesignator(BlockEntity entity, BlockPos targetPos, ResourceKey<Level> targetDimension, Player player, ResourceKey<Level> actualDimension) {
         boolean success = false;
-        //put before this the target dimension
-        if (targetDimension != actualDimension) {
-            Objects.requireNonNull(player).sendSystemMessage(Component.translatable("message.oritechthings.advanced_target_designator.different_dimension"));
-            return InteractionResult.FAIL;
-        }
-        switch (entity) {
-            case LaserArmBlockEntity laserEntity -> {
-                if (laserEntity.hunterAddons > 0) {
-                    laserEntity.cycleHunterTargetMode();
-                    player.sendSystemMessage(Component.translatable("message.oritech.target_designator.hunter_target",
-                            Component.translatable(laserEntity.hunterTargetMode.message)));
-                    return InteractionResult.SUCCESS;
-                }
-                success = laserEntity.setTargetFromDesignator(targetPos);
+        if (entity instanceof DronePortEntity dronePortEntity) {
+            // success = dronePortEntity.setCrossDimensionalTarget(targetPos, targetDimension);
+        } else {
+            if (targetDimension != actualDimension) {
+                Objects.requireNonNull(player).sendSystemMessage(Component.translatable("message.oritechthings.advanced_target_designator.different_dimension"));
+                return InteractionResult.FAIL;
             }
-            case DronePortEntity dronePortEntity -> success = dronePortEntity.setTargetFromDesignator(targetPos);
-            case AcceleratorSpeedSensorBlockEntity speedSensorEntity -> success = speedSensorEntity.setTargetDesignator(targetPos, player);
-            default -> {}
+            switch (entity) {
+                case LaserArmBlockEntity laserEntity -> {
+                    if (laserEntity.hunterAddons > 0) {
+                        laserEntity.cycleHunterTargetMode();
+                        player.sendSystemMessage(Component.translatable("message.oritech.target_designator.hunter_target",
+                                Component.translatable(laserEntity.hunterTargetMode.message)));
+                        return InteractionResult.SUCCESS;
+                    }
+                    success = laserEntity.setTargetFromDesignator(targetPos);
+                }
+                case AcceleratorSpeedSensorBlockEntity speedSensorEntity -> {
+                    success = speedSensorEntity.setTargetDesignator(targetPos, player);
+                }
+                default -> {
+                }
+            }
         }
         Objects.requireNonNull(player).sendSystemMessage(
                 Component.translatable(
