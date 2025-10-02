@@ -87,9 +87,7 @@ public class ModLangProviderZhCn extends LanguageProvider {
         // drone cross-dimensional messages
         add("message." + MOD_ID + ".drone.server_unavailable", "§c⚠ 服务器不可用于跨维度传输 ⚠");
         add("message." + MOD_ID + ".drone.dimension_unavailable", "§c⚠ 目标维度不可用 ⚠");
-        add("message." + MOD_ID + ".drone.target_not_drone_port", "§c⚠ 目标位置不包含无人机端口 ⚠");
-        add("message." + MOD_ID + ".drone.target_invalid_block", "§c⚠ 目标方块不是有效的无人机端口 ⚠");
-        add("message." + MOD_ID + ".drone.cross_dimensional_target_set", "§a✓ 跨维度目标设置成功");
+        add("message." + MOD_ID + ".drone.cross_dimensional_target_set", "跨维度目标端口已设置。\n当库存不为空时，无人机将跨维度传送物品。");
     }
 
 }

@@ -88,9 +88,7 @@ public class ModLangProviderRuRu extends LanguageProvider {
         // drone cross-dimensional messages
         add("message." + MOD_ID + ".drone.server_unavailable", "§c⚠ Сервер недоступен для межмерного переноса ⚠");
         add("message." + MOD_ID + ".drone.dimension_unavailable", "§c⚠ Целевое измерение недоступно ⚠");
-        add("message." + MOD_ID + ".drone.target_not_drone_port", "§c⚠ Целевая позиция не содержит Порт Дрона ⚠");
-        add("message." + MOD_ID + ".drone.target_invalid_block", "§c⚠ Целевой блок не является действительным Портом Дрона ⚠");
-        add("message." + MOD_ID + ".drone.cross_dimensional_target_set", "§a✓ Межмерная цель успешно установлена");
+        add("message." + MOD_ID + ".drone.cross_dimensional_target_set", "Межмерный целевой порт установлен.\nДрон будет доставлять через измерения, когда инвентарь не пуст.");
     }
 
 }

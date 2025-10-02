@@ -6,7 +6,6 @@ import com.lumengrid.oritechthings.main.ConfigLoader;
 import dev.architectury.fluid.FluidStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
@@ -25,10 +24,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import rearth.oritech.block.blocks.interaction.DronePortBlock;
+import rearth.oritech.block.blocks.processing.MachineCoreBlock;
+import rearth.oritech.block.entity.MachineCoreEntity;
 import rearth.oritech.block.entity.interaction.DronePortEntity;
+import rearth.oritech.api.energy.containers.DynamicEnergyStorage;
 import rearth.oritech.init.ComponentContent;
 
-import java.util.List;
+import java.util.Objects;
 
 /**
  * Mixin that adds cross-dimensional functionality to DronePortEntity
@@ -43,17 +45,12 @@ public class DronePortEntityMixin {
     @Shadow private DronePortEntity.DroneTransferData incomingPacket;
     @Shadow private String statusMessage;
     @Shadow protected SimpleContainer cardInventory;
+    
+    // Add shadow for energyStorage to access it
+    @Shadow @Final protected DynamicEnergyStorage energyStorage;
 
     @Unique
     private ResourceKey<Level> targetDimension = null;
-
-    /**
-     * Called by AdvancedTargetDesignator to set cross-dimensional target
-     */
-    public void oritechthings$setDimensionTarget(BlockPos targetPos, ResourceKey<Level> dimension) {
-        this.targetDimension = dimension;
-        this.targetPosition = targetPos;
-    }
 
     /**
      * Inject into checkPositionCard to read dimension data from AdvancedTargetDesignator
@@ -63,22 +60,28 @@ public class DronePortEntityMixin {
         DronePortEntity self = (DronePortEntity) (Object) this;
         var source = cardInventory.getItem(0);
 
-        if (source != null && !source.isEmpty() && source.has(ModDataComponents.TARGET_DIMENSION.get())) {
-            var targetDimension = source.get(ModDataComponents.TARGET_DIMENSION.get());
-            assert self.getLevel() != null;
-            assert targetDimension != null;
-            boolean isCrossDimensional = !targetDimension.equals(self.getLevel().dimension());
-            if (isCrossDimensional) {
-                var targetPos = source.get(ComponentContent.TARGET_POSITION.get());
-                boolean success = setCrossDimensionalTarget(targetPos, targetDimension);
-                if (success) {
-                    cardInventory.setItem(1, source);
-                    cardInventory.setItem(0, ItemStack.EMPTY);
-                    cardInventory.setChanged();
-                    self.setChanged();
-                }
+        if (source != null && !source.isEmpty()) {
+            if (source.has(ModDataComponents.TARGET_DIMENSION.get())) {
+                var targetDimension = source.get(ModDataComponents.TARGET_DIMENSION.get());
+                assert self.getLevel() != null;
+                assert targetDimension != null;
+                boolean isCrossDimensional = !targetDimension.equals(self.getLevel().dimension());
+                if (isCrossDimensional) {
+                    var targetPos = source.get(ComponentContent.TARGET_POSITION.get());
+                    boolean success = setCrossDimensionalTarget(targetPos, targetDimension);
+                    if (success) {
+                        cardInventory.setItem(1, source);
+                        cardInventory.setItem(0, ItemStack.EMPTY);
+                        cardInventory.setChanged();
+                        self.setChanged();
+                    }
 
-                ci.cancel();
+                    ci.cancel();
+                } else {
+                    this.targetDimension = null;
+                }
+            } else {
+                this.targetDimension = null;
             }
         }
     }
@@ -86,7 +89,7 @@ public class DronePortEntityMixin {
     /**
      * Check if this drone port can perform cross-dimensional transfers
      */
-    public boolean isCrossDimensional() {
+    private boolean isCrossDimensional() {
         DronePortEntity self = (DronePortEntity) (Object) this;
         if (targetDimension == null) return false;
         assert self.getLevel() != null;
@@ -184,7 +187,7 @@ public class DronePortEntityMixin {
     }
 
     @Unique
-    public boolean setCrossDimensionalTarget(BlockPos targetPos, ResourceKey<Level> targetDimension) {
+    private boolean setCrossDimensionalTarget(BlockPos targetPos, ResourceKey<Level> targetDimension) {
         DronePortEntity self = (DronePortEntity) (Object) this;
 
         assert self.getLevel() != null;
@@ -200,21 +203,28 @@ public class DronePortEntityMixin {
             return false;
         }
 
+        var targetState = Objects.requireNonNull(targetLevel).getBlockState(targetPos);
+        if (targetState.getBlock() instanceof MachineCoreBlock && targetState.getValue(MachineCoreBlock.USED)) {
+            var coreEntity = (MachineCoreEntity) targetLevel.getBlockEntity(targetPos);
+            var controllerPos = Objects.requireNonNull(coreEntity).getControllerPos();
+            if (controllerPos != null) targetPos = controllerPos;
+        }
+
         BlockEntity targetEntity = targetLevel.getBlockEntity(targetPos);
         if (!(targetEntity instanceof DronePortEntity)) {
-            statusMessage = "message.oritechthings.drone.target_not_drone_port";
+            statusMessage = "message.oritech.drone.target_invalid";
             return false;
         }
 
         if (!(targetLevel.getBlockState(targetPos).getBlock() instanceof DronePortBlock)) {
-            statusMessage = "message.oritechthings.drone.target_invalid_block";
+            statusMessage = "message.oritech.drone.target_invalid";
             return false;
         }
 
         this.targetDimension = targetDimension;
         this.targetPosition = targetPos;
         statusMessage = "message.oritechthings.drone.cross_dimensional_target_set";
-        
+
         return true;
     }
     
@@ -267,7 +277,7 @@ public class DronePortEntityMixin {
         self.inventory.clearContent();
         self.fluidStorage.setStack(FluidStack.empty());
         lastSentAt = self.getLevel().getGameTime();
-        // self.energyStorage.amount -= calculateCrossDimensionalEnergyUsage();
+        energyStorage.amount -= calculateCrossDimensionalEnergyUsage();
 
         self.triggerAnim("machine", "takeoff");
         targetPort.setChanged();
@@ -278,40 +288,5 @@ public class DronePortEntityMixin {
                 arriveTime - self.getLevel().getGameTime());
         
         return true;
-    }
-    
-    @Unique
-    private List<ItemStack> oritechthings$getInventoryStacks() {
-        DronePortEntity self = (DronePortEntity) (Object) this;
-        try {
-            var field = DronePortEntity.class.getDeclaredField("inventory");
-            field.setAccessible(true);
-            var inventory = field.get(self);
-            
-            var method = inventory.getClass().getMethod("getHeldStacks");
-            @SuppressWarnings("unchecked")
-            NonNullList<ItemStack> heldStacks = (NonNullList<ItemStack>) method.invoke(inventory);
-            
-            return heldStacks.stream().filter(stack -> !stack.isEmpty()).toList();
-        } catch (Exception e) {
-            OritechThings.LOGGER.error("Failed to access inventory", e);
-            return List.of();
-        }
-    }
-    
-    @Unique
-    private FluidStack oritechthings$getFluidStack() {
-        DronePortEntity self = (DronePortEntity) (Object) this;
-        try {
-            var field = DronePortEntity.class.getDeclaredField("fluidStorage");
-            field.setAccessible(true);
-            var fluidStorage = field.get(self);
-            
-            var method = fluidStorage.getClass().getMethod("getStack");
-            return (FluidStack) method.invoke(fluidStorage);
-        } catch (Exception e) {
-            OritechThings.LOGGER.error("Failed to access fluid storage", e);
-            return FluidStack.empty();
-        }
     }
 }
