@@ -87,6 +87,13 @@ public class ModLangProviderZhCn extends LanguageProvider {
         add("message." + MOD_ID + ".drone.dimension_unavailable", "§c⚠ 目标维度不可用 ⚠");
         add("message." + MOD_ID + ".drone.cross_dimensional_target_set", "跨维度目标端口已设置。\n当库存不为空时，无人机将跨维度传送物品。");
         add("message." + MOD_ID + ".drone.addon_required", "§c⚠ 跨维度传输需要跨维度插件 ⚠");
+        
+        // Advanced Target Designator tooltips
+        add("tooltip." + MOD_ID + ".advanced_target_designator.usage", "§7兼容的机器:");
+        add("tooltip." + MOD_ID + ".advanced_target_designator.speed_sensor", "§9• 粒子加速器 速度传感器");
+        add("tooltip." + MOD_ID + ".advanced_target_designator.drone_port", "§9• 无人机端口");
+        add("tooltip." + MOD_ID + ".advanced_target_designator.laser_arm", "§9• 末影激光器");
+        add("tooltip." + MOD_ID + ".advanced_target_designator.cross_dimensional", "§6⚡ 只有无人机端口支持跨维度传输");
         add("tooltip." + MOD_ID + ".addon_block_cross_dimensional", "附加到无人机端口以启用跨维度传输。\n允许无人机在维度之间旅行。");
     }
 

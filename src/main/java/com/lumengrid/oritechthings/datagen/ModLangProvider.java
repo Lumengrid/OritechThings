@@ -87,6 +87,13 @@ public class ModLangProvider extends LanguageProvider {
         add("message." + MOD_ID + ".drone.dimension_unavailable", "§c⚠ Target dimension is not available ⚠");
         add("message." + MOD_ID + ".drone.cross_dimensional_target_set", "Cross-dimensional target port set.\nDrone will deliver across dimensions whenever the inventory is not empty.");
         add("message." + MOD_ID + ".drone.addon_required", "§c⚠ Cross-Dimensional Addon required for inter-dimensional transfers ⚠");
+        
+        // Advanced Target Designator tooltips
+        add("tooltip." + MOD_ID + ".advanced_target_designator.usage", "§7Compatible Machines:");
+        add("tooltip." + MOD_ID + ".advanced_target_designator.speed_sensor", "§9• Particle Accelerator Speed Sensor");
+        add("tooltip." + MOD_ID + ".advanced_target_designator.drone_port", "§9• Drone Port");
+        add("tooltip." + MOD_ID + ".advanced_target_designator.laser_arm", "§9• Enderic Laser");
+        add("tooltip." + MOD_ID + ".advanced_target_designator.cross_dimensional", "§6⚡ Only Drone Ports support cross-dimensional transfers");
         add("tooltip." + MOD_ID + ".addon_block_cross_dimensional", "Attach to a Drone Port to enable cross-dimensional transfers.\nAllows drones to travel between dimensions.");
     }
 

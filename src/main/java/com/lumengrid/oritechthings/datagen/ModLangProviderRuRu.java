@@ -88,6 +88,13 @@ public class ModLangProviderRuRu extends LanguageProvider {
         add("message." + MOD_ID + ".drone.dimension_unavailable", "§c⚠ Целевое измерение недоступно ⚠");
         add("message." + MOD_ID + ".drone.cross_dimensional_target_set", "Межмерный целевой порт установлен.\nДрон будет доставлять через измерения, когда инвентарь не пуст.");
         add("message." + MOD_ID + ".drone.addon_required", "§c⚠ Требуется межмерное дополнение для межмерных переносов ⚠");
+        
+        // Advanced Target Designator tooltips
+        add("tooltip." + MOD_ID + ".advanced_target_designator.usage", "§7Совместимые Машины:");
+        add("tooltip." + MOD_ID + ".advanced_target_designator.speed_sensor", "§9• Ускоритель Частиц Датчик Скорости");
+        add("tooltip." + MOD_ID + ".advanced_target_designator.drone_port", "§9• Порт Дронов");
+        add("tooltip." + MOD_ID + ".advanced_target_designator.laser_arm", "§9• Эндерический Лазер");
+        add("tooltip." + MOD_ID + ".advanced_target_designator.cross_dimensional", "§6⚡ Только Порты Дронов поддерживают межмерные переносы");
         add("tooltip." + MOD_ID + ".addon_block_cross_dimensional", "Прикрепите к порту дрона для включения межмерных переносов.\nПозволяет дронам путешествовать между измерениями.");
     }
 
