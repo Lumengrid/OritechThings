@@ -27,8 +27,6 @@ public class ModLangProvider extends LanguageProvider {
         add("tooltip."+MOD_ID+".tier_addon", "Tier ");
         add("tooltip."+MOD_ID+".state.on", "ON");
         add("tooltip."+MOD_ID+".state.off", "OFF");
-        
-        
 
         //generic blocks
         ModBlocks.OTHER.getEntries().forEach(e -> addBlock(e,
@@ -88,7 +86,8 @@ public class ModLangProvider extends LanguageProvider {
         add("message." + MOD_ID + ".drone.server_unavailable", "§c⚠ Server unavailable for cross-dimensional transfer ⚠");
         add("message." + MOD_ID + ".drone.dimension_unavailable", "§c⚠ Target dimension is not available ⚠");
         add("message." + MOD_ID + ".drone.cross_dimensional_target_set", "Cross-dimensional target port set.\nDrone will deliver across dimensions whenever the inventory is not empty.");
-
+        add("message." + MOD_ID + ".drone.addon_required", "§c⚠ Cross-Dimensional Addon required for inter-dimensional transfers ⚠");
+        add("tooltip." + MOD_ID + ".addon_block_cross_dimensional", "Attach to a Drone Port to enable cross-dimensional transfers.\nAllows drones to travel between dimensions.");
     }
 
 }

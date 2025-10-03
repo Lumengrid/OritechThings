@@ -90,6 +90,13 @@ public class ModBlocks {
     public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_8 = processingAddonBuilder(8);
     public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_9 = processingAddonBuilder(9);
 
+    public static final DeferredBlock<Block> ADDON_BLOCK_CROSS_DIMENSIONAL = registerAddon(
+            "addon_block_cross_dimensional", () -> new TierAddonBlock(
+                    MachineAddonBlock.AddonSettings.getDefaultSettings()
+                            .withNeedsSupport(true)
+                            .withBoundingShape(generateAddonShape(7)),
+                    2, Constants.AddonType.CROSS_DIMENSIONAL));
+
     public static final DeferredBlock<Block> ACCELERATOR_SPEED_SENSOR = registerBlock(
             "particle_accelerator_speed_sensor", AcceleratorSpeedSensorBlock::new);
 

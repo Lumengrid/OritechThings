@@ -27,8 +27,6 @@ public class ModLangProviderRuRu extends LanguageProvider {
         add("tooltip."+MOD_ID+".tier_addon", "Уровень ");
         add("tooltip."+MOD_ID+".state.on", "ВКЛ.");
         add("tooltip."+MOD_ID+".state.off", "ВЫКЛ.");
-        
-        
 
         //generic blocks
         ModBlocks.OTHER.getEntries().forEach(e -> addBlock(e,
@@ -89,6 +87,8 @@ public class ModLangProviderRuRu extends LanguageProvider {
         add("message." + MOD_ID + ".drone.server_unavailable", "§c⚠ Сервер недоступен для межмерного переноса ⚠");
         add("message." + MOD_ID + ".drone.dimension_unavailable", "§c⚠ Целевое измерение недоступно ⚠");
         add("message." + MOD_ID + ".drone.cross_dimensional_target_set", "Межмерный целевой порт установлен.\nДрон будет доставлять через измерения, когда инвентарь не пуст.");
+        add("message." + MOD_ID + ".drone.addon_required", "§c⚠ Требуется межмерное дополнение для межмерных переносов ⚠");
+        add("tooltip." + MOD_ID + ".addon_block_cross_dimensional", "Прикрепите к порту дрона для включения межмерных переносов.\nПозволяет дронам путешествовать между измерениями.");
     }
 
 }

@@ -85,6 +85,7 @@ public static final Supplier<BlockEntityType<AcceleratorSpeedSensorBlockEntity>>
                             ModBlocks.ADDON_BLOCK_PROCESSING_TIER_6.get(),
                             ModBlocks.ADDON_BLOCK_PROCESSING_TIER_7.get(),
                             ModBlocks.ADDON_BLOCK_PROCESSING_TIER_8.get(),
-                            ModBlocks.ADDON_BLOCK_PROCESSING_TIER_9.get()
+                            ModBlocks.ADDON_BLOCK_PROCESSING_TIER_9.get(),
+                            ModBlocks.ADDON_BLOCK_CROSS_DIMENSIONAL.get()
                     ).build(null));
 }

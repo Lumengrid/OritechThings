@@ -23,6 +23,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         for (DeferredBlock<?> data : Constants.getAllAddons()) {
             addonBlockState(data);
         }
+        
         simpleBlockState(ModBlocks.ACCELERATOR_SPEED_SENSOR);
         blockwithparentModel(ModBlocks.INFESTED_AMETHYST_BLOCK,"block/amethyst_block");
     }

@@ -4,6 +4,7 @@ import com.lumengrid.oritechthings.main.ModDataComponents;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.main.ConfigLoader;
 import com.lumengrid.oritechthings.api.CrossDimensionalDrone;
+import com.lumengrid.oritechthings.block.ModBlocks;
 import dev.architectury.fluid.FluidStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -34,6 +35,7 @@ import rearth.oritech.block.entity.MachineCoreEntity;
 import rearth.oritech.block.entity.interaction.DronePortEntity;
 import rearth.oritech.api.energy.containers.DynamicEnergyStorage;
 import rearth.oritech.init.ComponentContent;
+import rearth.oritech.util.MachineAddonController;
 
 import java.util.Objects;
 
@@ -57,6 +59,9 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
     @Unique
     private ResourceKey<Level> targetDimension = null;
 
+    @Unique
+    private boolean hasCrossDimensionalAddon = false;
+
     /**
      * Public method to set cross-dimensional target from AdvancedTargetDesignator
      */
@@ -67,6 +72,10 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
             assert self.getLevel() != null;
             boolean isCrossDimensional = !targetDimension.equals(self.getLevel().dimension());
             if (isCrossDimensional) {
+                if (!hasCrossDimensionalAddon) {
+                    statusMessage = "message.oritechthings.drone.addon_required";
+                    return false;
+                }
                 return setCrossDimensionalTarget(targetPos, targetDimension);
             }
         }
@@ -114,6 +123,9 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
      */
     private boolean isCrossDimensional() {
         if (!ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
+            return false;
+        }
+        if (!hasCrossDimensionalAddon) {
             return false;
         }
         DronePortEntity self = (DronePortEntity) (Object) this;
@@ -193,6 +205,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
         if (targetDimension != null) {
             nbt.putString("target_dimension", targetDimension.location().toString());
         }
+        nbt.putBoolean("has_cross_dimensional_addon", hasCrossDimensionalAddon);
     }
     
     /**
@@ -210,6 +223,25 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
                 targetDimension = null;
             }
         }
+        hasCrossDimensionalAddon = nbt.getBoolean("has_cross_dimensional_addon");
+    }
+    
+    /**
+     * Inject into getAdditionalStatFromAddon to detect cross-dimensional addon
+     */
+    @Inject(method = "getAdditionalStatFromAddon", at = @At("TAIL"))
+    private void getAdditionalStatFromAddon(MachineAddonController.AddonBlock addonBlock, CallbackInfo ci) {
+        if (addonBlock.state().getBlock().equals(ModBlocks.ADDON_BLOCK_CROSS_DIMENSIONAL.get())) {
+            hasCrossDimensionalAddon = true;
+        }
+    }
+    
+    /**
+     * Inject into resetAddons to reset cross-dimensional addon state
+     */
+    @Inject(method = "resetAddons", at = @At("TAIL"))
+    private void resetAddons(CallbackInfo ci) {
+        hasCrossDimensionalAddon = false;
     }
 
     @Unique

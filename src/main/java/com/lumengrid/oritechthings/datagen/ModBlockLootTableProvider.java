@@ -3,7 +3,6 @@ package com.lumengrid.oritechthings.datagen;
 import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.util.Constants;
 
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
@@ -43,6 +42,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         for (DeferredBlock<?> data : Constants.getAllAddons()) {
             dropSelf(data.get());
         }
+        
         dropSelf(ModBlocks.ACCELERATOR_SPEED_SENSOR.get());
         dropOther(ModBlocks.INFESTED_AMETHYST_BLOCK.get(), Blocks.AMETHYST_BLOCK.asItem());
     }
