@@ -147,6 +147,8 @@ dependencies {
     implementation "curse.maven:supermarticonfig-438332:5546996"
     implementation "curse.maven:supermarticore-454372:6076757"
     implementation "curse.maven:chunkloaders-402924:5550217"
+    implementation "curse.maven:shetiphiancore-71738:6978276"
+    implementation "curse.maven:enderchest-363535:6913788"
 
     implementation "curse.maven:jei-238222:5846880"
 }
