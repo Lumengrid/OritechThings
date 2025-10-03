@@ -9,6 +9,7 @@ import dev.architectury.fluid.FluidStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
@@ -19,7 +20,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.SimpleContainer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -38,6 +41,8 @@ import rearth.oritech.init.ComponentContent;
 import rearth.oritech.util.MachineAddonController;
 
 import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Mixin that adds cross-dimensional functionality to DronePortEntity
@@ -52,8 +57,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
     @Shadow private DronePortEntity.DroneTransferData incomingPacket;
     @Shadow private String statusMessage;
     @Shadow protected SimpleContainer cardInventory;
-    
-    // Add shadow for energyStorage to access it
+
     @Shadow @Final protected DynamicEnergyStorage energyStorage;
 
     @Unique
@@ -321,77 +325,78 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
     
     /**
      * Create special particle effects for cross-dimensional transfers
+     * @param dronePort The drone port entity
+     * @param isArrival true for arrival effects, false for departure effects
      */
     @Unique
-    private void triggerCrossDimensionalEffects(DronePortEntity self) {
-        if (!(self.getLevel() instanceof ServerLevel serverLevel)) return;
+    private void triggerCrossDimensionalEffects(DronePortEntity dronePort, boolean isArrival) {
+        if (!(dronePort.getLevel() instanceof ServerLevel serverLevel)) return;
         
-        BlockPos pos = self.getBlockPos();
-
-        double x = pos.getX() + 0.5;
-        double y = pos.getY() + 0.5;
-        double z = pos.getZ() + 0.5;
+        // Calculate the center of the multiblock structure
+        BlockPos centerPos = calculateMultiblockCenter(dronePort);
         
-        for (int i = 0; i < 200; i++) {
+        double x = centerPos.getX() + 0.5;
+        double y = centerPos.getY() + 0.5;
+        double z = centerPos.getZ() + 0.5;
+        
+        for (int i = 0; i < 100; i++) {
             double angle = (i * 0.15) + (serverLevel.getGameTime() * 0.1);
             double radius = 1.5 + Math.sin(i * 0.08) * 1.0;
             double offsetY = Math.sin(i * 0.2) * 2.0;
             
             double offsetX = Math.cos(angle) * radius;
             double offsetZ = Math.sin(angle) * radius;
-
+ 
             serverLevel.sendParticles(ParticleTypes.PORTAL,
                 x + offsetX, y + offsetY, z + offsetZ,
-                4, 0.1, 0.1, 0.1, 0.3);
+                2, 0.1, 0.1, 0.1, 0.3);
         }
-
-        for (int i = 0; i < 120; i++) {
+ 
+        for (int i = 0; i < 60; i++) {
             double angle = -(i * 0.3) + (serverLevel.getGameTime() * 0.15);
             double radius = 0.8 + Math.cos(i * 0.12) * 0.4;
             double offsetY = Math.cos(i * 0.15) * 1.5;
             
             double offsetX = Math.cos(angle) * radius;
             double offsetZ = Math.sin(angle) * radius;
-
+ 
             serverLevel.sendParticles(ParticleTypes.PORTAL,
                 x + offsetX, y + offsetY, z + offsetZ,
-                3, 0.05, 0.05, 0.05, 0.4);
+                1, 0.05, 0.05, 0.05, 0.4);
         }
-
-        for (int i = 0; i < 80; i++) {
+ 
+        for (int i = 0; i < 40; i++) {
             double angle = Math.random() * Math.PI * 2;
             double radius = 0.5 + Math.random() * 2.0;
             double offsetX = Math.cos(angle) * radius;
             double offsetZ = Math.sin(angle) * radius;
             double offsetY = Math.random() * 2.5;
-
-            // End portal eye particles
+ 
             serverLevel.sendParticles(ParticleTypes.END_ROD,
                 x + offsetX, y + offsetY, z + offsetZ,
-                2, 0.05, 0.05, 0.05, 0.1);
-
+                1, 0.05, 0.05, 0.05, 0.1);
+ 
             serverLevel.sendParticles(ParticleTypes.REVERSE_PORTAL,
                 x + offsetX, y + offsetY, z + offsetZ,
                 1, 0.1, 0.1, 0.1, 0.2);
         }
-
-        for (int i = 0; i < 60; i++) {
-            double offsetX = (Math.random() - 0.5) * 3.0; // Wider spread for 3x3
+ 
+        for (int i = 0; i < 30; i++) {
+            double offsetX = (Math.random() - 0.5) * 3.0;
             double offsetZ = (Math.random() - 0.5) * 3.0;
             double offsetY = Math.random() * 3.0;
             
             serverLevel.sendParticles(ParticleTypes.WARPED_SPORE,
                 x + offsetX, y + offsetY, z + offsetZ,
-                2, 0.1, 0.1, 0.1, 0.05);
+                1, 0.1, 0.1, 0.1, 0.05);
             
             serverLevel.sendParticles(ParticleTypes.CRIMSON_SPORE,
                 x + offsetX, y + offsetY, z + offsetZ,
-                2, 0.1, 0.1, 0.1, 0.05);
+                1, 0.1, 0.1, 0.1, 0.05);
         }
         
-        // Add soul fire effect for mystical appearance
-        for (int i = 0; i < 40; i++) {
-            double offsetX = (Math.random() - 0.5) * 4.0; // Wider for 3x3
+        for (int i = 0; i < 20; i++) {
+            double offsetX = (Math.random() - 0.5) * 4.0;
             double offsetZ = (Math.random() - 0.5) * 4.0;
             double offsetY = Math.random() * 3.0;
 
@@ -399,12 +404,54 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
                 x + offsetX, y + offsetY, z + offsetZ,
                 1, 0.02, 0.02, 0.02, 0.02);
         }
+
+        if (isArrival) {
+            serverLevel.playSound(null, centerPos, SoundEvents.PORTAL_TRAVEL, SoundSource.BLOCKS, 1.2f, 1.0f);
+            serverLevel.playSound(null, centerPos, SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.BLOCKS, 1.0f, 1.2f);
+            serverLevel.playSound(null, centerPos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.8f, 0.8f);
+            serverLevel.playSound(null, centerPos, SoundEvents.END_PORTAL_SPAWN, SoundSource.BLOCKS, 0.6f, 1.8f);
+            
+            OritechThings.LOGGER.info("Cross-dimensional arrival effects triggered at {} in dimension {}", 
+                    centerPos, serverLevel.dimension().location());
+        } else {
+            serverLevel.playSound(null, centerPos, SoundEvents.PORTAL_TRAVEL, SoundSource.BLOCKS, 1.5f, 0.7f);
+            serverLevel.playSound(null, centerPos, SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.BLOCKS, 1.2f, 0.8f);
+            serverLevel.playSound(null, centerPos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 1.0f, 1.2f);
+            serverLevel.playSound(null, centerPos, SoundEvents.END_PORTAL_SPAWN, SoundSource.BLOCKS, 0.8f, 1.5f);
+        }
+    }
+    
+    @Unique
+    private BlockPos calculateMultiblockCenter(DronePortEntity dronePort) {
+        BlockPos controllerPos = dronePort.getBlockPos();
+        Direction facing = dronePort.getFacingForMultiblock();
+        return controllerPos.relative(facing);
+    }
+    
+    /**
+     * Inject into checkIncomingAnimation to prevent normal landing animation for cross-dimensional transfers
+     */
+    @Inject(method = "checkIncomingAnimation", at = @At("HEAD"), cancellable = true)
+    private void checkIncomingAnimation(CallbackInfo ci) {
+        DronePortEntity self = (DronePortEntity) (Object) this;
         
-        // Play multiple layered sound effects for dramatic impact
-        serverLevel.playSound(null, pos, SoundEvents.PORTAL_TRAVEL, SoundSource.BLOCKS, 1.5f, 0.7f);
-        serverLevel.playSound(null, pos, SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.BLOCKS, 1.2f, 0.8f);
-        serverLevel.playSound(null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 1.0f, 1.2f);
-        serverLevel.playSound(null, pos, SoundEvents.END_PORTAL_SPAWN, SoundSource.BLOCKS, 0.8f, 1.5f);
+        if (incomingPacket != null && isCrossDimensionalPacket()) {
+            ci.cancel();
+        }
+    }
+    
+    @Unique
+    private boolean isCrossDimensionalPacket() {
+        if (incomingPacket == null) return false;
+        
+        DronePortEntity self = (DronePortEntity) (Object) this;
+        long expectedNormalTime = takeOffTime + landTime;
+        long expectedCrossDimensionalTime = landTime;
+        long currentTime = self.getLevel().getGameTime();
+        long timeSinceSent = currentTime - (incomingPacket.arrivesAt() - expectedNormalTime);
+        long timeSinceCrossDimensional = currentTime - (incomingPacket.arrivesAt() - expectedCrossDimensionalTime);
+
+        return Math.abs(timeSinceCrossDimensional) < Math.abs(timeSinceSent);
     }
     
     @Unique
@@ -430,7 +477,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
             return false;
         }
 
-        long arriveTime = targetLevel.getGameTime() + landTime; // since we just teleport the time to arrive should be really short
+        long arriveTime = targetLevel.getGameTime() + 20; // since we just teleport the time to arrive should be really short
         var data = new DronePortEntity.DroneTransferData(self.inventory.getHeldStacks().stream().filter(stack -> !stack.isEmpty()).toList(), self.fluidStorage.getStack(), arriveTime);
         targetPort.setIncomingPacket(data);
         self.inventory.clearContent();
@@ -438,7 +485,9 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
         lastSentAt = self.getLevel().getGameTime();
         energyStorage.amount -= calculateCrossDimensionalEnergyUsage();
 
-        triggerCrossDimensionalEffects(self);
+        triggerCrossDimensionalEffects(self, false);
+        scheduleCrossDimensionalArrival(targetPort, targetLevel, 20);
+        
         targetPort.setChanged();
         self.setChanged();
 
@@ -447,5 +496,17 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
                 arriveTime - self.getLevel().getGameTime());
         
         return true;
+    }
+    
+    @Unique
+    private void scheduleCrossDimensionalArrival(DronePortEntity targetPort, Level targetLevel, int delayTicks) {
+        if (targetLevel instanceof ServerLevel serverLevel) {
+            serverLevel.getServer().tell(new net.minecraft.server.TickTask(
+                serverLevel.getServer().getTickCount() + delayTicks,
+                () -> {
+                    triggerCrossDimensionalEffects(targetPort, true);
+                }
+            ));
+        }
     }
 }
