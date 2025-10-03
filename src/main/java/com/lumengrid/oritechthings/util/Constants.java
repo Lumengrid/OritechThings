@@ -69,8 +69,12 @@ public class Constants {
             ModBlocks.ADDON_BLOCK_PROCESSING_TIER_9,
     };
 
+    public static DeferredBlock<?>[] CROSS_DIMENSIONAL = {
+            ModBlocks.ADDON_BLOCK_CROSS_DIMENSIONAL
+    };
+
     public static int size = SPEED.length + EFFICIENCY.length + EFFICIENT.length + CAPACITOR.length + ACCEPTOR.length
-            + PROCESSING.length;
+            + PROCESSING.length + CROSS_DIMENSIONAL.length;
 
     public static DeferredBlock<?>[] getAllAddons() {
         DeferredBlock<?>[] result = new DeferredBlock<?>[size];
@@ -83,6 +87,9 @@ public class Constants {
         System.arraycopy(PROCESSING, 0, result,
                 SPEED.length + EFFICIENCY.length + EFFICIENT.length + CAPACITOR.length + ACCEPTOR.length,
                 PROCESSING.length);
+        System.arraycopy(CROSS_DIMENSIONAL, 0, result,
+                SPEED.length + EFFICIENCY.length + EFFICIENT.length + CAPACITOR.length + ACCEPTOR.length + PROCESSING.length,
+                CROSS_DIMENSIONAL.length);
         return result;
     }
 
@@ -92,7 +99,8 @@ public class Constants {
         EFFICIENT_SPEED("efficient_speed"),
         PROCESSING("processing"),
         ACCEPTOR("acceptor"),
-        CAPACITOR("capacitor");
+        CAPACITOR("capacitor"),
+        CROSS_DIMENSIONAL("cross_dimensional");
 
         private final String name;
 

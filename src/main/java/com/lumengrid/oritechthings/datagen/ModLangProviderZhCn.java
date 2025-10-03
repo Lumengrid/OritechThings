@@ -27,8 +27,6 @@ public class ModLangProviderZhCn extends LanguageProvider {
         add("tooltip."+MOD_ID+".tier_addon", "等级 ");
         add("tooltip."+MOD_ID+".state.on", "开启");
         add("tooltip."+MOD_ID+".state.off", "关闭");
-        
-        
 
         //generic blocks
         ModBlocks.OTHER.getEntries().forEach(e -> addBlock(e,
@@ -88,6 +86,8 @@ public class ModLangProviderZhCn extends LanguageProvider {
         add("message." + MOD_ID + ".drone.server_unavailable", "§c⚠ 服务器不可用于跨维度传输 ⚠");
         add("message." + MOD_ID + ".drone.dimension_unavailable", "§c⚠ 目标维度不可用 ⚠");
         add("message." + MOD_ID + ".drone.cross_dimensional_target_set", "跨维度目标端口已设置。\n当库存不为空时，无人机将跨维度传送物品。");
+        add("message." + MOD_ID + ".drone.addon_required", "§c⚠ 跨维度传输需要跨维度插件 ⚠");
+        add("tooltip." + MOD_ID + ".addon_block_cross_dimensional", "附加到无人机端口以启用跨维度传输。\n允许无人机在维度之间旅行。");
     }
 
 }
