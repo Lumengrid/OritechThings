@@ -20,9 +20,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.SimpleContainer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,8 +39,6 @@ import rearth.oritech.init.ComponentContent;
 import rearth.oritech.util.MachineAddonController;
 
 import java.util.Objects;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Mixin that adds cross-dimensional functionality to DronePortEntity
@@ -81,7 +77,6 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
         boolean isCrossDimensional = !targetDimension.equals(self.getLevel().dimension());
         
         if (isCrossDimensional) {
-            // Validate addon state before allowing cross-dimensional target setting
             validateCrossDimensionalAddonState();
             
             if (!hasCrossDimensionalAddon) {
@@ -93,7 +88,6 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
             
             return setCrossDimensionalTarget(targetPos, targetDimension);
         } else {
-            // Same dimension - use normal logic
             return self.setTargetFromDesignator(targetPos);
         }
     }
@@ -141,8 +135,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
         if (!ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
             return false;
         }
-        
-        // Periodic validation of addon state to catch removals during gameplay
+
         DronePortEntity self = (DronePortEntity) (Object) this;
         if (self.getLevel() != null && self.getLevel().getGameTime() % 20 == 0) {
             validateCrossDimensionalAddonState();
@@ -160,8 +153,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
     private void validateCrossDimensionalAddonState() {
         DronePortEntity self = (DronePortEntity) (Object) this;
         boolean foundCrossDimensionalAddon = false;
-        
-        // Check all connected addons to see if cross-dimensional addon is still present
+
         for (BlockPos addonPos : self.getConnectedAddons()) {
             if (self.getLevel() != null) {
                 var blockState = self.getLevel().getBlockState(addonPos);
@@ -171,8 +163,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
                 }
             }
         }
-        
-        // Update state if it has changed
+
         if (hasCrossDimensionalAddon != foundCrossDimensionalAddon) {
             hasCrossDimensionalAddon = foundCrossDimensionalAddon;
             OritechThings.LOGGER.debug("Cross-dimensional addon state changed to: {} at {}", 
@@ -309,11 +300,9 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
      */
     @Inject(method = "initAddons", at = @At("TAIL"))
     private void initAddons(CallbackInfo ci) {
-        // Force a re-check of all addons to ensure hasCrossDimensionalAddon is accurate
         DronePortEntity self = (DronePortEntity) (Object) this;
         boolean foundCrossDimensionalAddon = false;
-        
-        // Check all connected addons to see if cross-dimensional addon is present
+
         for (BlockPos addonPos : self.getConnectedAddons()) {
             if (self.getLevel() != null) {
                 var blockState = self.getLevel().getBlockState(addonPos);
@@ -325,17 +314,12 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
         }
         
         hasCrossDimensionalAddon = foundCrossDimensionalAddon;
-        OritechThings.LOGGER.debug("Cross-dimensional addon state updated: {} at {}", 
-                hasCrossDimensionalAddon, self.getBlockPos());
     }
 
     @Unique
     private boolean setCrossDimensionalTarget(BlockPos targetPos, ResourceKey<Level> targetDimension) {
         DronePortEntity self = (DronePortEntity) (Object) this;
-
-        // Validate addon state before proceeding with cross-dimensional target setting
         validateCrossDimensionalAddonState();
-        
         if (!hasCrossDimensionalAddon) {
             statusMessage = "message.oritechthings.drone.addon_required";
             OritechThings.LOGGER.warn("Attempted to set cross-dimensional target without addon at drone port {}", 
@@ -409,8 +393,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
     @Unique
     private void triggerCrossDimensionalEffects(DronePortEntity dronePort, boolean isArrival) {
         if (!(dronePort.getLevel() instanceof ServerLevel serverLevel)) return;
-        
-        // Calculate the center of the multiblock structure
+
         BlockPos centerPos = calculateMultiblockCenter(dronePort);
         
         double x = centerPos.getX() + 0.5;
