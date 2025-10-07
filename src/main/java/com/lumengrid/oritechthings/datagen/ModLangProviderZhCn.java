@@ -95,6 +95,10 @@ public class ModLangProviderZhCn extends LanguageProvider {
         add("tooltip." + MOD_ID + ".advanced_target_designator.laser_arm", "§9• 末影激光器");
         add("tooltip." + MOD_ID + ".advanced_target_designator.cross_dimensional", "§6⚡ 只有无人机端口支持跨维度传输");
         add("tooltip." + MOD_ID + ".addon_block_cross_dimensional", "附加到无人机端口以启用跨维度传输。\n允许无人机在维度之间旅行。");
+        
+        // Accelerator Motor tooltips
+        add("tooltip." + MOD_ID + ".accelerator_motor.addon_info", "§6⚡ 支持插件");
+        add("tooltip." + MOD_ID + ".accelerator_motor.addon_placement", "§7在下方放置速度或效率插件以提升性能");
     }
 
 }

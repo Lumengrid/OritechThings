@@ -27,6 +27,7 @@ public class ModLangProvider extends LanguageProvider {
         add("tooltip."+MOD_ID+".tier_addon", "Tier ");
         add("tooltip."+MOD_ID+".state.on", "ON");
         add("tooltip."+MOD_ID+".state.off", "OFF");
+        
 
         //generic blocks
         ModBlocks.OTHER.getEntries().forEach(e -> addBlock(e,
@@ -95,6 +96,10 @@ public class ModLangProvider extends LanguageProvider {
         add("tooltip." + MOD_ID + ".advanced_target_designator.laser_arm", "§9• Enderic Laser");
         add("tooltip." + MOD_ID + ".advanced_target_designator.cross_dimensional", "§6⚡ Only Drone Ports support cross-dimensional transfers");
         add("tooltip." + MOD_ID + ".addon_block_cross_dimensional", "Attach to a Drone Port to enable cross-dimensional transfers.\nAllows drones to travel between dimensions.");
+        
+        // Accelerator Motor tooltips
+        add("tooltip." + MOD_ID + ".accelerator_motor.addon_info", "§6⚡ Addon Compatible");
+        add("tooltip." + MOD_ID + ".accelerator_motor.addon_placement", "§7Place Speed or Efficiency addons underneath to enhance performance");
     }
 
 }
