@@ -4,6 +4,10 @@
   "package": "com.lumengrid.oritechthings.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "AcceleratorMotorInteractionMixin",
+    "AcceleratorMotorTooltipMixin",
+    "AcceleratorMotorBlockMixin",
+    "MachineAddonBlockMixin",
     "DronePortEntityMixin"
   ],
   "client": [],

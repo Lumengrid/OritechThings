@@ -96,6 +96,10 @@ public class ModLangProviderRuRu extends LanguageProvider {
         add("tooltip." + MOD_ID + ".advanced_target_designator.laser_arm", "§9• Эндерический Лазер");
         add("tooltip." + MOD_ID + ".advanced_target_designator.cross_dimensional", "§6⚡ Только Порты Дронов поддерживают межмерные переносы");
         add("tooltip." + MOD_ID + ".addon_block_cross_dimensional", "Прикрепите к порту дрона для включения межмерных переносов.\nПозволяет дронам путешествовать между измерениями.");
+        
+        // Accelerator Motor tooltips
+        add("tooltip." + MOD_ID + ".accelerator_motor.addon_info", "§6⚡ Совместим с дополнениями");
+        add("tooltip." + MOD_ID + ".accelerator_motor.addon_placement", "§7Разместите дополнения скорости или эффективности снизу для улучшения производительности");
     }
 
 }
