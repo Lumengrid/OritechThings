@@ -31,6 +31,11 @@ public static final Supplier<BlockEntityType<AcceleratorSpeedSensorBlockEntity>>
                     () -> BlockEntityType.Builder.of(AcceleratorSpeedSensorBlockEntity::new,
                             ModBlocks.ACCELERATOR_SPEED_SENSOR.get()).build(null));
 
+    public static final Supplier<BlockEntityType<com.lumengrid.oritechthings.entity.custom.AcceleratorMagneticFieldBlockEntity>> ACCELERATOR_MAGNETIC_FIELD_BLOCK_ENTITY =
+            MOD_BLOCK_ENTITIES.register("accelerator_magnetic_field_block_entity",
+                    () -> BlockEntityType.Builder.of(com.lumengrid.oritechthings.entity.custom.AcceleratorMagneticFieldBlockEntity::new,
+                            ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get()).build(null));
+
     public static final Supplier<EntityType<AmethystFishEntity>> AMETHYST_FISH =
             MOD_MOB_ENTITIES.register("amethyst_fish", () -> EntityType.Builder.of(AmethystFishEntity::new, MobCategory.MONSTER)
                     .sized(0.75f, 0.35f).build("amethyst_fish"));

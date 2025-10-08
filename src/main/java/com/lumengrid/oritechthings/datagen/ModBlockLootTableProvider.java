@@ -44,6 +44,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         }
         
         dropSelf(ModBlocks.ACCELERATOR_SPEED_SENSOR.get());
+        dropSelf(ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get());
         dropOther(ModBlocks.INFESTED_AMETHYST_BLOCK.get(), Blocks.AMETHYST_BLOCK.asItem());
     }
 

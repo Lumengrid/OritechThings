@@ -1,6 +1,7 @@
 package com.lumengrid.oritechthings.item.custom;
 
 import com.lumengrid.oritechthings.block.ModBlocks;
+import com.lumengrid.oritechthings.entity.custom.AcceleratorMagneticFieldBlockEntity;
 import com.lumengrid.oritechthings.entity.custom.AcceleratorSpeedSensorBlockEntity;
 import com.lumengrid.oritechthings.main.ConfigLoader;
 import com.lumengrid.oritechthings.main.ModDataComponents;
@@ -80,6 +81,22 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
                 return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
             }
         }
+        if (clickedBlockState.getBlock().equals(ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get())) {
+            if (clickedEntity instanceof com.lumengrid.oritechthings.entity.custom.AcceleratorMagneticFieldBlockEntity) {
+                return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
+            }
+        }
+        // Check if clicking on a particle accelerator controller
+        if (clickedBlockState.getBlock().equals(BlockContent.ACCELERATOR_CONTROLLER)) {
+            if (clickedEntity instanceof rearth.oritech.block.entity.accelerator.AcceleratorControllerBlockEntity) {
+                // Save the accelerator position in the designator
+                itemInHand.set(ComponentContent.TARGET_POSITION.get(), context.getClickedPos());
+                itemInHand.set(ModDataComponents.TARGET_DIMENSION.get(), level.dimension());
+                Objects.requireNonNull(player).sendSystemMessage(Component.translatable("message.oritechthings.advanced_target_designator.accelerator_saved")
+                        .append(Component.literal(context.getClickedPos().toShortString()).withStyle(ChatFormatting.BLUE)));
+                return InteractionResult.SUCCESS;
+            }
+        }
         if (!clickedBlockState.getBlock().equals(Blocks.AIR)) {
             itemInHand.set(ComponentContent.TARGET_POSITION.get(), context.getClickedPos());
             itemInHand.set(ModDataComponents.TARGET_DIMENSION.get(), level.dimension());
@@ -95,22 +112,26 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
             var crossDimensionalDrone = (CrossDimensionalDrone) dronePortEntity;
             success = crossDimensionalDrone.oritechthings$setCrossDimensionalTarget(targetPos, targetDimension);
         } else {
+            // Check for cross-dimensional targets
             if (targetDimension != actualDimension) {
                 Objects.requireNonNull(player).sendSystemMessage(Component.translatable("message.oritechthings.advanced_target_designator.different_dimension"));
                 return InteractionResult.FAIL;
-            }
-            switch (entity) {
-                case LaserArmBlockEntity laserEntity -> {
-                    if (laserEntity.hunterAddons > 0) {
-                        laserEntity.cycleHunterTargetMode();
-                        player.sendSystemMessage(Component.translatable("message.oritech.target_designator.hunter_target",
-                                Component.translatable(laserEntity.hunterTargetMode.message)));
-                        return InteractionResult.SUCCESS;
+            } else {
+                // Same dimension - proceed normally
+                switch (entity) {
+                    case LaserArmBlockEntity laserEntity -> {
+                        if (laserEntity.hunterAddons > 0) {
+                            laserEntity.cycleHunterTargetMode();
+                            player.sendSystemMessage(Component.translatable("message.oritech.target_designator.hunter_target",
+                                    Component.translatable(laserEntity.hunterTargetMode.message)));
+                            return InteractionResult.SUCCESS;
+                        }
+                        success = laserEntity.setTargetFromDesignator(targetPos);
                     }
-                    success = laserEntity.setTargetFromDesignator(targetPos);
-                }
-                case AcceleratorSpeedSensorBlockEntity speedSensorEntity -> success = speedSensorEntity.setTargetDesignator(targetPos, player);
-                default -> {
+                    case AcceleratorSpeedSensorBlockEntity speedSensorEntity -> success = speedSensorEntity.setTargetDesignator(targetPos, player);
+                    case AcceleratorMagneticFieldBlockEntity magneticFieldEntity -> success = magneticFieldEntity.setTargetDesignator(targetPos, player);
+                    default -> {
+                    }
                 }
             }
         }
