@@ -33,6 +33,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(ModTags.Blocks.ADDONS);
 
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ACCELERATOR_SPEED_SENSOR.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get());
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.INFESTED_AMETHYST_BLOCK.get());
 
         for(DeferredBlock<?> data: Constants.EFFICIENCY){
@@ -60,6 +61,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
         }
 
         tag(ModTags.Blocks.PARTICLE_ACCELERATOR).add(ModBlocks.ACCELERATOR_SPEED_SENSOR.get());
+        tag(ModTags.Blocks.PARTICLE_ACCELERATOR).add(ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get());
 
 
     }

@@ -42,6 +42,9 @@ public class ConfigLoader {
     @Expose
     public DimensionalDrone dimensionalDroneSettings = new DimensionalDrone(true, 10000);
 
+    @Expose
+    public ParticleAccelerator particleAcceleratorSettings = new ParticleAccelerator(0.85f);
+
     public void load() {
         Gson gson = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation()
@@ -104,6 +107,12 @@ public class ConfigLoader {
     public record DimensionalDrone(
             @Expose boolean enabled,
             @Expose int energyToCross
+    ) {
+
+    }
+
+    public record ParticleAccelerator(
+            @Expose float acceleratorSizeReductionPercentage
     ) {
 
     }

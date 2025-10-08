@@ -55,6 +55,27 @@ public class ModLangProvider extends LanguageProvider {
                 "⚠ Target Particle Accelerator too far - Max distance 128 blocks ⚠");
         add("gui."+AspeedSensor+".speed_input","Speed Input" );
 
+        //particle accelerator magnetic field
+
+        var AMagneticField = MOD_ID + "." + DataGenUtil.getName(ModBlocks.ACCELERATOR_MAGNETIC_FIELD);
+        
+        add("tooltip." + AMagneticField, "Magnetic Field Stabilizer");
+        add("tooltip." + AMagneticField + "_desc", "Provides magnetic field stabilization for particle accelerators. Reduces required bend distance and prevents particle loss. Requires energy and must be placed within the accelerator ring. Only one magnetic field per accelerator is allowed.");
+        add("tooltip." + MOD_ID + ".item_extra_info", "Hold CTRL for more information");
+        
+        // Advanced Target Designator usage for Magnetic Field Block
+        add("tooltip." + AMagneticField + ".target_designator_usage", "§7Advanced Target Designator Usage:");
+        add("tooltip." + AMagneticField + ".target_designator_step1", "§91. Right-click with Advanced Target Designator to store position");
+        add("tooltip." + AMagneticField + ".target_designator_step2", "§92. Place Magnetic Field Block within particle accelerator ring");
+        add("tooltip." + AMagneticField + ".target_designator_step3", "§93. Right-click Magnetic Field Block to link to stored position");
+        add("tooltip." + AMagneticField + ".target_designator_benefit", "§6⚡ Allows precise placement and automatic linking to accelerators");
+        
+        // Magnetic field block messages
+        add("block.oritechthings.accelerator_magnetic_field.invalid_controller", "Invalid accelerator controller! Must target a particle accelerator controller.");
+        add("block.oritechthings.accelerator_magnetic_field.outside_area", "Magnetic field must be placed within the particle accelerator area at the same Y level!");
+        add("block.oritechthings.accelerator_magnetic_field.error", "Failed to link magnetic field to accelerator controller.");
+        add("block.oritechthings.accelerator_magnetic_field.controller_set", "Magnetic field linked to accelerator controller at ");
+
         // frame placer
 
         var FramePlacer = MOD_ID + "." + DataGenUtil.getName(ModItems.FRAME_PLACER);
@@ -79,6 +100,7 @@ public class ModLangProvider extends LanguageProvider {
 
         add("message." + TargetDesignator + ".position_invalid", "⚠ Invalid position ⚠");
         add("message." + TargetDesignator + ".different_dimension", "⚠ Different Dimension ⚠");
+        add("message." + TargetDesignator + ".accelerator_saved", "Particle Accelerator saved at ");
 
         add("tooltip." + MOD_ID + ".accelerator_target_designator",
                 "Usable to store the position of a Particle Accelerator");

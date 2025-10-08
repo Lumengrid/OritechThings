@@ -100,6 +100,9 @@ public class ModBlocks {
     public static final DeferredBlock<Block> ACCELERATOR_SPEED_SENSOR = registerBlock(
             "particle_accelerator_speed_sensor", AcceleratorSpeedSensorBlock::new);
 
+    public static final DeferredBlock<Block> ACCELERATOR_MAGNETIC_FIELD = registerBlock(
+            "accelerator_magnetic_field", com.lumengrid.oritechthings.block.custom.AcceleratorMagneticFieldBlock::new);
+
     public static final DeferredBlock<Block> INFESTED_AMETHYST_BLOCK = registerBlock(
             "infested_amethyst_block", () -> new InfestedAmethystBlock(Blocks.AMETHYST_BLOCK,
                     BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).strength(1.5F).sound(SoundType.AMETHYST))

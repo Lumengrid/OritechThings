@@ -54,6 +54,27 @@ public class ModLangProviderRuRu extends LanguageProvider {
                 "⚠ Целевой ускоритель частиц слишком далеко — макс. дистанция 128 блоков ⚠");
         add("gui."+AspeedSensor+".speed_input","Вход скорости" );
 
+        //particle accelerator magnetic field
+
+        var AMagneticField = MOD_ID + "." + DataGenUtil.getName(ModBlocks.ACCELERATOR_MAGNETIC_FIELD);
+        
+        add("tooltip." + AMagneticField, "Стабилизатор магнитного поля");
+        add("tooltip." + AMagneticField + "_desc", "Обеспечивает стабилизацию магнитного поля для ускорителей частиц. Уменьшает требуемое расстояние изгиба и предотвращает потерю частиц. Требует энергии и должен быть размещён внутри кольца ускорителя. Разрешено только одно магнитное поле на ускоритель.");
+        add("tooltip." + MOD_ID + ".item_extra_info", "Удерживайте CTRL для получения дополнительной информации");
+        
+        // Advanced Target Designator usage for Magnetic Field Block
+        add("tooltip." + AMagneticField + ".target_designator_usage", "§7Использование Продвинутого Целеуказателя:");
+        add("tooltip." + AMagneticField + ".target_designator_step1", "§91. ПКМ с Продвинутым Целеуказателем для сохранения позиции");
+        add("tooltip." + AMagneticField + ".target_designator_step2", "§92. Разместите Блок Магнитного Поля внутри кольца ускорителя частиц");
+        add("tooltip." + AMagneticField + ".target_designator_step3", "§93. ПКМ по Блоку Магнитного Поля для связи с сохранённой позицией");
+        add("tooltip." + AMagneticField + ".target_designator_benefit", "§6⚡ Позволяет точное размещение и автоматическую связь с ускорителями");
+        
+        // Magnetic field block messages
+        add("block.oritechthings.accelerator_magnetic_field.invalid_controller", "Неверный контроллер ускорителя! Должен указывать на контроллер ускорителя частиц.");
+        add("block.oritechthings.accelerator_magnetic_field.outside_area", "Магнитное поле должно быть размещено в области ускорителя частиц на том же уровне Y!");
+        add("block.oritechthings.accelerator_magnetic_field.error", "Не удалось связать магнитное поле с контроллером ускорителя.");
+        add("block.oritechthings.accelerator_magnetic_field.controller_set", "Магнитное поле связано с контроллером ускорителя в ");
+
         // frame placer
 
         var FramePlacer = MOD_ID + "." + DataGenUtil.getName(ModItems.FRAME_PLACER);
@@ -78,6 +99,7 @@ public class ModLangProviderRuRu extends LanguageProvider {
 
         add("message." + TargetDesignator + ".position_invalid", "⚠ Недопустимое положение ⚠");
         add("message." + TargetDesignator + ".different_dimension", "⚠ Другая размерность ⚠");
+        add("message." + TargetDesignator + ".accelerator_saved", "Ускоритель частиц сохранён в ");
 
         // (?) deprecated (?)
         add("tooltip." + MOD_ID + ".accelerator_target_designator",
