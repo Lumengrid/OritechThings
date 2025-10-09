@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class AcceleratorMagneticFieldBlockEntity extends ExpandableEnergyStorageBlockEntity implements ComparatorOutputProvider {
-    public static final long BASE_ENERGY_CAPACITY = 10000;
-    public static final long BASE_ENERGY_INSERTION = 1000;
+    public static final long BASE_ENERGY_CAPACITY = 1000000;
+    public static final long BASE_ENERGY_INSERTION = 10000;
     public static final long BASE_ENERGY_EXTRACTION = 0;
     
     public AcceleratorMagneticFieldBlockEntity(BlockPos pos, BlockState state) {

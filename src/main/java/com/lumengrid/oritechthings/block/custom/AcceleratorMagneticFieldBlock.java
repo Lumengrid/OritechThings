@@ -60,38 +60,38 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
     
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+    public BlockState getStateForPlacement(@NotNull BlockPlaceContext ctx) {
         return Objects.requireNonNull(super.getStateForPlacement(ctx)).setValue(TARGET_DIR, ctx.getNearestLookingDirection().getOpposite());
     }
     
     @Override
-    public RenderShape getRenderShape(BlockState state) {
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
         return RenderShape.MODEL;
     }
     
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new AcceleratorMagneticFieldBlockEntity(pos, state);
     }
     
     @Override
-    protected boolean hasAnalogOutputSignal(BlockState state) {
+    protected boolean hasAnalogOutputSignal(@NotNull BlockState state) {
         return true;
     }
     
     @Override
-    protected int getAnalogOutputSignal(BlockState state, Level world, BlockPos pos) {
-        return ((ComparatorOutputProvider) world.getBlockEntity(pos)).getComparatorOutput();
+    protected int getAnalogOutputSignal(@NotNull BlockState state, Level world, @NotNull BlockPos pos) {
+        return ((ComparatorOutputProvider) Objects.requireNonNull(world.getBlockEntity(pos))).getComparatorOutput();
     }
     
     @Override
-    public boolean isSignalSource(BlockState state) {
+    public boolean isSignalSource(@NotNull BlockState state) {
         return true;
     }
     
     @Override
-    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+    public void neighborChanged(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull Block sourceBlock, @NotNull BlockPos sourcePos, boolean notify) {
         super.neighborChanged(state, world, pos, sourceBlock, sourcePos, notify);
         
         if (world.isClientSide) return;
@@ -104,7 +104,7 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
     }
     
     @Override
-    public InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
+    public @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level world, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hit) {
         
         if (!world.isClientSide) {
             
@@ -123,7 +123,7 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
     }
     
     @Override
-    protected List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
+    protected @NotNull List<ItemStack> getDrops(@NotNull BlockState state, LootParams.@NotNull Builder builder) {
         var droppedStacks = super.getDrops(state, builder);
 
         var blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
@@ -134,17 +134,13 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
 
         return droppedStacks;
     }
-
-    @Override
-    public ItemStack getCloneItemStack(LevelReader world, BlockPos pos, BlockState state) {
-        return getStackWithData(world, pos);
-    }
     
     @NotNull
     private static ItemStack getStackWithData(LevelReader world, BlockPos pos) {
         var stack = new ItemStack(com.lumengrid.oritechthings.block.ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get().asItem());
         
         var storageEntity = (AcceleratorMagneticFieldBlockEntity) world.getBlockEntity(pos);
+        assert storageEntity != null;
         if (storageEntity.getEnergyStorage(null).getAmount() > 0) {
             stack.set(EnergyApi.ITEM.getEnergyComponent(), storageEntity.getEnergyStorage(null).getAmount());
         }
@@ -153,13 +149,14 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
     }
     
     @Override
-    public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+    public void setPlacedBy(@NotNull Level world, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable LivingEntity placer, @NotNull ItemStack itemStack) {
         super.setPlacedBy(world, pos, state, placer, itemStack);
         
         long storedEnergyInStack = itemStack.getOrDefault(EnergyApi.ITEM.getEnergyComponent(), 0L);
         
         if (storedEnergyInStack > 0) {
             var storageEntity = (ExpandableEnergyStorageBlockEntity) world.getBlockEntity(pos);
+            assert storageEntity != null;
             storageEntity.energyStorage.setAmount(storedEnergyInStack);
         }
     }
@@ -167,7 +164,7 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level world, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
         return (world1, pos, state1, blockEntity) -> {
             if (blockEntity instanceof BlockEntityTicker ticker)
                 ticker.tick(world1, pos, state1, blockEntity);
@@ -175,7 +172,7 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
     }
     
     @Override
-    public BlockState playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
+    public @NotNull BlockState playerWillDestroy(Level world, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
         
         if (!world.isClientSide) {
             var entity = world.getBlockEntity(pos);
@@ -188,7 +185,7 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip,
+    public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context, @NotNull List<Component> tooltip,
                                 TooltipFlag options) {
         if (options.isAdvanced()) {
             tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field").withStyle(net.minecraft.ChatFormatting.GRAY));
