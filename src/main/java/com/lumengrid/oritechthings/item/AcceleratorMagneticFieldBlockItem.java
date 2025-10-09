@@ -1,6 +1,7 @@
 package com.lumengrid.oritechthings.item;
 
 import com.lumengrid.oritechthings.entity.custom.AcceleratorMagneticFieldBlockEntity;
+import org.jetbrains.annotations.NotNull;
 import rearth.oritech.api.energy.EnergyApi;
 import rearth.oritech.api.energy.containers.SimpleEnergyItemStorage;
 import rearth.oritech.util.TooltipHelper;
@@ -20,8 +21,8 @@ public class AcceleratorMagneticFieldBlockItem extends BlockItem implements Ener
     }
     
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag type) {
-        var storedEnergy = stack.getOrDefault(EnergyApi.ITEM.getEnergyComponent(), 0L);
+    public void appendHoverText(ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag type) {
+        long storedEnergy = stack.getOrDefault(EnergyApi.ITEM.getEnergyComponent(), 0L);
         
         if (storedEnergy != 0) {
             var text = Component.translatable("tooltip.oritech.energy_stored", TooltipHelper.getEnergyText(storedEnergy));
@@ -38,15 +39,20 @@ public class AcceleratorMagneticFieldBlockItem extends BlockItem implements Ener
     }
     
     @Override
-    public int getBarColor(ItemStack stack) {
+    public int getBarColor(@NotNull ItemStack stack) {
         return 0xff7007; // Orange color for energy bar
     }
-    
+
     @Override
     public int getBarWidth(ItemStack stack) {
         var capacity = AcceleratorMagneticFieldBlockEntity.BASE_ENERGY_CAPACITY;
-        var fillAmount = stack.getOrDefault(EnergyApi.ITEM.getEnergyComponent(), 0L);
-        
+        long fillAmount = stack.getOrDefault(EnergyApi.ITEM.getEnergyComponent(), 0L);
+        if (fillAmount <= 0) {
+            return 0;
+        }
+        if (fillAmount >= capacity) {
+            return MAX_BAR_WIDTH / 100;
+        }
         return Math.round((fillAmount * 100f / capacity) * MAX_BAR_WIDTH) / 100;
     }
     
