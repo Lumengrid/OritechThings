@@ -69,11 +69,9 @@ public class AcceleratorParticleLogicMixin {
 
         if (serverWorld.getBlockEntity(linkedMagnets.getFirst()) instanceof AcceleratorMagneticFieldBlockEntity magnetEntity) {
             float energyCost = calculateMagneticFieldEnergyCostStatic(requiredDist, speed);
-            System.out.println(energyCost);
-            System.out.println(magnetEntity.getEnergyStorage().getAmount());
-            if (magnetEntity.getEnergyStorage().getAmount() >= energyCost) {
+            if (magnetEntity.energyStorage.getAmount() >= energyCost) {
                 System.out.println("applied magnet effect");
-                magnetEntity.getEnergyStorage().extract((long) energyCost, false);
+                magnetEntity.energyStorage.extract((long) energyCost, false);
                 return true;
             }
         }

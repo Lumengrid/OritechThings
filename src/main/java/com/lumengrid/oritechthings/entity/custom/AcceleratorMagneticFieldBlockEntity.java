@@ -9,35 +9,24 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 import rearth.oritech.block.entity.accelerator.AcceleratorControllerBlockEntity;
-import rearth.oritech.block.base.entity.UpgradableMachineBlockEntity;
-import rearth.oritech.client.init.ModScreens;
-import rearth.oritech.init.recipes.OritechRecipe;
-import rearth.oritech.init.recipes.OritechRecipeType;
+import rearth.oritech.block.base.entity.ExpandableEnergyStorageBlockEntity;
 import rearth.oritech.util.ComparatorOutputProvider;
-import rearth.oritech.util.ScreenProvider.GuiSlot;
-import rearth.oritech.util.InventoryInputMode;
-import rearth.oritech.util.InventorySlotAssignment;
-import rearth.oritech.util.ScreenProvider;
 
 import java.util.List;
 import java.util.Objects;
 
-public class AcceleratorMagneticFieldBlockEntity extends UpgradableMachineBlockEntity implements ComparatorOutputProvider, ScreenProvider {
-    
-    // Configuration
-    private static final int BASE_ENERGY_PER_TICK = 100;
-    private static final int BASE_ENERGY_CAPACITY = 10000;
-    private static final int BASE_ENERGY_INSERTION = 1000;
-
+public class AcceleratorMagneticFieldBlockEntity extends ExpandableEnergyStorageBlockEntity implements ComparatorOutputProvider {
+    public static final long BASE_ENERGY_CAPACITY = 10000;
+    public static final long BASE_ENERGY_INSERTION = 1000;
+    public static final long BASE_ENERGY_EXTRACTION = 0;
     
     public AcceleratorMagneticFieldBlockEntity(BlockPos pos, BlockState state) {
-        super(ModEntities.ACCELERATOR_MAGNETIC_FIELD_BLOCK_ENTITY.get(), pos, state, BASE_ENERGY_PER_TICK);
+        super(ModEntities.ACCELERATOR_MAGNETIC_FIELD_BLOCK_ENTITY.get(), pos, state);
     }
 
     public boolean setTargetDesignator(BlockPos acceleratorPos, Player player) {
@@ -45,31 +34,28 @@ public class AcceleratorMagneticFieldBlockEntity extends UpgradableMachineBlockE
             player.sendSystemMessage(Component.translatable("block.oritechthings.accelerator_magnetic_field.invalid_controller").withStyle(ChatFormatting.RED));
             return false;
         }
-        
-        // Get the accelerator controller at the stored position
+
+        assert level != null;
         BlockEntity acceleratorEntity = level.getBlockEntity(acceleratorPos);
         if (!(acceleratorEntity instanceof AcceleratorControllerBlockEntity)) {
             player.sendSystemMessage(Component.translatable("block.oritechthings.accelerator_magnetic_field.invalid_controller").withStyle(ChatFormatting.RED));
             return false;
         }
-        
-        // Check if magnetic field is within the particle accelerator area and at same Y level
+
         if (!isWithinAcceleratorArea(acceleratorPos, this.getBlockPos())) {
             player.sendSystemMessage(Component.translatable("block.oritechthings.accelerator_magnetic_field.outside_area").withStyle(ChatFormatting.RED));
             return false;
         }
 
-        // Add this magnetic field to the accelerator controller
         ((MagneticFieldController) acceleratorEntity).addMagneticField(this.getBlockPos());
         
         level.playSound(player, this.getBlockPos(), SoundEvents.ALLAY_AMBIENT_WITH_ITEM, SoundSource.BLOCKS, 1f, 1f);
         player.sendSystemMessage(Component.translatable("block.oritechthings.accelerator_magnetic_field.controller_set")
                 .append(Component.literal(acceleratorPos.toShortString()).withStyle(ChatFormatting.BLUE)));
-        sync();
+        setChanged();
 
         return true;
     }
-    
     
     private boolean isWithinAcceleratorArea(BlockPos acceleratorPos, BlockPos magnetPos) {
         // Check if magnet is at the same Y level as the accelerator
@@ -114,9 +100,8 @@ public class AcceleratorMagneticFieldBlockEntity extends UpgradableMachineBlockE
     
     @Override
     public int getComparatorOutput() {
-        // Return signal based on energy level (0-15)
-        float energyRatio = (float) energyStorage.getAmount() / energyStorage.getCapacity();
-        return Math.min(15, (int) (energyRatio * 15));
+        if (energyStorage.amount == 0) return 0;
+        return (int) (1 + ((energyStorage.amount / (float) energyStorage.capacity) * 14));
     }
     
     @Override
@@ -128,61 +113,52 @@ public class AcceleratorMagneticFieldBlockEntity extends UpgradableMachineBlockE
     public long getDefaultInsertRate() {
         return BASE_ENERGY_INSERTION;
     }
-
+    
     @Override
-    public InventorySlotAssignment getSlotAssignments() {
-        return new InventorySlotAssignment(0, 0, 0, 0);
-    }
-
-    @Override
-    public List<GuiSlot> getGuiSlots() {
-        return List.of();
-    }
-
-    @Override
-    public MenuType<?> getScreenHandlerType() {
-        return ModScreens.STORAGE_SCREEN;
-    }
-
-    @Override
-    public int getInventorySize() {
-        return 0;
-    }
-
-    @Override
-    protected OritechRecipeType getOwnRecipeType() {
-        return null; // This entity doesn't process recipes
-    }
-
-    @Override
-    public float getDisplayedEnergyUsage() {
-        return BASE_ENERGY_PER_TICK;
-    }
-
-    @Override
-    public float getProgress() {
-        return 0.0f; // This entity doesn't have progress
-    }
-
-    @Override
-    public InventoryInputMode getInventoryInputMode() {
-        return InventoryInputMode.FILL_LEFT_TO_RIGHT;
-    }
-
-    @Override
-    public Container getDisplayedInventory() {
-        return inventory;
+    public long getDefaultExtractionRate() {
+        return BASE_ENERGY_EXTRACTION;
     }
 
     @Override
     public List<Vec3i> getAddonSlots() {
-        return List.of(); // This entity doesn't support addons
+        return List.of(
+            new Vec3i(0, 0, -1),
+            new Vec3i(0, 0, 1),
+            new Vec3i(-1, 0, 0),
+            new Vec3i(1, 0, 0),
+            new Vec3i(0, -1, 0)
+        );
     }
     
-    public void sync() {
-        setChanged();
-        if (level != null && !level.isClientSide) {
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+    @Override
+    public float getCoreQuality() {
+        return 2;
+    }
+    
+    public Direction getFacing() {
+        var state = getBlockState();
+        if (state.hasProperty(com.lumengrid.oritechthings.block.custom.AcceleratorMagneticFieldBlock.TARGET_DIR)) {
+            return state.getValue(com.lumengrid.oritechthings.block.custom.AcceleratorMagneticFieldBlock.TARGET_DIR);
         }
+        return Direction.NORTH;
+    }
+    
+    @Override
+    public Direction getFacingForAddon() {
+        var state = Objects.requireNonNull(level).getBlockState(getBlockPos());
+        if (state.hasProperty(com.lumengrid.oritechthings.block.custom.AcceleratorMagneticFieldBlock.TARGET_DIR)) {
+            var facing = state.getValue(com.lumengrid.oritechthings.block.custom.AcceleratorMagneticFieldBlock.TARGET_DIR);
+            
+            if (facing.equals(Direction.UP) || facing.equals(Direction.DOWN))
+                return Direction.NORTH;
+            
+            return facing;
+        }
+        return Direction.NORTH;
+    }
+    
+    @Override
+    public Property<Direction> getBlockFacingProperty() {
+        return com.lumengrid.oritechthings.block.custom.AcceleratorMagneticFieldBlock.TARGET_DIR;
     }
 }

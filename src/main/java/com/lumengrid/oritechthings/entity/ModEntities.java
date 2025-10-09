@@ -5,6 +5,7 @@ import com.lumengrid.oritechthings.entity.custom.AcceleratorSpeedSensorBlockEnti
 import com.lumengrid.oritechthings.entity.custom.AmethystFishEntity;
 import com.lumengrid.oritechthings.entity.custom.TierAddonBlockEntity;
 import com.lumengrid.oritechthings.main.OritechThings;
+import rearth.oritech.api.energy.EnergyApi;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -19,6 +20,11 @@ public class ModEntities {
         public static void register(IEventBus bus){
                 MOD_BLOCK_ENTITIES.register(bus);
                 MOD_MOB_ENTITIES.register(bus);
+                
+                // Register block entities with EnergyApi
+                if (EnergyApi.BLOCK != null) {
+                    EnergyApi.BLOCK.registerBlockEntity(ACCELERATOR_MAGNETIC_FIELD_BLOCK_ENTITY::get);
+                }
         }
 
     public static final DeferredRegister<BlockEntityType<?>> MOD_BLOCK_ENTITIES =
