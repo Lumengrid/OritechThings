@@ -86,7 +86,24 @@ public class AcceleratorParticleLogicMixin {
         // Base cost increases with speed and bend difficulty
         float baseCost = speed * 10f; // Base cost proportional to speed
         float bendDifficulty = Math.max(0, requiredDist - 1f); // Extra cost for difficult bends
-        return baseCost + (bendDifficulty * 50f);
+        float totalCost = baseCost + (bendDifficulty * 50f);
+        
+        // Apply efficiency addon reduction if available
+        AcceleratorControllerBlockEntity currentEntity = currentAccelerator.get();
+        if (currentEntity != null) {
+            // Get efficiency multiplier from addons (if any)
+            float efficiencyMultiplier = getEfficiencyMultiplier(currentEntity);
+            totalCost = totalCost / efficiencyMultiplier; // Higher efficiency = lower cost
+        }
+        
+        return totalCost;
+    }
+    
+    // Helper method to get efficiency multiplier from addons
+    private static float getEfficiencyMultiplier(AcceleratorControllerBlockEntity entity) {
+        // This would need to be implemented based on how Oritech handles addon multipliers
+        // For now, return 1.0f (no efficiency bonus)
+        return 1.0f;
     }
 
     // Thread-local storage to track the current accelerator instance
