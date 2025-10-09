@@ -3,12 +3,14 @@ package com.lumengrid.oritechthings.block;
 import com.lumengrid.oritechthings.block.custom.AcceleratorSpeedSensorBlock;
 import com.lumengrid.oritechthings.block.custom.InfestedAmethystBlock;
 import com.lumengrid.oritechthings.block.custom.TierAddonBlock;
+import com.lumengrid.oritechthings.item.AcceleratorMagneticFieldBlockItem;
 import com.lumengrid.oritechthings.item.ModItems;
 import com.lumengrid.oritechthings.main.ConfigLoader;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.util.Constants;
 import com.lumengrid.oritechthings.util.Constants.NameUtil;
 import com.lumengrid.oritechthings.util.ShapeUtil;
+import rearth.oritech.api.energy.EnergyApi;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -100,7 +102,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> ACCELERATOR_SPEED_SENSOR = registerBlock(
             "particle_accelerator_speed_sensor", AcceleratorSpeedSensorBlock::new);
 
-    public static final DeferredBlock<Block> ACCELERATOR_MAGNETIC_FIELD = registerBlock(
+    public static final DeferredBlock<Block> ACCELERATOR_MAGNETIC_FIELD = registerEnergyStorageBlock(
             "accelerator_magnetic_field", com.lumengrid.oritechthings.block.custom.AcceleratorMagneticFieldBlock::new);
 
     public static final DeferredBlock<Block> INFESTED_AMETHYST_BLOCK = registerBlock(
@@ -218,6 +220,24 @@ public class ModBlocks {
 
     private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block,DeferredRegister.Items items) {
         items.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+    }
+
+    private static <T extends Block> DeferredBlock<T> registerEnergyStorageBlock(String name, Supplier<T> block) {
+        DeferredBlock<T> toReturn = OTHER.register(name, block);
+        registerEnergyStorageBlockItem(name, toReturn);
+        return toReturn;
+    }
+
+    private static <T extends Block> void registerEnergyStorageBlockItem(String name, DeferredBlock<T> block) {
+        ModItems.BLOCKITEMS.register(name, () -> {
+            if (EnergyApi.ITEM != null) {
+                var item = new AcceleratorMagneticFieldBlockItem(block.get(), new Item.Properties().component(EnergyApi.ITEM.getEnergyComponent(), 0L));
+                EnergyApi.ITEM.registerForItem(() -> item);
+                return item;
+            } else {
+                return new BlockItem(block.get(), new Item.Properties());
+            }
+        });
     }
 
 }

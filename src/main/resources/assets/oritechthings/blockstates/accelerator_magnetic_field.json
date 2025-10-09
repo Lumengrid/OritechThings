@@ -1,7 +1,27 @@
 {
   "variants": {
-    "": {
+    "target_dir=north": {
       "model": "oritechthings:block/accelerator_magnetic_field"
+    },
+    "target_dir=east": {
+      "model": "oritechthings:block/accelerator_magnetic_field",
+      "y": 90
+    },
+    "target_dir=south": {
+      "model": "oritechthings:block/accelerator_magnetic_field",
+      "y": 180
+    },
+    "target_dir=west": {
+      "model": "oritechthings:block/accelerator_magnetic_field",
+      "y": 270
+    },
+    "target_dir=up": {
+      "model": "oritechthings:block/accelerator_magnetic_field",
+      "x": 90
+    },
+    "target_dir=down": {
+      "model": "oritechthings:block/accelerator_magnetic_field",
+      "x": 270
     }
   }
 }
