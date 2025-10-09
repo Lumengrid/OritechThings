@@ -4,31 +4,30 @@ import com.lumengrid.oritechthings.api.MagneticFieldController;
 import com.lumengrid.oritechthings.entity.ModEntities;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import rearth.oritech.block.entity.accelerator.AcceleratorControllerBlockEntity;
 import rearth.oritech.block.base.entity.UpgradableMachineBlockEntity;
 import rearth.oritech.client.init.ModScreens;
-import rearth.oritech.init.recipes.OritechRecipe;
 import rearth.oritech.init.recipes.OritechRecipeType;
 import rearth.oritech.util.ComparatorOutputProvider;
-import rearth.oritech.util.ScreenProvider.GuiSlot;
 import rearth.oritech.util.InventoryInputMode;
 import rearth.oritech.util.InventorySlotAssignment;
 import rearth.oritech.util.ScreenProvider;
 
 import java.util.List;
-import java.util.Objects;
 
-public class AcceleratorMagneticFieldBlockEntity extends UpgradableMachineBlockEntity implements ComparatorOutputProvider, ScreenProvider {
+public class AcceleratorMagneticFieldBlockEntity extends UpgradableMachineBlockEntity implements ComparatorOutputProvider, ScreenProvider, MenuProvider {
     
     // Configuration
     private static final int BASE_ENERGY_PER_TICK = 100;
@@ -118,6 +117,11 @@ public class AcceleratorMagneticFieldBlockEntity extends UpgradableMachineBlockE
         float energyRatio = (float) energyStorage.getAmount() / energyStorage.getCapacity();
         return Math.min(15, (int) (energyRatio * 15));
     }
+
+    @Override
+    public boolean inputOptionsEnabled() {
+        return false;
+    }
     
     @Override
     public long getDefaultCapacity() {
@@ -140,8 +144,18 @@ public class AcceleratorMagneticFieldBlockEntity extends UpgradableMachineBlockE
     }
 
     @Override
+    public boolean showProgress() {
+        return false;
+    }
+
+    @Override
+    public boolean hasRedstoneControlAvailable() {
+        return true;
+    }
+
+    @Override
     public MenuType<?> getScreenHandlerType() {
-        return ModScreens.STORAGE_SCREEN;
+        return ModScreens.PULVERIZER_SCREEN;
     }
 
     @Override
@@ -176,7 +190,9 @@ public class AcceleratorMagneticFieldBlockEntity extends UpgradableMachineBlockE
 
     @Override
     public List<Vec3i> getAddonSlots() {
-        return List.of(); // This entity doesn't support addons
+        return List.of(
+          new Vec3i(1, 1, 1)
+        );
     }
     
     public void sync() {
@@ -184,5 +200,39 @@ public class AcceleratorMagneticFieldBlockEntity extends UpgradableMachineBlockE
         if (level != null && !level.isClientSide) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
+    }
+    
+    // Methods for screen display
+    public int getLastSpeed() {
+        return (int) (energyStorage.getAmount() / 1000);
+    }
+    
+    public String getLinkedAcceleratorUUID() {
+        // Return a simple representation of linked accelerator
+        return "Linked"; // This would be set when linking with target designator
+    }
+    
+    public int getEnergyStored() {
+        return (int) energyStorage.getAmount();
+    }
+    
+    public int getMaxEnergyStored() {
+        return (int) energyStorage.getCapacity();
+    }
+    
+    // MenuProvider implementation
+    @Override
+    public Component getDisplayName() {
+        return Component.translatable("block.oritechthings.accelerator_magnetic_field");
+    }
+    
+    @Override
+    public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+        return new rearth.oritech.client.ui.UpgradableMachineScreenHandler(i, inventory, this);
+    }
+
+    @Override
+    public float getCoreQuality() {
+        return 2;
     }
 }

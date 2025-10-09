@@ -18,4 +18,8 @@ public class ModMenuTypes {
     private static <T extends AbstractContainerMenu> DeferredHolder<MenuType<?>,MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IMenuTypeExtension.create(factory));
     }
+
+    public static void register(net.neoforged.bus.api.IEventBus eventBus) {
+        MENUS.register(eventBus);
+    }
 }
