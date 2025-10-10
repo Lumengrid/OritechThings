@@ -2,6 +2,7 @@ package com.lumengrid.oritechthings.mixin;
 
 import com.lumengrid.oritechthings.api.MagneticFieldController;
 import com.lumengrid.oritechthings.entity.custom.AcceleratorMagneticFieldBlockEntity;
+import com.lumengrid.oritechthings.main.ConfigLoader;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
@@ -45,7 +46,7 @@ public class AcceleratorParticleLogicMixin {
 
     private static boolean canMagneticFieldAssistStatic(float requiredDist, float speed) {
         // Check if magnetic fields are enabled in config
-        var config = com.lumengrid.oritechthings.main.ConfigLoader.getInstance().magneticFieldSettings;
+        var config = ConfigLoader.getInstance().magneticFieldSettings;
         if (!config.enabled()) {
             return false;
         }
@@ -121,7 +122,7 @@ public class AcceleratorParticleLogicMixin {
     }
 
     private static float getTotalCost(float requiredDist, float speed) {
-        var config = com.lumengrid.oritechthings.main.ConfigLoader.getInstance().magneticFieldSettings;
+        var config = ConfigLoader.getInstance().magneticFieldSettings;
         float baseCost = config.baseCost();
         float speedCost = (speed * speed) / config.speedCostDivisor();
         float bendCost = (requiredDist * requiredDist);

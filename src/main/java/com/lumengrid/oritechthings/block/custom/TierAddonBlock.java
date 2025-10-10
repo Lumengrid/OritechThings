@@ -1,6 +1,7 @@
 package com.lumengrid.oritechthings.block.custom;
 
 import com.lumengrid.oritechthings.entity.custom.TierAddonBlockEntity;
+import com.lumengrid.oritechthings.main.ConfigLoader;
 import com.lumengrid.oritechthings.util.Constants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -86,7 +87,7 @@ public class TierAddonBlock extends MachineAddonBlock {
             TooltipFlag options) {
         if (this.defaultBlockState().getValue(ADDON_TYPE).toString().equals(Constants.AddonType.CROSS_DIMENSIONAL.toString())) {
             // Check if cross-dimensional addons are enabled
-            if (!com.lumengrid.oritechthings.main.ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
+            if (!ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
                 tooltip.add(Component.translatable("tooltip." + MOD_ID + ".addon_block_cross_dimensional_disabled")
                         .withStyle(ChatFormatting.RED));
                 return;
