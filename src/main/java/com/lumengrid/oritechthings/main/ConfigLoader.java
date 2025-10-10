@@ -43,7 +43,7 @@ public class ConfigLoader {
     public DimensionalDrone dimensionalDroneSettings = new DimensionalDrone(true, 10000);
 
     @Expose
-    public MagneticField magneticFieldSettings = new MagneticField(true, 10000.0f, 50.0f);
+    public MagneticField magneticFieldSettings = new MagneticField(true, 10000.0f, 50.0f, 32, 16);
 
     public void load() {
         Gson gson = new GsonBuilder()
@@ -114,7 +114,9 @@ public class ConfigLoader {
     public record MagneticField(
             @Expose boolean enabled,
             @Expose float baseCost,
-            @Expose float speedCostDivisor
+            @Expose float speedCostDivisor,
+            @Expose int searchRadius,
+            @Expose int minDistance
     ) {
 
     }
