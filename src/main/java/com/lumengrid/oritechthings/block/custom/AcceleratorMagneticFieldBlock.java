@@ -1,6 +1,7 @@
 package com.lumengrid.oritechthings.block.custom;
 
 import com.lumengrid.oritechthings.entity.custom.AcceleratorMagneticFieldBlockEntity;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -187,19 +188,25 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context, @NotNull List<Component> tooltip,
                                 TooltipFlag options) {
-        if (options.isAdvanced()) {
-            tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field").withStyle(net.minecraft.ChatFormatting.GRAY));
-            tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field_desc").withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
-            
-            tooltip.add(Component.translatable("tooltip.oritechthings.item_extra_info").withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
-            
-            if (net.minecraft.client.Minecraft.getInstance().options.keySprint.isDown()) {
-                tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_usage"));
-                tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_step1"));
-                tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_step2"));
-                tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_step3"));
-                tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_benefit"));
-            }
+        if (!com.lumengrid.oritechthings.main.ConfigLoader.getInstance().magneticFieldSettings.enabled()) {
+            tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field_disabled")
+                    .withStyle(net.minecraft.ChatFormatting.RED));
+            return;
+        }
+        
+        tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field").withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field_desc").withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
+        tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field_limitation").withStyle(net.minecraft.ChatFormatting.RED));
+        tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field_addon_info").withStyle(net.minecraft.ChatFormatting.GOLD));
+        tooltip.add(Component.empty());
+        if (Screen.hasControlDown()) {
+            tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_usage"));
+            tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_step1"));
+            tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_step2"));
+            tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_step3"));
+            tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_benefit"));
+        } else {
+            tooltip.add(Component.translatable("tooltip.oritech.item_extra_info").withStyle(net.minecraft.ChatFormatting.DARK_GRAY).withStyle(net.minecraft.ChatFormatting.ITALIC));
         }
     }
 }

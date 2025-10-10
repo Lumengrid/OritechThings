@@ -1,5 +1,6 @@
 {
   "values": [
-    "oritechthings:particle_accelerator_speed_sensor"
+    "oritechthings:particle_accelerator_speed_sensor",
+    "oritechthings:accelerator_magnetic_field"
   ]
 }

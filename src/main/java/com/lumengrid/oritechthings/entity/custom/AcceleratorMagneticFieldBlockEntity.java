@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class AcceleratorMagneticFieldBlockEntity extends ExpandableEnergyStorageBlockEntity implements ComparatorOutputProvider {
-    public static final long BASE_ENERGY_CAPACITY = 1000000;
-    public static final long BASE_ENERGY_INSERTION = 10000;
+    public static final long BASE_ENERGY_CAPACITY = 500000;
+    public static final long BASE_ENERGY_INSERTION = 20000;
     public static final long BASE_ENERGY_EXTRACTION = 0;
     
     public AcceleratorMagneticFieldBlockEntity(BlockPos pos, BlockState state) {
@@ -122,8 +122,6 @@ public class AcceleratorMagneticFieldBlockEntity extends ExpandableEnergyStorage
     @Override
     public List<Vec3i> getAddonSlots() {
         return List.of(
-            new Vec3i(0, 0, -1),
-            new Vec3i(0, 0, 1),
             new Vec3i(-1, 0, 0),
             new Vec3i(1, 0, 0),
             new Vec3i(0, -1, 0)
