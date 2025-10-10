@@ -58,15 +58,18 @@ public class ModLangProviderRuRu extends LanguageProvider {
 
         var AMagneticField = MOD_ID + "." + DataGenUtil.getName(ModBlocks.ACCELERATOR_MAGNETIC_FIELD);
         
-        add("tooltip." + AMagneticField, "Стабилизатор магнитного поля");
-        add("tooltip." + AMagneticField + "_desc", "Обеспечивает стабилизацию магнитного поля для ускорителей частиц. Уменьшает требуемое расстояние изгиба и предотвращает потерю частиц. Требует энергии и должен быть размещён внутри кольца ускорителя. Разрешено только одно магнитное поле на ускоритель.");
+        add("tooltip." + AMagneticField, "Магнитное Поле Ускорителя Частиц");
+        add("tooltip." + AMagneticField + "_desc", "Помогает частицам в крутых поворотах, обеспечивая магнитное наведение");
+        add("tooltip." + AMagneticField + "_limitation", "§c⚠ Только одно магнитное поле проверяется на ускоритель частиц");
+        add("tooltip." + AMagneticField + "_addon_info", "§6⚡ Совместимые Дополнения: Эффективность, Конденсатор");
+        add("tooltip." + AMagneticField + "_disabled", "§c⚠ Магнитные поля отключены в конфигурации сервера");
         add("tooltip." + MOD_ID + ".item_extra_info", "Удерживайте CTRL для получения дополнительной информации");
         
         // Advanced Target Designator usage for Magnetic Field Block
         add("tooltip." + AMagneticField + ".target_designator_usage", "§7Использование Продвинутого Целеуказателя:");
-        add("tooltip." + AMagneticField + ".target_designator_step1", "§91. ПКМ с Продвинутым Целеуказателем для сохранения позиции");
+        add("tooltip." + AMagneticField + ".target_designator_step1", "§91. ПКМ по ускорителю частиц с Продвинутым Целеуказателем для сохранения позиции");
         add("tooltip." + AMagneticField + ".target_designator_step2", "§92. Разместите Блок Магнитного Поля внутри кольца ускорителя частиц");
-        add("tooltip." + AMagneticField + ".target_designator_step3", "§93. ПКМ по Блоку Магнитного Поля для связи с сохранённой позицией");
+        add("tooltip." + AMagneticField + ".target_designator_step3", "§93. ПКМ по магнитному полю для связи ускорителя частиц с блоком магнитного поля");
         add("tooltip." + AMagneticField + ".target_designator_benefit", "§6⚡ Позволяет точное размещение и автоматическую связь с ускорителями");
         
         // Magnetic field block messages
@@ -74,6 +77,7 @@ public class ModLangProviderRuRu extends LanguageProvider {
         add("block.oritechthings.accelerator_magnetic_field.outside_area", "Магнитное поле должно быть размещено в области ускорителя частиц на том же уровне Y!");
         add("block.oritechthings.accelerator_magnetic_field.error", "Не удалось связать магнитное поле с контроллером ускорителя.");
         add("block.oritechthings.accelerator_magnetic_field.controller_set", "Магнитное поле связано с контроллером ускорителя в ");
+        
 
         // frame placer
 
@@ -114,10 +118,12 @@ public class ModLangProviderRuRu extends LanguageProvider {
         // Advanced Target Designator tooltips
         add("tooltip." + MOD_ID + ".advanced_target_designator.usage", "§7Совместимые Машины:");
         add("tooltip." + MOD_ID + ".advanced_target_designator.speed_sensor", "§9• Ускоритель Частиц Датчик Скорости");
+        add("tooltip." + MOD_ID + ".advanced_target_designator.magnetic_field", "§9• Ускоритель Частиц Магнитное Поле");
         add("tooltip." + MOD_ID + ".advanced_target_designator.drone_port", "§9• Порт Дронов");
         add("tooltip." + MOD_ID + ".advanced_target_designator.laser_arm", "§9• Эндерический Лазер");
         add("tooltip." + MOD_ID + ".advanced_target_designator.cross_dimensional", "§6⚡ Только Порты Дронов поддерживают межмерные переносы");
         add("tooltip." + MOD_ID + ".addon_block_cross_dimensional", "Прикрепите к порту дрона для включения межмерных переносов.\nПозволяет дронам путешествовать между измерениями.");
+        add("tooltip." + MOD_ID + ".addon_block_cross_dimensional_disabled", "§c⚠ Межмерные дополнения отключены в конфигурации сервера");
         
         // Accelerator Motor tooltips
         add("tooltip." + MOD_ID + ".accelerator_motor.addon_info", "§6⚡ Совместим с дополнениями");

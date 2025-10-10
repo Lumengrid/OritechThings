@@ -162,6 +162,11 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
                     .withStyle(ChatFormatting.GRAY));
             tooltip.add(Component.translatable("tooltip.oritechthings.advanced_target_designator.speed_sensor")
                     .withStyle(ChatFormatting.BLUE));
+            // Only show magnetic field if enabled in config
+            if (ConfigLoader.getInstance().magneticFieldSettings.enabled()) {
+                tooltip.add(Component.translatable("tooltip.oritechthings.advanced_target_designator.magnetic_field")
+                        .withStyle(ChatFormatting.BLUE));
+            }
             tooltip.add(Component.translatable("tooltip.oritechthings.advanced_target_designator.drone_port")
                     .withStyle(ChatFormatting.BLUE));
             tooltip.add(Component.translatable("tooltip.oritechthings.advanced_target_designator.laser_arm")

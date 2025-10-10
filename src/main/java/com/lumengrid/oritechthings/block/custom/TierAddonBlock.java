@@ -85,6 +85,13 @@ public class TierAddonBlock extends MachineAddonBlock {
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip,
             TooltipFlag options) {
         if (this.defaultBlockState().getValue(ADDON_TYPE).toString().equals(Constants.AddonType.CROSS_DIMENSIONAL.toString())) {
+            // Check if cross-dimensional addons are enabled
+            if (!com.lumengrid.oritechthings.main.ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
+                tooltip.add(Component.translatable("tooltip." + MOD_ID + ".addon_block_cross_dimensional_disabled")
+                        .withStyle(ChatFormatting.RED));
+                return;
+            }
+            
             if (Screen.hasControlDown()) {
                 tooltip.add(Component.translatable("tooltip." + MOD_ID + ".addon_block_cross_dimensional").withStyle(ChatFormatting.DARK_GRAY));
             } else {

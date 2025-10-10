@@ -43,7 +43,7 @@ public class ConfigLoader {
     public DimensionalDrone dimensionalDroneSettings = new DimensionalDrone(true, 10000);
 
     @Expose
-    public ParticleAccelerator particleAcceleratorSettings = new ParticleAccelerator(0.85f);
+    public MagneticField magneticFieldSettings = new MagneticField(true, 10000.0f, 50.0f);
 
     public void load() {
         Gson gson = new GsonBuilder()
@@ -111,8 +111,10 @@ public class ConfigLoader {
 
     }
 
-    public record ParticleAccelerator(
-            @Expose float acceleratorSizeReductionPercentage
+    public record MagneticField(
+            @Expose boolean enabled,
+            @Expose float baseCost,
+            @Expose float speedCostDivisor
     ) {
 
     }

@@ -34,11 +34,8 @@ public class AcceleratorParticleLogicMixin {
         if (currentEntity != null && currentEntity.getParticle() != null) {
             float combinedDist = currentEntity.getParticle().lastBendDistance + currentEntity.getParticle().lastBendDistance2;
             if (combinedDist <= originalRequiredDist) {
-                System.out.println("need to check magnet");
-                if (canMagneticFieldAssistStatic(originalRequiredDist, speed)) {
-                    System.out.println("sto dentro 3");
-                    // If magnetic field can help, return a very large negative value to prevent exit
-                    cir.setReturnValue(Float.MIN_VALUE); // Very large negative value to prevent particle exit
+                if (canMagneticFieldAssistStatic(originalRequiredDist - combinedDist, speed)) {
+                    cir.setReturnValue(Float.MIN_VALUE);
                     return;
                 }
             }
@@ -46,8 +43,13 @@ public class AcceleratorParticleLogicMixin {
         cir.setReturnValue(originalRequiredDist);
     }
 
-    // Static helper method to check if magnetic field can assist with bend
     private static boolean canMagneticFieldAssistStatic(float requiredDist, float speed) {
+        // Check if magnetic fields are enabled in config
+        var config = com.lumengrid.oritechthings.main.ConfigLoader.getInstance().magneticFieldSettings;
+        if (!config.enabled()) {
+            return false;
+        }
+        
         AcceleratorControllerBlockEntity currentEntity = currentAccelerator.get();
         if (currentEntity == null) {
             return false;
@@ -66,52 +68,67 @@ public class AcceleratorParticleLogicMixin {
         }
 
         if (serverWorld.getBlockEntity(linkedMagnets.getFirst()) instanceof AcceleratorMagneticFieldBlockEntity magnetEntity) {
-            // Check if magnet is powered by redstone
             if (magnetEntity.receivedRedstoneSignal() > 0) {
-                System.out.println("magnet disabled");
                 return false;
             }
+
+            long currentTick = serverWorld.getGameTime();
+            if (!lastTickLogged.containsKey(magnetEntity.getBlockPos())) {
+                lastTickLogged.put(magnetEntity.getBlockPos(), -1L);
+                callsThisTick.put(magnetEntity.getBlockPos(), 0);
+            }
             
-            float energyCost = calculateMagneticFieldEnergyCostStatic(requiredDist, speed, magnetEntity);
-            if (magnetEntity.energyStorage.getAmount() >= energyCost) {
-                System.out.println("applied magnet effect using " + energyCost);
-                magnetEntity.energyStorage.amount -= (long) energyCost;
-                
-                // Create particle effects at the magnet location
-                createMagneticFieldParticles(serverWorld, magnetEntity.getBlockPos());
-                
+            if (lastTickLogged.get(magnetEntity.getBlockPos()) != currentTick) {
+                lastTickLogged.put(magnetEntity.getBlockPos(), currentTick);
+                callsThisTick.put(magnetEntity.getBlockPos(), 1);
+                if (lastEnergyTick.containsKey(magnetEntity.getBlockPos())) {
+                    lastEnergyTick.put(magnetEntity.getBlockPos(), -1L);
+                }
+            } else {
+                callsThisTick.put(magnetEntity.getBlockPos(), callsThisTick.get(magnetEntity.getBlockPos()) + 1);
+            }
+
+            long energyCostLong = Math.round(calculateMagneticFieldEnergyCostStatic(requiredDist, speed, magnetEntity));
+            if (!lastEnergyTick.containsKey(magnetEntity.getBlockPos())) {
+                lastEnergyTick.put(magnetEntity.getBlockPos(), -1L);
+            }
+
+            boolean alreadyConsumedThisTick = lastEnergyTick.get(magnetEntity.getBlockPos()) == currentTick;
+            if (alreadyConsumedThisTick) {
                 return true;
             }
-            System.out.println("not enough energy " + energyCost);
+            
+            magnetEntity.energyStorage.update();
+            if (magnetEntity.energyStorage.getAmount() >= energyCostLong) {
+                magnetEntity.energyStorage.amount -= energyCostLong;
+                magnetEntity.energyStorage.update();
+
+                lastEnergyTick.put(magnetEntity.getBlockPos(), currentTick);
+                createMagneticFieldParticles(serverWorld, magnetEntity.getBlockPos());
+
+                return true;
+            }
         }
-        System.out.println("you need to exit");
+
         return false;
     }
 
-    // Static version of energy cost calculation
     private static float calculateMagneticFieldEnergyCostStatic(float requiredDist, float speed, AcceleratorMagneticFieldBlockEntity magnetEntity) {
-        float bendDifficulty = Math.max(0, requiredDist - 1f);
-        float totalCost = (speed / 2) + (bendDifficulty * 50f);
+        float totalCost = getTotalCost(requiredDist, speed);
+        float efficiencyMultiplier = Math.max(0.1f, magnetEntity.getBaseAddonData().efficiency());
 
-        float efficiencyMultiplier = getMagnetEfficiencyMultiplier(magnetEntity);
-        totalCost = totalCost / efficiencyMultiplier;
-        
-        return totalCost;
+        return totalCost * efficiencyMultiplier;
     }
-    
-    // Helper method to get efficiency multiplier from magnet's addons
-    private static float getMagnetEfficiencyMultiplier(AcceleratorMagneticFieldBlockEntity magnetEntity) {
-        // Get the base addon data from the magnet entity
-        var addonData = magnetEntity.getBaseAddonData();
-        
-        // Calculate efficiency multiplier from addons
-        // Base efficiency is 1.0, addons provide bonuses
-        float efficiencyMultiplier = 1.0f + addonData.efficiency();
-        
-        return Math.max(1.0f, efficiencyMultiplier); // Ensure minimum of 1.0
+
+    private static float getTotalCost(float requiredDist, float speed) {
+        var config = com.lumengrid.oritechthings.main.ConfigLoader.getInstance().magneticFieldSettings;
+        float baseCost = config.baseCost();
+        float speedCost = (speed * speed) / config.speedCostDivisor();
+        float bendCost = (requiredDist * requiredDist);
+
+        return baseCost + speedCost + bendCost;
     }
-    
-    // Create particle effects when magnetic field is activated
+
     private static void createMagneticFieldParticles(ServerLevel world, net.minecraft.core.BlockPos magnetPos) {
         Vec3 centerPos = Vec3.atCenterOf(magnetPos);
 
@@ -128,21 +145,19 @@ public class AcceleratorParticleLogicMixin {
                 0.08, 0.08, 0.08,
                 0.05
         );
-        
-        // Play a subtle sound effect
-        // world.playSound(null, magnetPos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 0.3f, 1.5f);
     }
 
-    // Thread-local storage to track the current accelerator instance
     private static final ThreadLocal<AcceleratorControllerBlockEntity> currentAccelerator = new ThreadLocal<>();
 
-    // Inject into update method to set the current accelerator context
+    private static final java.util.Map<net.minecraft.core.BlockPos, Long> lastTickLogged = new java.util.HashMap<>();
+    private static final java.util.Map<net.minecraft.core.BlockPos, Integer> callsThisTick = new java.util.HashMap<>();
+    private static final java.util.Map<net.minecraft.core.BlockPos, Long> lastEnergyTick = new java.util.HashMap<>();
+
     @Inject(method = "update", at = @At("HEAD"))
     private void setCurrentAcceleratorContext(AcceleratorParticleLogic.ActiveParticle particle, CallbackInfo ci) {
         currentAccelerator.set(entity);
     }
 
-    // Inject into update method to clear the current accelerator context
     @Inject(method = "update", at = @At("RETURN"))
     private void clearCurrentAcceleratorContext(AcceleratorParticleLogic.ActiveParticle particle, CallbackInfo ci) {
         currentAccelerator.remove();

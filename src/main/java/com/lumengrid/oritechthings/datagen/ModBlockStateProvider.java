@@ -24,6 +24,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
             addonBlockState(data);
         }
         
+        simpleBlockState(ModBlocks.ACCELERATOR_MAGNETIC_FIELD);
         simpleBlockState(ModBlocks.ACCELERATOR_SPEED_SENSOR);
         blockwithparentModel(ModBlocks.INFESTED_AMETHYST_BLOCK,"block/amethyst_block");
     }

@@ -58,15 +58,18 @@ public class ModLangProviderZhCn extends LanguageProvider {
 
         var AMagneticField = MOD_ID + "." + DataGenUtil.getName(ModBlocks.ACCELERATOR_MAGNETIC_FIELD);
         
-        add("tooltip." + AMagneticField, "磁场稳定器");
-        add("tooltip." + AMagneticField + "_desc", "为粒子加速器提供磁场稳定。减少所需的弯曲距离并防止粒子损失。需要能量且必须放置在加速器环内。每个加速器只能连接一个磁场稳定器。");
+        add("tooltip." + AMagneticField, "粒子加速器磁场");
+        add("tooltip." + AMagneticField + "_desc", "通过提供磁引导协助粒子进行急转弯");
+        add("tooltip." + AMagneticField + "_limitation", "§c⚠ 每个粒子加速器只检查一个磁场");
+        add("tooltip." + AMagneticField + "_addon_info", "§6⚡ 兼容插件: 效率, 电容");
+        add("tooltip." + AMagneticField + "_disabled", "§c⚠ 服务器配置中已禁用磁场");
         add("tooltip." + MOD_ID + ".item_extra_info", "按住 CTRL 获取更多信息");
         
         // Advanced Target Designator usage for Magnetic Field Block
         add("tooltip." + AMagneticField + ".target_designator_usage", "§7高级目标指示器使用方法:");
-        add("tooltip." + AMagneticField + ".target_designator_step1", "§91. 右键点击高级目标指示器存储位置");
+        add("tooltip." + AMagneticField + ".target_designator_step1", "§91. 用高级目标指示器右键点击粒子加速器以保存位置");
         add("tooltip." + AMagneticField + ".target_designator_step2", "§92. 在粒子加速器环内放置磁场稳定器");
-        add("tooltip." + AMagneticField + ".target_designator_step3", "§93. 右键点击磁场稳定器链接到存储的位置");
+        add("tooltip." + AMagneticField + ".target_designator_step3", "§93. 右键点击磁场稳定器以将粒子加速器与磁场稳定器链接");
         add("tooltip." + AMagneticField + ".target_designator_benefit", "§6⚡ 允许精确定位和自动链接到加速器");
         
         // Magnetic field block messages
@@ -74,6 +77,7 @@ public class ModLangProviderZhCn extends LanguageProvider {
         add("block.oritechthings.accelerator_magnetic_field.outside_area", "磁场稳定器必须放置在粒子加速器区域内且处于同一Y高度！");
         add("block.oritechthings.accelerator_magnetic_field.error", "无法将磁场稳定器连接到加速器控制器。");
         add("block.oritechthings.accelerator_magnetic_field.controller_set", "磁场已连接到加速器控制器位置 ");
+        
 
         // frame placer
 
@@ -113,10 +117,12 @@ public class ModLangProviderZhCn extends LanguageProvider {
         // Advanced Target Designator tooltips
         add("tooltip." + MOD_ID + ".advanced_target_designator.usage", "§7兼容的机器:");
         add("tooltip." + MOD_ID + ".advanced_target_designator.speed_sensor", "§9• 粒子加速器 速度传感器");
+        add("tooltip." + MOD_ID + ".advanced_target_designator.magnetic_field", "§9• 粒子加速器 磁场");
         add("tooltip." + MOD_ID + ".advanced_target_designator.drone_port", "§9• 无人机端口");
         add("tooltip." + MOD_ID + ".advanced_target_designator.laser_arm", "§9• 末影激光器");
         add("tooltip." + MOD_ID + ".advanced_target_designator.cross_dimensional", "§6⚡ 只有无人机端口支持跨维度传输");
         add("tooltip." + MOD_ID + ".addon_block_cross_dimensional", "附加到无人机端口以启用跨维度传输。\n允许无人机在维度之间旅行。");
+        add("tooltip." + MOD_ID + ".addon_block_cross_dimensional_disabled", "§c⚠ 服务器配置中已禁用跨维度插件");
         
         // Accelerator Motor tooltips
         add("tooltip." + MOD_ID + ".accelerator_motor.addon_info", "§6⚡ 支持插件");
