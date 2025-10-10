@@ -3,8 +3,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "oritechthings:block/accelerator_magnetic_field",
-		"particle": "oritechthings:block/accelerator_magnetic_field"
+		"0": "oritech:item/magnetic_coil",
+		"particle": "oritech:item/magnetic_coil"
 	},
 	"elements": [
 		{

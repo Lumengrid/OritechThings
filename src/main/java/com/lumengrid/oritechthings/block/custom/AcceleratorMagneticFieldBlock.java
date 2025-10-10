@@ -1,6 +1,7 @@
 package com.lumengrid.oritechthings.block.custom;
 
 import com.lumengrid.oritechthings.entity.custom.AcceleratorMagneticFieldBlockEntity;
+import com.lumengrid.oritechthings.main.ConfigLoader;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -188,7 +189,7 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context, @NotNull List<Component> tooltip,
                                 TooltipFlag options) {
-        if (!com.lumengrid.oritechthings.main.ConfigLoader.getInstance().magneticFieldSettings.enabled()) {
+        if (!ConfigLoader.getInstance().magneticFieldSettings.enabled()) {
             tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field_disabled")
                     .withStyle(net.minecraft.ChatFormatting.RED));
             return;
