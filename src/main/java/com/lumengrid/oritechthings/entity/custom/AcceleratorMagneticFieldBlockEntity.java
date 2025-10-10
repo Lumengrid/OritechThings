@@ -62,40 +62,56 @@ public class AcceleratorMagneticFieldBlockEntity extends ExpandableEnergyStorage
         if (magnetPos.getY() != acceleratorPos.getY()) {
             return false;
         }
-        return true;
-//        TODO Manage a proper function that checks if the magnet is inside the particle accelerator area
-//        // Check if magnet is within the accelerator area (search for accelerator blocks in a reasonable radius)
-//        int searchRadius = 32; // Maximum radius to search for accelerator components
-//        int minDistance = Integer.MAX_VALUE;
-//
-//        // Search for accelerator components (controller, motor, guide ring, sensor)
-//        for (int x = -searchRadius; x <= searchRadius; x++) {
-//            for (int z = -searchRadius; z <= searchRadius; z++) {
-//                BlockPos checkPos = acceleratorPos.offset(x, 0, z);
-//                var blockState = level.getBlockState(checkPos);
-//                var block = blockState.getBlock();
-//
-//                // Check if this is an accelerator component
-//                if (isAcceleratorComponent(block)) {
-//                    int distance = magnetPos.distManhattan(checkPos);
-//                    minDistance = Math.min(minDistance, distance);
-//                }
-//            }
-//        }
-//
-//        // Magnet must be within reasonable distance of accelerator components
-//        return minDistance <= 16; // Within 16 blocks of accelerator components
+        
+        // Get configurable values from the configuration
+        var config = com.lumengrid.oritechthings.main.ConfigLoader.getInstance().magneticFieldSettings;
+        int searchRadius = config.searchRadius();
+        int maxAllowedDistance = config.minDistance();
+        
+        // Check if magnet is within the accelerator area (search for accelerator blocks in configurable radius)
+        int minDistance = Integer.MAX_VALUE;
+
+        for (int x = -searchRadius; x <= searchRadius; x++) {
+            for (int z = -searchRadius; z <= searchRadius; z++) {
+                BlockPos checkPos = acceleratorPos.offset(x, 0, z);
+                assert level != null;
+                var blockState = level.getBlockState(checkPos);
+                var block = blockState.getBlock();
+
+                // Check if this is an accelerator component
+                if (isAcceleratorComponent(block)) {
+                    int distance = magnetPos.distManhattan(checkPos);
+                    minDistance = Math.min(minDistance, distance);
+                }
+            }
+        }
+
+        // Magnet must be within configurable distance of accelerator components
+        return minDistance <= maxAllowedDistance;
     }
     
     private boolean isAcceleratorComponent(net.minecraft.world.level.block.Block block) {
-        // Check if the block is part of the particle accelerator system
-        String blockName = block.toString().toLowerCase();
-        return blockName.contains("accelerator") || 
-               blockName.contains("particle") ||
-               blockName.contains("motor") ||
-               blockName.contains("guide") ||
-               blockName.contains("ring") ||
-               blockName.contains("sensor");
+        // Check for base accelerator block types using proper type checking
+        if (block instanceof rearth.oritech.block.blocks.accelerator.AcceleratorPassthroughBlock) {
+            return true; // Covers: Motor, Ring, Sensor
+        }
+        
+        // Check for controller (extends HorizontalDirectionalBlock directly)
+        if (block instanceof rearth.oritech.block.blocks.accelerator.AcceleratorControllerBlock) {
+            return true;
+        }
+        
+        // Check for magnetic field (custom block)
+        if (block instanceof com.lumengrid.oritechthings.block.custom.AcceleratorMagneticFieldBlock) {
+            return true;
+        }
+        
+        // Check for black hole (part of accelerator system)
+        if (block instanceof rearth.oritech.block.blocks.accelerator.BlackHoleBlock) {
+            return true;
+        }
+        
+        return false;
     }
     
     @Override
