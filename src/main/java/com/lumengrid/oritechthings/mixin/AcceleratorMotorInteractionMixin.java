@@ -47,13 +47,7 @@ public class AcceleratorMotorInteractionMixin {
 
         var baseMotorCost = speed * Oritech.CONFIG.accelerationRFCost();
         float additionalVelocity = Math.max(Math.min(addonStats.speedBonus(), 10.0f), 0.0f);
-        var additionalCost = 0.0;
-        if (additionalVelocity > 0) {
-            additionalCost = speed * Oritech.CONFIG.accelerationRFCost() * additionalVelocity;
-        }
-
-        var totalCostBeforeEfficiency = baseMotorCost + additionalCost;
-        var totalCost = calculateEnergyCost(totalCostBeforeEfficiency, addonStats.energyCostMultiplier());
+        var totalCost = calculateEnergyCost(baseMotorCost, addonStats.energyCostMultiplier());
         var availableEnergy = storage.getAmount();
         if (availableEnergy >= totalCost) {
             storage.extract(totalCost, false);
