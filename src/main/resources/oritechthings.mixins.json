@@ -6,13 +6,14 @@
   "mixins": [
     "AcceleratorControllerBlockEntityMixin",
     "AcceleratorMotorInteractionMixin",
-    "AcceleratorMotorTooltipMixin",
     "AcceleratorMotorBlockMixin",
     "MachineAddonBlockMixin",
     "AcceleratorParticleLogicMixin",
     "DronePortEntityMixin"
   ],
-  "client": [],
+  "client": [
+    "AcceleratorMotorTooltipMixin"
+  ],
   "server": [],
   "minVersion": "0.8"
 }
