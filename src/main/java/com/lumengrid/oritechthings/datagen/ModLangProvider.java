@@ -28,6 +28,16 @@ public class ModLangProvider extends LanguageProvider {
         add("tooltip."+MOD_ID+".state.on", "ON");
         add("tooltip."+MOD_ID+".state.off", "OFF");
         
+        // Tag translations
+        add("tag."+MOD_ID+".addons", "Oritech Things Addons");
+        add("tag."+MOD_ID+".tiered_addon_processing", "Processing Addons");
+        add("tag."+MOD_ID+".tiered_addon_acceptor", "Acceptor Addons");
+        add("tag."+MOD_ID+".tiered_addon_capacitor", "Capacitor Addons");
+        add("tag."+MOD_ID+".tiered_addon_speed", "Speed Addons");
+        add("tag."+MOD_ID+".tiered_addon_efficient_speed", "Efficient Speed Addons");
+        add("tag."+MOD_ID+".tiered_addon_efficiency", "Efficiency Addons");
+        add("tag."+MOD_ID+".particle_accelerator", "Particle Accelerator Components");
+        
 
         //generic blocks
         ModBlocks.OTHER.getEntries().forEach(e -> addBlock(e,
@@ -104,6 +114,7 @@ public class ModLangProvider extends LanguageProvider {
 
         add("message." + TargetDesignator + ".position_invalid", "⚠ Invalid position ⚠");
         add("message." + TargetDesignator + ".different_dimension", "⚠ Different Dimension ⚠");
+        add("tooltip." + TargetDesignator + ".dimension", "Dimension: ");
         add("message." + TargetDesignator + ".accelerator_saved", "Particle Accelerator saved at ");
 
         add("tooltip." + MOD_ID + ".accelerator_target_designator",

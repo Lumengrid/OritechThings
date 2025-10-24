@@ -145,16 +145,11 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag type) {
-        if (!stack.has(ComponentContent.TARGET_POSITION.get())) {
-            tooltip.add(Component.translatable("tooltip.oritech.target_designator.no_target")
-                    .withStyle(ChatFormatting.RED));
-        } else {
-            BlockPos position = stack.get(ComponentContent.TARGET_POSITION.get());
-            if (ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
-                ResourceKey<Level> dimension = stack.get(ModDataComponents.TARGET_DIMENSION.get());
-                tooltip.add(Component.translatable("tooltip.oritech.target_designator.set_to", Objects.requireNonNull(position).toShortString())
-                        .append(Component.literal(getDimensionName(dimension)).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.BOLD)));
-            }
+        super.appendHoverText(stack, context, tooltip, type);
+        if (ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
+            ResourceKey<Level> dimension = stack.get(ModDataComponents.TARGET_DIMENSION.get());
+            tooltip.add(Component.translatable("tooltip.oritechthings.advanced_target_designator.dimension")
+                    .append(Component.literal(getDimensionName(dimension)).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.BOLD)));
         }
         tooltip.add(Component.empty());
         if (Screen.hasControlDown()) {

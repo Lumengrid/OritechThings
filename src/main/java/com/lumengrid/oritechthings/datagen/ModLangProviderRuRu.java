@@ -27,6 +27,16 @@ public class ModLangProviderRuRu extends LanguageProvider {
         add("tooltip."+MOD_ID+".tier_addon", "Уровень ");
         add("tooltip."+MOD_ID+".state.on", "ВКЛ.");
         add("tooltip."+MOD_ID+".state.off", "ВЫКЛ.");
+        
+        // Tag translations
+        add("tag."+MOD_ID+".addons", "Oritech Things Дополнения");
+        add("tag."+MOD_ID+".tiered_addon_processing", "Дополнения Обработки");
+        add("tag."+MOD_ID+".tiered_addon_acceptor", "Дополнения Приемника");
+        add("tag."+MOD_ID+".tiered_addon_capacitor", "Дополнения Конденсатора");
+        add("tag."+MOD_ID+".tiered_addon_speed", "Дополнения Скорости");
+        add("tag."+MOD_ID+".tiered_addon_efficient_speed", "Дополнения Эффективной Скорости");
+        add("tag."+MOD_ID+".tiered_addon_efficiency", "Дополнения Эффективности");
+        add("tag."+MOD_ID+".particle_accelerator", "Компоненты Ускорителя Частиц");
 
         //generic blocks
         ModBlocks.OTHER.getEntries().forEach(e -> addBlock(e,
@@ -103,6 +113,7 @@ public class ModLangProviderRuRu extends LanguageProvider {
 
         add("message." + TargetDesignator + ".position_invalid", "⚠ Недопустимое положение ⚠");
         add("message." + TargetDesignator + ".different_dimension", "⚠ Другая размерность ⚠");
+        add("tooltip." + TargetDesignator + ".dimension", "Размерность: ");
         add("message." + TargetDesignator + ".accelerator_saved", "Ускоритель частиц сохранён в ");
 
         // (?) deprecated (?)
