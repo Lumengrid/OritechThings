@@ -27,6 +27,16 @@ public class ModLangProviderZhCn extends LanguageProvider {
         add("tooltip."+MOD_ID+".tier_addon", "等级 ");
         add("tooltip."+MOD_ID+".state.on", "开启");
         add("tooltip."+MOD_ID+".state.off", "关闭");
+        
+        // Tag translations
+        add("tag."+MOD_ID+".addons", "Oritech Things 插件");
+        add("tag."+MOD_ID+".tiered_addon_processing", "处理插件");
+        add("tag."+MOD_ID+".tiered_addon_acceptor", "接收器插件");
+        add("tag."+MOD_ID+".tiered_addon_capacitor", "电容器插件");
+        add("tag."+MOD_ID+".tiered_addon_speed", "速度插件");
+        add("tag."+MOD_ID+".tiered_addon_efficient_speed", "高效速度插件");
+        add("tag."+MOD_ID+".tiered_addon_efficiency", "效率插件");
+        add("tag."+MOD_ID+".particle_accelerator", "粒子加速器组件");
 
         //generic blocks
         ModBlocks.OTHER.getEntries().forEach(e -> addBlock(e,
@@ -103,6 +113,7 @@ public class ModLangProviderZhCn extends LanguageProvider {
 
         add("message." + TargetDesignator + ".position_invalid", "⚠ 无效位置 ⚠");
         add("message." + TargetDesignator + ".different_dimension", "⚠ 不同维度 ⚠");
+        add("tooltip." + TargetDesignator + ".dimension", "维度: ");
         add("message." + TargetDesignator + ".accelerator_saved", "粒子加速器已保存到 ");
 
         add("tooltip." + MOD_ID + ".accelerator_target_designator",
