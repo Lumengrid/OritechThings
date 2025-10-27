@@ -6,6 +6,7 @@ import com.lumengrid.oritechthings.entity.custom.AcceleratorSpeedSensorBlockEnti
 import com.lumengrid.oritechthings.main.ConfigLoader;
 import com.lumengrid.oritechthings.main.ModDataComponents;
 import com.lumengrid.oritechthings.api.CrossDimensionalDrone;
+import com.lumengrid.oritechthings.main.OritechThings;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -40,67 +41,71 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
 
     @Override
     public @NotNull InteractionResult useOn(UseOnContext context) {
-        if (context.getLevel().isClientSide()) {
-            return InteractionResult.SUCCESS;
-        }
-        var crossDimensionEnabled = ConfigLoader.getInstance().dimensionalDroneSettings.enabled();
-        if (!crossDimensionEnabled) {
-            return super.useOn(context);
-        }
-        BlockPos clickedPos = context.getClickedPos();
-        Level level = context.getLevel();
-        Player player = context.getPlayer();
-        BlockState clickedBlockState = level.getBlockState(clickedPos);
-        if (clickedBlockState.getBlock() instanceof MachineCoreBlock && clickedBlockState.getValue(MachineCoreBlock.USED)) {
-            BlockEntity machineEntity = MachineCoreBlock.getControllerEntity(level, clickedPos);
-            if (machineEntity instanceof LaserArmBlockEntity) {
-                clickedPos = clickedPos.below();
-                clickedBlockState = level.getBlockState(clickedPos);
-            }
-        }
-        BlockEntity clickedEntity = level.getBlockEntity(clickedPos);
-        BlockPos targetPos = null;
-        ResourceKey<Level> targetDimension = null;
-        ItemStack itemInHand = context.getItemInHand();
-        if (itemInHand.has(ComponentContent.TARGET_POSITION.get())) {
-            targetPos = itemInHand.get(ComponentContent.TARGET_POSITION.get());
-            targetDimension = itemInHand.get(ModDataComponents.TARGET_DIMENSION.get());
-        }
-        if (clickedBlockState.getBlock().equals(BlockContent.LASER_ARM_BLOCK)) {
-            if (clickedEntity instanceof LaserArmBlockEntity) {
-                return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
-            }
-        }
-        if (clickedBlockState.getBlock().equals(BlockContent.DRONE_PORT_BLOCK)) {
-            if (clickedEntity instanceof DronePortEntity) {
-                return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
-            }
-        }
-        if (clickedBlockState.getBlock().equals(ModBlocks.ACCELERATOR_SPEED_SENSOR.get())) {
-            if (clickedEntity instanceof AcceleratorSpeedSensorBlockEntity) {
-                return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
-            }
-        }
-        if (clickedBlockState.getBlock().equals(ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get())) {
-            if (clickedEntity instanceof com.lumengrid.oritechthings.entity.custom.AcceleratorMagneticFieldBlockEntity) {
-                return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
-            }
-        }
-        // Check if clicking on a particle accelerator controller
-        if (clickedBlockState.getBlock().equals(BlockContent.ACCELERATOR_CONTROLLER)) {
-            if (clickedEntity instanceof rearth.oritech.block.entity.accelerator.AcceleratorControllerBlockEntity) {
-                // Save the accelerator position in the designator
-                itemInHand.set(ComponentContent.TARGET_POSITION.get(), context.getClickedPos());
-                itemInHand.set(ModDataComponents.TARGET_DIMENSION.get(), level.dimension());
-                Objects.requireNonNull(player).sendSystemMessage(Component.translatable("message.oritechthings.advanced_target_designator.accelerator_saved")
-                        .append(Component.literal(context.getClickedPos().toShortString()).withStyle(ChatFormatting.BLUE)));
+        try {
+            if (context.getLevel().isClientSide()) {
                 return InteractionResult.SUCCESS;
             }
-        }
-        if (!clickedBlockState.getBlock().equals(Blocks.AIR)) {
-            itemInHand.set(ComponentContent.TARGET_POSITION.get(), context.getClickedPos());
-            itemInHand.set(ModDataComponents.TARGET_DIMENSION.get(), level.dimension());
-            Objects.requireNonNull(player).sendSystemMessage(Component.translatable("message.oritech.target_designator.position_stored"));
+            var crossDimensionEnabled = ConfigLoader.getInstance().dimensionalDroneSettings.enabled();
+            if (!crossDimensionEnabled) {
+                return super.useOn(context);
+            }
+            BlockPos clickedPos = context.getClickedPos();
+            Level level = context.getLevel();
+            Player player = context.getPlayer();
+            BlockState clickedBlockState = level.getBlockState(clickedPos);
+            if (clickedBlockState.getBlock() instanceof MachineCoreBlock && clickedBlockState.getValue(MachineCoreBlock.USED)) {
+                BlockEntity machineEntity = MachineCoreBlock.getControllerEntity(level, clickedPos);
+                if (machineEntity instanceof LaserArmBlockEntity) {
+                    clickedPos = clickedPos.below();
+                    clickedBlockState = level.getBlockState(clickedPos);
+                }
+            }
+            BlockEntity clickedEntity = level.getBlockEntity(clickedPos);
+            BlockPos targetPos = null;
+            ResourceKey<Level> targetDimension = null;
+            ItemStack itemInHand = context.getItemInHand();
+            if (itemInHand.has(ComponentContent.TARGET_POSITION.get())) {
+                targetPos = itemInHand.get(ComponentContent.TARGET_POSITION.get());
+                targetDimension = itemInHand.get(ModDataComponents.TARGET_DIMENSION.get());
+            }
+            if (clickedBlockState.getBlock().equals(BlockContent.LASER_ARM_BLOCK)) {
+                if (clickedEntity instanceof LaserArmBlockEntity) {
+                    return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
+                }
+            }
+            if (clickedBlockState.getBlock().equals(BlockContent.DRONE_PORT_BLOCK)) {
+                if (clickedEntity instanceof DronePortEntity) {
+                    return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
+                }
+            }
+            if (clickedBlockState.getBlock().equals(ModBlocks.ACCELERATOR_SPEED_SENSOR.get())) {
+                if (clickedEntity instanceof AcceleratorSpeedSensorBlockEntity) {
+                    return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
+                }
+            }
+            if (clickedBlockState.getBlock().equals(ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get())) {
+                if (clickedEntity instanceof com.lumengrid.oritechthings.entity.custom.AcceleratorMagneticFieldBlockEntity) {
+                    return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
+                }
+            }
+            // Check if clicking on a particle accelerator controller
+            if (clickedBlockState.getBlock().equals(BlockContent.ACCELERATOR_CONTROLLER)) {
+                if (clickedEntity instanceof rearth.oritech.block.entity.accelerator.AcceleratorControllerBlockEntity) {
+                    // Save the accelerator position in the designator
+                    itemInHand.set(ComponentContent.TARGET_POSITION.get(), context.getClickedPos());
+                    itemInHand.set(ModDataComponents.TARGET_DIMENSION.get(), level.dimension());
+                    Objects.requireNonNull(player).sendSystemMessage(Component.translatable("message.oritechthings.advanced_target_designator.accelerator_saved")
+                            .append(Component.literal(context.getClickedPos().toShortString()).withStyle(ChatFormatting.BLUE)));
+                    return InteractionResult.SUCCESS;
+                }
+            }
+            if (!clickedBlockState.getBlock().equals(Blocks.AIR)) {
+                itemInHand.set(ComponentContent.TARGET_POSITION.get(), context.getClickedPos());
+                itemInHand.set(ModDataComponents.TARGET_DIMENSION.get(), level.dimension());
+                Objects.requireNonNull(player).sendSystemMessage(Component.translatable("message.oritech.target_designator.position_stored"));
+            }
+        } catch (Exception e) {
+            OritechThings.LOGGER.error("AdvancedTargetDesignator.useOn{}", e.getMessage());
         }
 
         return InteractionResult.SUCCESS;
