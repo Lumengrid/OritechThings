@@ -46,7 +46,7 @@ public class OritechThings
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(ModEntities.AMETHYST_FISH.get(), AmethystFishRenderer::new);
-            NeoForge.EVENT_BUS.register(RenderWorldLastEvent.class);
+            // NeoForge.EVENT_BUS.register(RenderWorldLastEvent.class);
         }
     }
 }
