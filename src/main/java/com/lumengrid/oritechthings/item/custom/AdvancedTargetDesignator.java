@@ -28,7 +28,6 @@ import rearth.oritech.block.blocks.processing.MachineCoreBlock;
 import rearth.oritech.block.entity.interaction.DronePortEntity;
 import rearth.oritech.block.entity.interaction.LaserArmBlockEntity;
 import rearth.oritech.init.BlockContent;
-import rearth.oritech.init.ComponentContent;
 import rearth.oritech.item.tools.LaserTargetDesignator;
 
 import java.util.List;
@@ -64,8 +63,8 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
             BlockPos targetPos = null;
             ResourceKey<Level> targetDimension = null;
             ItemStack itemInHand = context.getItemInHand();
-            if (itemInHand.has(ComponentContent.TARGET_POSITION.get())) {
-                targetPos = itemInHand.get(ComponentContent.TARGET_POSITION.get());
+            if (itemInHand.has(ModDataComponents.TARGET_POSITION)) {
+                targetPos = itemInHand.get(ModDataComponents.TARGET_POSITION.get());
                 targetDimension = itemInHand.get(ModDataComponents.TARGET_DIMENSION.get());
             }
             if (clickedBlockState.getBlock().equals(BlockContent.LASER_ARM_BLOCK)) {
@@ -92,7 +91,7 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
             if (clickedBlockState.getBlock().equals(BlockContent.ACCELERATOR_CONTROLLER)) {
                 if (clickedEntity instanceof rearth.oritech.block.entity.accelerator.AcceleratorControllerBlockEntity) {
                     // Save the accelerator position in the designator
-                    itemInHand.set(ComponentContent.TARGET_POSITION.get(), context.getClickedPos());
+                    itemInHand.set(ModDataComponents.TARGET_POSITION.get(), context.getClickedPos());
                     itemInHand.set(ModDataComponents.TARGET_DIMENSION.get(), level.dimension());
                     Objects.requireNonNull(player).sendSystemMessage(Component.translatable("message.oritechthings.advanced_target_designator.accelerator_saved")
                             .append(Component.literal(context.getClickedPos().toShortString()).withStyle(ChatFormatting.BLUE)));
@@ -100,12 +99,12 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
                 }
             }
             if (!clickedBlockState.getBlock().equals(Blocks.AIR)) {
-                itemInHand.set(ComponentContent.TARGET_POSITION.get(), context.getClickedPos());
+                itemInHand.set(ModDataComponents.TARGET_POSITION.get(), context.getClickedPos());
                 itemInHand.set(ModDataComponents.TARGET_DIMENSION.get(), level.dimension());
                 Objects.requireNonNull(player).sendSystemMessage(Component.translatable("message.oritech.target_designator.position_stored"));
             }
         } catch (Exception e) {
-            OritechThings.LOGGER.error("AdvancedTargetDesignator.useOn{}", e.getMessage());
+            OritechThings.LOGGER.error("AdvancedTargetDesignator.useOn: {}", e.getMessage());
         }
 
         return InteractionResult.SUCCESS;
@@ -150,7 +149,13 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag type) {
-        super.appendHoverText(stack, context, tooltip, type);
+        if (stack.has(ModDataComponents.TARGET_POSITION.get())) {
+            BlockPos data = stack.get(ModDataComponents.TARGET_POSITION.get());
+            assert data != null;
+            tooltip.add(Component.translatable("tooltip.oritech.target_designator.set_to", data.toShortString()));
+        } else {
+            tooltip.add(Component.translatable("tooltip.oritech.target_designator.no_target"));
+        }
         if (ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
             ResourceKey<Level> dimension = stack.get(ModDataComponents.TARGET_DIMENSION.get());
             tooltip.add(Component.translatable("tooltip.oritechthings.advanced_target_designator.dimension")
@@ -162,7 +167,6 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
                     .withStyle(ChatFormatting.GRAY));
             tooltip.add(Component.translatable("tooltip.oritechthings.advanced_target_designator.speed_sensor")
                     .withStyle(ChatFormatting.BLUE));
-            // Only show magnetic field if enabled in config
             if (ConfigLoader.getInstance().magneticFieldSettings.enabled()) {
                 tooltip.add(Component.translatable("tooltip.oritechthings.advanced_target_designator.magnetic_field")
                         .withStyle(ChatFormatting.BLUE));
