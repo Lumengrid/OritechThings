@@ -30,6 +30,6 @@ license = "${mod_license}"
     modId = "oritech"
     type = "required"
     versionRange = "${oritech_version_range}"
-    ordering = "NONE"
+    ordering = "BEFORE"
     side = "BOTH"
 

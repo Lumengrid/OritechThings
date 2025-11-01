@@ -31,7 +31,6 @@ public class OritechThings
     public OritechThings(IEventBus modEventBus, ModContainer modContainer)
     {
         ConfigLoader.getInstance().load();
-
         ModCreativeModeTabs.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModDataComponents.register(modEventBus);
@@ -46,7 +45,7 @@ public class OritechThings
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(ModEntities.AMETHYST_FISH.get(), AmethystFishRenderer::new);
-            // NeoForge.EVENT_BUS.register(RenderWorldLastEvent.class);
+            NeoForge.EVENT_BUS.register(RenderWorldLastEvent.class);
         }
     }
 }
