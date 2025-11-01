@@ -1,5 +1,6 @@
 package com.lumengrid.oritechthings.event;
 
+import com.lumengrid.oritechthings.item.custom.AdvancedTargetDesignator;
 import com.lumengrid.oritechthings.main.ModDataComponents;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.util.RenderBlockUtils;
@@ -14,8 +15,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import rearth.oritech.init.ComponentContent;
-import rearth.oritech.item.tools.LaserTargetDesignator;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderWorldLastEvent {
@@ -36,10 +35,11 @@ public class RenderWorldLastEvent {
     private static void checkTargetDesignator(Player player, InteractionHand hand) {
         try {
             ItemStack item = player.getItemInHand(hand);
-            if (item.isEmpty() || !(item.getItem() instanceof LaserTargetDesignator) || !item.has(ComponentContent.TARGET_POSITION.get())) {
+            // Only render for AdvancedTargetDesignator items
+            if (item.isEmpty() || !(item.getItem() instanceof AdvancedTargetDesignator) || !item.has(ModDataComponents.TARGET_POSITION)) {
                 return;
             }
-            BlockPos targetPos = item.get(ComponentContent.TARGET_POSITION.get());
+            BlockPos targetPos = item.get(ModDataComponents.TARGET_POSITION.get());
             if (targetPos != null) {
                 if (item.has(ModDataComponents.TARGET_DIMENSION)) {
                     ResourceKey<Level> dimension = item.get(ModDataComponents.TARGET_DIMENSION.get());
@@ -51,7 +51,7 @@ public class RenderWorldLastEvent {
                 }
             }
         } catch (Exception e) {
-            OritechThings.LOGGER.error("checkTargetDesignator{}", e.getMessage());
+            OritechThings.LOGGER.error("checkTargetDesignator: {}", e.getMessage());
         }
     }
 }

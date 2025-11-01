@@ -1,5 +1,6 @@
 package com.lumengrid.oritechthings.mixin;
 
+import com.lumengrid.oritechthings.item.custom.AdvancedTargetDesignator;
 import com.lumengrid.oritechthings.main.ModDataComponents;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.main.ConfigLoader;
@@ -35,7 +36,6 @@ import rearth.oritech.block.blocks.processing.MachineCoreBlock;
 import rearth.oritech.block.entity.MachineCoreEntity;
 import rearth.oritech.block.entity.interaction.DronePortEntity;
 import rearth.oritech.api.energy.containers.DynamicEnergyStorage;
-import rearth.oritech.init.ComponentContent;
 import rearth.oritech.util.MachineAddonController;
 
 import java.util.Objects;
@@ -94,41 +94,55 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
 
     /**
      * Inject into checkPositionCard to read dimension data from AdvancedTargetDesignator
+     * Only intercepts if it's our AdvancedTargetDesignator, otherwise lets Oritech handle it
      */
     @Inject(method = "checkPositionCard", at = @At("HEAD"), cancellable = true)
     private void checkPositionCard(CallbackInfo ci) {
         try {
-            if (ConfigLoader.getInstance().dimensionalDroneSettings.enabled() && hasCrossDimensionalAddon) {
-                DronePortEntity self = (DronePortEntity) (Object) this;
-                var source = cardInventory.getItem(0);
-
-                if (source != null && !source.isEmpty()) {
-                    if (source.has(ModDataComponents.TARGET_DIMENSION.get())) {
-                        var targetDimension = source.get(ModDataComponents.TARGET_DIMENSION.get());
-                        assert self.getLevel() != null;
-                        assert targetDimension != null;
-                        boolean isCrossDimensional = !targetDimension.equals(self.getLevel().dimension());
-                        if (isCrossDimensional) {
-                            var targetPos = source.get(ComponentContent.TARGET_POSITION.get());
-                            boolean success = setCrossDimensionalTarget(targetPos, targetDimension);
-                            if (success) {
-                                cardInventory.setItem(1, source);
-                                cardInventory.setItem(0, ItemStack.EMPTY);
-                                cardInventory.setChanged();
-                                self.setChanged();
-                            }
-
-                            ci.cancel();
-                        } else {
-                            this.targetDimension = null;
-                        }
-                    } else {
-                        this.targetDimension = null;
-                    }
-                }
+            DronePortEntity self = (DronePortEntity) (Object) this;
+            var source = cardInventory.getItem(0);
+            if (source == null || source.isEmpty()) {
+                return;
             }
+            boolean isAdvancedDesignator = source.getItem() instanceof AdvancedTargetDesignator;
+            if (!isAdvancedDesignator) {
+                return;
+            }
+
+            if (source.has(ModDataComponents.TARGET_POSITION.get())) {
+                var targetPos = source.get(ModDataComponents.TARGET_POSITION.get());
+                ResourceKey<Level> targetDimension = null;
+                if (ConfigLoader.getInstance().dimensionalDroneSettings.enabled() && source.has(ModDataComponents.TARGET_DIMENSION.get())) {
+                    targetDimension = source.get(ModDataComponents.TARGET_DIMENSION.get());
+                }
+
+                if (targetDimension == null) {
+                    assert self.getLevel() != null;
+                    targetDimension = self.getLevel().dimension();
+                }
+                
+                assert self.getLevel() != null;
+                boolean isCrossDimensional = !targetDimension.equals(self.getLevel().dimension());
+                if (isCrossDimensional && !hasCrossDimensionalAddon) {
+                    OritechThings.LOGGER.warn("Cross-dimensional transfer attempted without Cross-Dimensional Addon at drone port {}",
+                            self.getBlockPos());
+                    ci.cancel();
+                    return;
+                }
+
+                boolean success = setCrossDimensionalTarget(targetPos, targetDimension);
+                if (success) {
+                    cardInventory.setItem(1, source);
+                    cardInventory.setItem(0, ItemStack.EMPTY);
+                    cardInventory.setChanged();
+                    self.setChanged();
+                }
+
+                ci.cancel();
+            }
+            
         } catch (Exception e) {
-            OritechThings.LOGGER.error("DronePortEntityMixin.checkPositionCard{}", e.getMessage());
+            OritechThings.LOGGER.error("DronePortEntityMixin.checkPositionCard: {}", e.getMessage());
         }
     }
     
@@ -324,7 +338,8 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
     private boolean setCrossDimensionalTarget(BlockPos targetPos, ResourceKey<Level> targetDimension) {
         DronePortEntity self = (DronePortEntity) (Object) this;
         validateCrossDimensionalAddonState();
-        if (!hasCrossDimensionalAddon) {
+        assert self.getLevel() != null;
+        if (!targetDimension.equals(self.getLevel().dimension()) && !hasCrossDimensionalAddon) {
             statusMessage = "message.oritechthings.drone.addon_required";
             OritechThings.LOGGER.warn("Attempted to set cross-dimensional target without addon at drone port {}", 
                     self.getBlockPos());
@@ -498,8 +513,6 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
      */
     @Inject(method = "checkIncomingAnimation", at = @At("HEAD"), cancellable = true)
     private void checkIncomingAnimation(CallbackInfo ci) {
-        DronePortEntity self = (DronePortEntity) (Object) this;
-        
         if (incomingPacket != null && isCrossDimensionalPacket()) {
             ci.cancel();
         }

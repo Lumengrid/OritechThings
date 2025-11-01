@@ -63,6 +63,17 @@ public class ModLangProviderZhCn extends LanguageProvider {
         add("block." + AspeedSensor + ".invalid_controller.to_far",
                 "⚠ 目标粒子加速器过远 - 最大距离 128 格 ⚠");
         add("gui."+AspeedSensor+".speed_input","速度输入" );
+        
+        // Speed Sensor Block tooltips
+        add("tooltip." + AspeedSensor, "粒子加速器速度传感器");
+        add("tooltip." + AspeedSensor + "_desc", "监测加速器中的粒子速度，并根据速度阈值输出红石信号");
+        
+        // Advanced Target Designator usage for Speed Sensor
+        add("tooltip." + AspeedSensor + ".target_designator_usage", "§7高级目标指示器使用方法:");
+        add("tooltip." + AspeedSensor + ".target_designator_step1", "§91. 用高级目标指示器右键点击粒子加速器以保存位置");
+        add("tooltip." + AspeedSensor + ".target_designator_step2", "§92. 在所需位置放置速度传感器");
+        add("tooltip." + AspeedSensor + ".target_designator_step3", "§93. 右键点击速度传感器以将其链接到粒子加速器");
+        add("tooltip." + AspeedSensor + ".target_designator_benefit", "§6⚡ 允许远程监控和自动链接到加速器");
 
         //particle accelerator magnetic field
 

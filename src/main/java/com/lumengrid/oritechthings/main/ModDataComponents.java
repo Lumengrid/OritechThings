@@ -1,5 +1,6 @@
 package com.lumengrid.oritechthings.main;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -13,6 +14,9 @@ import java.util.function.UnaryOperator;
 public class ModDataComponents {
     public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPES =
             DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE ,OritechThings.MOD_ID);
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<BlockPos>> TARGET_POSITION = register("target_position",
+            builder -> builder.persistent(BlockPos.CODEC).networkSynchronized(BlockPos.STREAM_CODEC));
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResourceKey<Level>>> TARGET_DIMENSION = register("target_dimension",
             builder -> builder.persistent(Level.RESOURCE_KEY_CODEC));

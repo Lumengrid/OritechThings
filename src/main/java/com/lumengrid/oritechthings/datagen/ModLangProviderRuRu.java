@@ -63,6 +63,17 @@ public class ModLangProviderRuRu extends LanguageProvider {
         add("block." + AspeedSensor + ".invalid_controller.to_far",
                 "⚠ Целевой ускоритель частиц слишком далеко — макс. дистанция 128 блоков ⚠");
         add("gui."+AspeedSensor+".speed_input","Вход скорости" );
+        
+        // Speed Sensor Block tooltips
+        add("tooltip." + AspeedSensor, "Датчик Скорости Ускорителя Частиц");
+        add("tooltip." + AspeedSensor + "_desc", "Отслеживает скорость частиц в ускорителе и выдаёт сигнал редстоуна на основе порога скорости");
+        
+        // Advanced Target Designator usage for Speed Sensor
+        add("tooltip." + AspeedSensor + ".target_designator_usage", "§7Использование Продвинутого Целеуказателя:");
+        add("tooltip." + AspeedSensor + ".target_designator_step1", "§91. ПКМ по ускорителю частиц с Продвинутым Целеуказателем для сохранения позиции");
+        add("tooltip." + AspeedSensor + ".target_designator_step2", "§92. Разместите Датчик Скорости в желаемом месте");
+        add("tooltip." + AspeedSensor + ".target_designator_step3", "§93. ПКМ по датчику скорости для связи его с ускорителем частиц");
+        add("tooltip." + AspeedSensor + ".target_designator_benefit", "§6⚡ Позволяет удалённый мониторинг и автоматическую связь с ускорителями");
 
         //particle accelerator magnetic field
 

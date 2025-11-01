@@ -64,6 +64,17 @@ public class ModLangProvider extends LanguageProvider {
         add("block." + AspeedSensor + ".invalid_controller.to_far",
                 "⚠ Target Particle Accelerator too far - Max distance 128 blocks ⚠");
         add("gui."+AspeedSensor+".speed_input","Speed Input" );
+        
+        // Speed Sensor Block tooltips
+        add("tooltip." + AspeedSensor, "Particle Accelerator Speed Sensor");
+        add("tooltip." + AspeedSensor + "_desc", "Monitors particle velocity in the accelerator and outputs redstone signal based on speed threshold");
+        
+        // Advanced Target Designator usage for Speed Sensor
+        add("tooltip." + AspeedSensor + ".target_designator_usage", "§7Advanced Target Designator Usage:");
+        add("tooltip." + AspeedSensor + ".target_designator_step1", "§91. Right-click on a particle accelerator with the Advanced Target Designator to save position");
+        add("tooltip." + AspeedSensor + ".target_designator_step2", "§92. Place Speed Sensor at desired location");
+        add("tooltip." + AspeedSensor + ".target_designator_step3", "§93. Right-click on the speed sensor to link it to the particle accelerator");
+        add("tooltip." + AspeedSensor + ".target_designator_benefit", "§6⚡ Allows remote monitoring and automatic linking to accelerators");
 
         //particle accelerator magnetic field
 
