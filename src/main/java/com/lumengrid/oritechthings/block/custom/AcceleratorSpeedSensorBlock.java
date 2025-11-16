@@ -1,6 +1,7 @@
 package com.lumengrid.oritechthings.block.custom;
 
 import com.lumengrid.oritechthings.entity.custom.AcceleratorSpeedSensorBlockEntity;
+import com.lumengrid.oritechthings.util.ShapeUtil;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -25,6 +26,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -36,6 +40,7 @@ public class AcceleratorSpeedSensorBlock extends BaseEntityBlock {
     public AcceleratorSpeedSensorBlock() {
         super(Properties.of().strength(2f).requiresCorrectToolForDrops()
                 .lightLevel(state -> state.getValue(POWERED) ? 1 : 0)
+                .noOcclusion()
                 .isRedstoneConductor((state, blockGetter, pos) -> false));
         this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, false));
     }
@@ -44,9 +49,15 @@ public class AcceleratorSpeedSensorBlock extends BaseEntityBlock {
         this();
     }
 
+    @Override
+    public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        return Block.box(0, 0, 0, 16, 8, 16);
+    }
+
     @SuppressWarnings("null")
     @Override
-    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hitResult) {
+    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos,
+            @NotNull Player player, @NotNull BlockHitResult hitResult) {
         if (level.isClientSide()) {
             return InteractionResult.SUCCESS_NO_ITEM_USED;
         }
@@ -75,17 +86,20 @@ public class AcceleratorSpeedSensorBlock extends BaseEntityBlock {
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state,
+            @NotNull BlockEntityType<T> type) {
         return AcceleratorSpeedSensorBlockEntity::tick;
     }
 
     @Override
-    public int getSignal(@NotNull BlockState blockState, @NotNull BlockGetter blockAccess, @NotNull BlockPos pos, @NotNull Direction side) {
+    public int getSignal(@NotNull BlockState blockState, @NotNull BlockGetter blockAccess, @NotNull BlockPos pos,
+            @NotNull Direction side) {
         return blockState.getValue(POWERED) ? 15 : 0;
     }
 
     @Override
-    public int getDirectSignal(@NotNull BlockState blockState, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull Direction direction) {
+    public int getDirectSignal(@NotNull BlockState blockState, @NotNull BlockGetter level, @NotNull BlockPos pos,
+            @NotNull Direction direction) {
         return blockState.getValue(POWERED) ? 15 : 0;
     }
 
@@ -105,21 +119,34 @@ public class AcceleratorSpeedSensorBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context, @NotNull List<Component> tooltip,
-                                @NotNull TooltipFlag options) {
-        tooltip.add(Component.translatable("tooltip.oritechthings.particle_accelerator_speed_sensor").withStyle(net.minecraft.ChatFormatting.GRAY));
+    public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
+            @NotNull List<Component> tooltip,
+            @NotNull TooltipFlag options) {
+        tooltip.add(Component.translatable("tooltip.oritechthings.particle_accelerator_speed_sensor")
+                .withStyle(net.minecraft.ChatFormatting.GRAY));
         tooltip.add(Component.empty());
-        
+
         if (Screen.hasControlDown()) {
-            tooltip.add(Component.translatable("tooltip.oritechthings.particle_accelerator_speed_sensor.target_designator_usage").withStyle(net.minecraft.ChatFormatting.GRAY));
-            tooltip.add(Component.translatable("tooltip.oritechthings.particle_accelerator_speed_sensor.target_designator_step1").withStyle(net.minecraft.ChatFormatting.BLUE));
-            tooltip.add(Component.translatable("tooltip.oritechthings.particle_accelerator_speed_sensor.target_designator_step2").withStyle(net.minecraft.ChatFormatting.BLUE));
-            tooltip.add(Component.translatable("tooltip.oritechthings.particle_accelerator_speed_sensor.target_designator_step3").withStyle(net.minecraft.ChatFormatting.BLUE));
-            tooltip.add(Component.translatable("tooltip.oritechthings.particle_accelerator_speed_sensor.target_designator_benefit").withStyle(net.minecraft.ChatFormatting.GOLD));
+            tooltip.add(Component
+                    .translatable("tooltip.oritechthings.particle_accelerator_speed_sensor.target_designator_usage")
+                    .withStyle(net.minecraft.ChatFormatting.GRAY));
+            tooltip.add(Component
+                    .translatable("tooltip.oritechthings.particle_accelerator_speed_sensor.target_designator_step1")
+                    .withStyle(net.minecraft.ChatFormatting.BLUE));
+            tooltip.add(Component
+                    .translatable("tooltip.oritechthings.particle_accelerator_speed_sensor.target_designator_step2")
+                    .withStyle(net.minecraft.ChatFormatting.BLUE));
+            tooltip.add(Component
+                    .translatable("tooltip.oritechthings.particle_accelerator_speed_sensor.target_designator_step3")
+                    .withStyle(net.minecraft.ChatFormatting.BLUE));
+            tooltip.add(Component
+                    .translatable("tooltip.oritechthings.particle_accelerator_speed_sensor.target_designator_benefit")
+                    .withStyle(net.minecraft.ChatFormatting.GOLD));
         } else {
-            tooltip.add(Component.translatable("tooltip.oritech.item_extra_info").withStyle(net.minecraft.ChatFormatting.DARK_GRAY).withStyle(net.minecraft.ChatFormatting.ITALIC));
+            tooltip.add(Component.translatable("tooltip.oritech.item_extra_info")
+                    .withStyle(net.minecraft.ChatFormatting.DARK_GRAY).withStyle(net.minecraft.ChatFormatting.ITALIC));
         }
-        
+
         super.appendHoverText(stack, context, tooltip, options);
     }
 }
