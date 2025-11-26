@@ -339,6 +339,10 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
         DronePortEntity self = (DronePortEntity) (Object) this;
         validateCrossDimensionalAddonState();
         assert self.getLevel() != null;
+        if (targetDimension == null) {
+            targetDimension = self.getLevel().dimension();
+        }
+
         if (!targetDimension.equals(self.getLevel().dimension()) && !hasCrossDimensionalAddon) {
             statusMessage = "message.oritechthings.drone.addon_required";
             OritechThings.LOGGER.warn("Attempted to set cross-dimensional target without addon at drone port {}", 
