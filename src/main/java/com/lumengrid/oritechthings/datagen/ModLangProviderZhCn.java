@@ -38,18 +38,75 @@ public class ModLangProviderZhCn extends LanguageProvider {
         add("tag."+MOD_ID+".tiered_addon_efficiency", "效率插件");
         add("tag."+MOD_ID+".particle_accelerator", "粒子加速器组件");
 
-        //generic blocks
-        ModBlocks.OTHER.getEntries().forEach(e -> addBlock(e,
-                DataGenUtil.formatted(e.getRegisteredName())));
-        //block addons
-        ModBlocks.ADDONS.getEntries().forEach(e -> addBlock(e,
-                DataGenUtil.specificReplace(e.getRegisteredName())));
-        //generic items
-        ModItems.ITEMS.getEntries().forEach(e -> addItem(e,
-                DataGenUtil.formatted(e.getRegisteredName())));
-        //generic mobs
-        ModEntities.MOD_MOB_ENTITIES.getEntries().forEach(e -> addEntityType(e,
-                DataGenUtil.formatted(e.getRegisteredName())));
+        // Manual block translations
+        addBlock(ModBlocks.INFESTED_AMETHYST_BLOCK, "被虫蚀的紫水晶块");
+        addBlock(ModBlocks.ACCELERATOR_SPEED_SENSOR, "粒子加速器速度传感器");
+        addBlock(ModBlocks.ACCELERATOR_MAGNETIC_FIELD, "加速器磁场");
+        
+        // Block addons - Manual translations
+        addBlock(ModBlocks.ADDON_BLOCK_PROCESSING_TIER_2, "处理插件 等级2");
+        addBlock(ModBlocks.ADDON_BLOCK_PROCESSING_TIER_3, "处理插件 等级3");
+        addBlock(ModBlocks.ADDON_BLOCK_PROCESSING_TIER_4, "处理插件 等级4");
+        addBlock(ModBlocks.ADDON_BLOCK_PROCESSING_TIER_5, "处理插件 等级5");
+        addBlock(ModBlocks.ADDON_BLOCK_PROCESSING_TIER_6, "处理插件 等级6");
+        addBlock(ModBlocks.ADDON_BLOCK_PROCESSING_TIER_7, "处理插件 等级7");
+        addBlock(ModBlocks.ADDON_BLOCK_PROCESSING_TIER_8, "处理插件 等级8");
+        addBlock(ModBlocks.ADDON_BLOCK_PROCESSING_TIER_9, "处理插件 等级9");
+        
+        addBlock(ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_2, "接收器插件 等级2");
+        addBlock(ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_3, "接收器插件 等级3");
+        addBlock(ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_4, "接收器插件 等级4");
+        addBlock(ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_5, "接收器插件 等级5");
+        addBlock(ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_6, "接收器插件 等级6");
+        addBlock(ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_7, "接收器插件 等级7");
+        addBlock(ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_8, "接收器插件 等级8");
+        addBlock(ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_9, "接收器插件 等级9");
+        
+        addBlock(ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_2, "电容器插件 等级2");
+        addBlock(ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_3, "电容器插件 等级3");
+        addBlock(ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_4, "电容器插件 等级4");
+        addBlock(ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_5, "电容器插件 等级5");
+        addBlock(ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_6, "电容器插件 等级6");
+        addBlock(ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_7, "电容器插件 等级7");
+        addBlock(ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_8, "电容器插件 等级8");
+        addBlock(ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_9, "电容器插件 等级9");
+        
+        addBlock(ModBlocks.ADDON_BLOCK_SPEED_TIER_2, "速度插件 等级2");
+        addBlock(ModBlocks.ADDON_BLOCK_SPEED_TIER_3, "速度插件 等级3");
+        addBlock(ModBlocks.ADDON_BLOCK_SPEED_TIER_4, "速度插件 等级4");
+        addBlock(ModBlocks.ADDON_BLOCK_SPEED_TIER_5, "速度插件 等级5");
+        addBlock(ModBlocks.ADDON_BLOCK_SPEED_TIER_6, "速度插件 等级6");
+        addBlock(ModBlocks.ADDON_BLOCK_SPEED_TIER_7, "速度插件 等级7");
+        addBlock(ModBlocks.ADDON_BLOCK_SPEED_TIER_8, "速度插件 等级8");
+        addBlock(ModBlocks.ADDON_BLOCK_SPEED_TIER_9, "速度插件 等级9");
+        
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_2, "高效速度插件 等级2");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_3, "高效速度插件 等级3");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_4, "高效速度插件 等级4");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_5, "高效速度插件 等级5");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_6, "高效速度插件 等级6");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_7, "高效速度插件 等级7");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_8, "高效速度插件 等级8");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_9, "高效速度插件 等级9");
+        
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_2, "效率插件 等级2");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_3, "效率插件 等级3");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_4, "效率插件 等级4");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_5, "效率插件 等级5");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_6, "效率插件 等级6");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_7, "效率插件 等级7");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_8, "效率插件 等级8");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_9, "效率插件 等级9");
+        
+        addBlock(ModBlocks.ADDON_BLOCK_CROSS_DIMENSIONAL, "跨维度");
+        
+        // Manual item translations
+        addItem(ModItems.ADVANCED_TARGET_DESIGNATOR, "高级目标指示器");
+        addItem(ModItems.FRAME_PLACER, "框架放置器");
+        addItem(ModItems.AMETHYST_FISH_SPAWN_EGG, "紫水晶鱼刷怪蛋");
+        
+        // Manual entity translations
+        addEntityType(ModEntities.AMETHYST_FISH, "紫水晶鱼");
 
         //particle accelerator speed sensor
 
