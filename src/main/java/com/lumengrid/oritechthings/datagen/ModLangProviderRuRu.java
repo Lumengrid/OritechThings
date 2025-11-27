@@ -38,18 +38,75 @@ public class ModLangProviderRuRu extends LanguageProvider {
         add("tag."+MOD_ID+".tiered_addon_efficiency", "Дополнения Эффективности");
         add("tag."+MOD_ID+".particle_accelerator", "Компоненты Ускорителя Частиц");
 
-        //generic blocks
-        ModBlocks.OTHER.getEntries().forEach(e -> addBlock(e,
-                DataGenUtil.formatted(e.getRegisteredName())));
-        //block addons
-        ModBlocks.ADDONS.getEntries().forEach(e -> addBlock(e,
-                DataGenUtil.specificReplace(e.getRegisteredName())));
-        //generic items
-        ModItems.ITEMS.getEntries().forEach(e -> addItem(e,
-                DataGenUtil.formatted(e.getRegisteredName())));
-        //generic mobs
-        ModEntities.MOD_MOB_ENTITIES.getEntries().forEach(e -> addEntityType(e,
-                DataGenUtil.formatted(e.getRegisteredName())));
+        // Manual block translations
+        addBlock(ModBlocks.INFESTED_AMETHYST_BLOCK, "Заражённый Аметистовый Блок");
+        addBlock(ModBlocks.ACCELERATOR_SPEED_SENSOR, "Датчик Скорости Ускорителя Частиц");
+        addBlock(ModBlocks.ACCELERATOR_MAGNETIC_FIELD, "Магнитное Поле Ускорителя");
+        
+        // Block addons - Manual translations
+        addBlock(ModBlocks.ADDON_BLOCK_PROCESSING_TIER_2, "Дополнение Обработки Уровень 2");
+        addBlock(ModBlocks.ADDON_BLOCK_PROCESSING_TIER_3, "Дополнение Обработки Уровень 3");
+        addBlock(ModBlocks.ADDON_BLOCK_PROCESSING_TIER_4, "Дополнение Обработки Уровень 4");
+        addBlock(ModBlocks.ADDON_BLOCK_PROCESSING_TIER_5, "Дополнение Обработки Уровень 5");
+        addBlock(ModBlocks.ADDON_BLOCK_PROCESSING_TIER_6, "Дополнение Обработки Уровень 6");
+        addBlock(ModBlocks.ADDON_BLOCK_PROCESSING_TIER_7, "Дополнение Обработки Уровень 7");
+        addBlock(ModBlocks.ADDON_BLOCK_PROCESSING_TIER_8, "Дополнение Обработки Уровень 8");
+        addBlock(ModBlocks.ADDON_BLOCK_PROCESSING_TIER_9, "Дополнение Обработки Уровень 9");
+        
+        addBlock(ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_2, "Дополнение Приемника Уровень 2");
+        addBlock(ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_3, "Дополнение Приемника Уровень 3");
+        addBlock(ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_4, "Дополнение Приемника Уровень 4");
+        addBlock(ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_5, "Дополнение Приемника Уровень 5");
+        addBlock(ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_6, "Дополнение Приемника Уровень 6");
+        addBlock(ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_7, "Дополнение Приемника Уровень 7");
+        addBlock(ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_8, "Дополнение Приемника Уровень 8");
+        addBlock(ModBlocks.ADDON_BLOCK_ACCEPTOR_TIER_9, "Дополнение Приемника Уровень 9");
+        
+        addBlock(ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_2, "Дополнение Конденсатора Уровень 2");
+        addBlock(ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_3, "Дополнение Конденсатора Уровень 3");
+        addBlock(ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_4, "Дополнение Конденсатора Уровень 4");
+        addBlock(ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_5, "Дополнение Конденсатора Уровень 5");
+        addBlock(ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_6, "Дополнение Конденсатора Уровень 6");
+        addBlock(ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_7, "Дополнение Конденсатора Уровень 7");
+        addBlock(ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_8, "Дополнение Конденсатора Уровень 8");
+        addBlock(ModBlocks.ADDON_BLOCK_CAPACITOR_TIER_9, "Дополнение Конденсатора Уровень 9");
+        
+        addBlock(ModBlocks.ADDON_BLOCK_SPEED_TIER_2, "Дополнение Скорости Уровень 2");
+        addBlock(ModBlocks.ADDON_BLOCK_SPEED_TIER_3, "Дополнение Скорости Уровень 3");
+        addBlock(ModBlocks.ADDON_BLOCK_SPEED_TIER_4, "Дополнение Скорости Уровень 4");
+        addBlock(ModBlocks.ADDON_BLOCK_SPEED_TIER_5, "Дополнение Скорости Уровень 5");
+        addBlock(ModBlocks.ADDON_BLOCK_SPEED_TIER_6, "Дополнение Скорости Уровень 6");
+        addBlock(ModBlocks.ADDON_BLOCK_SPEED_TIER_7, "Дополнение Скорости Уровень 7");
+        addBlock(ModBlocks.ADDON_BLOCK_SPEED_TIER_8, "Дополнение Скорости Уровень 8");
+        addBlock(ModBlocks.ADDON_BLOCK_SPEED_TIER_9, "Дополнение Скорости Уровень 9");
+        
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_2, "Дополнение Эффективной Скорости Уровень 2");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_3, "Дополнение Эффективной Скорости Уровень 3");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_4, "Дополнение Эффективной Скорости Уровень 4");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_5, "Дополнение Эффективной Скорости Уровень 5");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_6, "Дополнение Эффективной Скорости Уровень 6");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_7, "Дополнение Эффективной Скорости Уровень 7");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_8, "Дополнение Эффективной Скорости Уровень 8");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENT_SPEED_TIER_9, "Дополнение Эффективной Скорости Уровень 9");
+        
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_2, "Дополнение Эффективности Уровень 2");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_3, "Дополнение Эффективности Уровень 3");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_4, "Дополнение Эффективности Уровень 4");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_5, "Дополнение Эффективности Уровень 5");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_6, "Дополнение Эффективности Уровень 6");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_7, "Дополнение Эффективности Уровень 7");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_8, "Дополнение Эффективности Уровень 8");
+        addBlock(ModBlocks.ADDON_BLOCK_EFFICIENCY_TIER_9, "Дополнение Эффективности Уровень 9");
+        
+        addBlock(ModBlocks.ADDON_BLOCK_CROSS_DIMENSIONAL, "Межмерное");
+        
+        // Manual item translations
+        addItem(ModItems.ADVANCED_TARGET_DESIGNATOR, "Продвинутый Целеуказатель");
+        addItem(ModItems.FRAME_PLACER, "Установщик Рам");
+        addItem(ModItems.AMETHYST_FISH_SPAWN_EGG, "Яйцо Призыва Аметистовой Рыбы");
+        
+        // Manual entity translations
+        addEntityType(ModEntities.AMETHYST_FISH, "Аметистовая Рыба");
 
         //particle accelerator speed sensor
 
