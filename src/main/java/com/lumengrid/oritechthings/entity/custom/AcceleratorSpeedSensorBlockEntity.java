@@ -191,10 +191,14 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
             AcceleratorParticleLogic.ActiveParticle part = accelerator.getParticle();
             if (part != null) {
                 int targetSpeed = speedControl.speedLimit;
-                
-                // In automatic mode, detect required velocity from recipe
                 if (speedControl.isAutomaticMode()) {
                     targetSpeed = getRequiredVelocityFromRecipe(accelerator, speedControl.level);
+                    if (targetSpeed <= 0) {
+                        powered = true;
+                    } else {
+                        return part.velocity > targetSpeed;
+                    }
+                    return powered;
                 }
                 
                 if (speedControl.isCheckGreater() && part.velocity > targetSpeed) {
@@ -210,26 +214,34 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
     }
     
     private static int getRequiredVelocityFromRecipe(AcceleratorControllerBlockEntity accelerator, Level level) {
-        // Get the active particle item
         ItemStack activeItem = accelerator.activeItemParticle;
         
         if (activeItem == null || activeItem.isEmpty()) {
-            return 1000; // Default fallback
+            return 0;
         }
-        
-        // Try to find a recipe where this item collides with itself (most common case)
+
         var inputInv = new SimpleCraftingInventory(activeItem.copy(), activeItem.copy());
         var recipeOptional = level.getRecipeManager().getRecipeFor(RecipeContent.PARTICLE_COLLISION, inputInv, level);
         
         if (recipeOptional.isPresent()) {
             var recipe = recipeOptional.get().value();
-            return recipe.getTime(); // Recipe time stores the required velocity
+            return recipe.getTime();
         }
-        
-        // If no recipe found for self-collision, try to find any recipe involving this item
-        // This would require checking all recipes, which might be expensive
-        // For now, return a default value
-        return 1000;
+
+        var allRecipes = level.getRecipeManager().getAllRecipesFor(RecipeContent.PARTICLE_COLLISION);
+        int maxVelocity = 0;
+        for (var recipeHolder : allRecipes) {
+            var recipe = recipeHolder.value();
+            var inputs = recipe.getInputs();
+            for (var ingredient : inputs) {
+                if (ingredient.test(activeItem)) {
+                    maxVelocity = Math.max(maxVelocity, recipe.getTime());
+                    break;
+                }
+            }
+        }
+
+        return maxVelocity;
     }
 
     private static void notifyNeighbors(Level level, BlockPos pos) {
