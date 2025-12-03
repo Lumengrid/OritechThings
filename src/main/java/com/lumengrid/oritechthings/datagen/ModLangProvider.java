@@ -64,6 +64,8 @@ public class ModLangProvider extends LanguageProvider {
         add("block." + AspeedSensor + ".invalid_controller.to_far",
                 "⚠ Target Particle Accelerator too far - Max distance 128 blocks ⚠");
         add("gui."+AspeedSensor+".speed_input","Speed Input" );
+        add("gui." + AspeedSensor + ".auto", "Auto");
+        add("gui." + AspeedSensor + ".manual", "Manual");
         
         // Speed Sensor Block tooltips
         add("tooltip." + AspeedSensor, "Particle Accelerator Speed Sensor");

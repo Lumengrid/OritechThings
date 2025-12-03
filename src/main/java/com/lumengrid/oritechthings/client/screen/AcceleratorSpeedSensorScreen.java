@@ -11,7 +11,6 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -46,7 +45,7 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
                                         boolean newState = !menu.be.isCheckGreater();
                                         PacketDistributor.sendToServer(new UpdateSpeedSensorC2SPacket(
                                                         menu.be.getBlockPos(),
-                                                        menu.be.getSpeedLimit(), menu.be.isEnabled(), newState));
+                                                        menu.be.getSpeedLimit(), menu.be.isEnabled(), newState, menu.be.isAutomaticMode()));
                                         button.setMessage(Component.literal(newState ? ">" : "<"));
                                 },
                                 menu.be.isEnabled(),
@@ -74,7 +73,7 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
                                         boolean newState = !menu.be.isEnabled();
                                         PacketDistributor.sendToServer(new UpdateSpeedSensorC2SPacket(
                                                         menu.be.getBlockPos(),
-                                                        menu.be.getSpeedLimit(), newState, menu.be.isCheckGreater()));
+                                                        menu.be.getSpeedLimit(), newState, menu.be.isCheckGreater(), menu.be.isAutomaticMode()));
                                         button.setMessage(menu.be.isEnabled()
                                                         ? Component.translatable("tooltip." + MOD_ID + ".state.on")
                                                         : Component.translatable("tooltip." + MOD_ID + ".state.off"));
@@ -82,6 +81,25 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
                                 menu.be.isEnabled(),
                                 0xFF93c47d,
                                 0xFFe06666));
+
+                // AUTO MODE TOGGLE
+                addRenderableWidget(new ToggleButton(
+                                leftPos + 10, topPos + 45, 28, 18,
+                                menu.be.isAutomaticMode()
+                                                ? Component.translatable("gui.oritechthings.particle_accelerator_speed_sensor.auto")
+                                                : Component.translatable("gui.oritechthings.particle_accelerator_speed_sensor.manual"),
+                                button -> {
+                                        boolean newState = !menu.be.isAutomaticMode();
+                                        PacketDistributor.sendToServer(new UpdateSpeedSensorC2SPacket(
+                                                        menu.be.getBlockPos(),
+                                                        menu.be.getSpeedLimit(), menu.be.isEnabled(), menu.be.isCheckGreater(), newState));
+                                        button.setMessage(newState
+                                                        ? Component.translatable("gui.oritechthings.particle_accelerator_speed_sensor.auto")
+                                                        : Component.translatable("gui.oritechthings.particle_accelerator_speed_sensor.manual"));
+                                },
+                                menu.be.isEnabled(),
+                                0xFF4a86e8,
+                                0xFF999999));
         }
 
         private void onSpeedEntered(String input) {
@@ -89,7 +107,7 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
                         int value = Integer.parseInt(input);
                         value = Math.max(0, Math.min(value, 999999));
                         PacketDistributor.sendToServer(new UpdateSpeedSensorC2SPacket(menu.be.getBlockPos(), value,
-                                        menu.be.isEnabled(), menu.be.isCheckGreater()));
+                                        menu.be.isEnabled(), menu.be.isCheckGreater(), menu.be.isAutomaticMode()));
                 } catch (NumberFormatException e) {
                         System.out.println(e.getMessage());
                 }
