@@ -39,7 +39,7 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
 
                 // < > TOGGLE
                 addRenderableWidget(new ToggleButton(
-                                leftPos + 40, topPos + 46, 17, 17,
+                                leftPos + 45, topPos + 46, 17, 17,
                                 Component.literal(menu.be.isCheckGreater() ? ">" : "<"),
                                 button -> {
                                         boolean newState = !menu.be.isCheckGreater();
@@ -53,7 +53,7 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
                                 0xFF000000));
 
                 // SPEED INPUT
-                EditBox speedInput = new EditBox(this.font, this.leftPos + 60, this.topPos + 45,
+                EditBox speedInput = new EditBox(this.font, this.leftPos + 65, this.topPos + 45,
                                 55, 20, Component.translatable(
                                                 "gui.oritechthings.particle_accelerator_speed_sensor.speed_input"));
                 speedInput.setMaxLength(6);
@@ -82,9 +82,8 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
                                 0xFF93c47d,
                                 0xFFe06666));
 
-                // AUTO MODE TOGGLE
                 addRenderableWidget(new ToggleButton(
-                                leftPos + 10, topPos + 45, 28, 18,
+                                leftPos + 8, topPos + 45, 32, 18,
                                 menu.be.isAutomaticMode()
                                                 ? Component.translatable("gui.oritechthings.particle_accelerator_speed_sensor.auto")
                                                 : Component.translatable("gui.oritechthings.particle_accelerator_speed_sensor.manual"),
