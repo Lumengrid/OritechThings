@@ -120,6 +120,8 @@ public class ModLangProviderZhCn extends LanguageProvider {
         add("block." + AspeedSensor + ".invalid_controller.to_far",
                 "⚠ 目标粒子加速器过远 - 最大距离 128 格 ⚠");
         add("gui."+AspeedSensor+".speed_input","速度输入" );
+        add("gui." + AspeedSensor + ".auto", "自动");
+        add("gui." + AspeedSensor + ".manual", "手动");
         
         // Speed Sensor Block tooltips
         add("tooltip." + AspeedSensor, "粒子加速器速度传感器");

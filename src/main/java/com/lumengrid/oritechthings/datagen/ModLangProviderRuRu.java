@@ -120,6 +120,8 @@ public class ModLangProviderRuRu extends LanguageProvider {
         add("block." + AspeedSensor + ".invalid_controller.to_far",
                 "⚠ Целевой ускоритель частиц слишком далеко — макс. дистанция 128 блоков ⚠");
         add("gui."+AspeedSensor+".speed_input","Вход скорости" );
+        add("gui." + AspeedSensor + ".auto", "Авто");
+        add("gui." + AspeedSensor + ".manual", "Ручной");
         
         // Speed Sensor Block tooltips
         add("tooltip." + AspeedSensor, "Датчик Скорости Ускорителя Частиц");

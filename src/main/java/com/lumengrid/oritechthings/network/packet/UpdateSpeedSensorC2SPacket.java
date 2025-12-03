@@ -15,7 +15,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
 public record UpdateSpeedSensorC2SPacket(BlockPos pos, int speed, boolean active,
-                                         boolean checkGreater) implements CustomPacketPayload {
+                                         boolean checkGreater, boolean automaticMode) implements CustomPacketPayload {
     public static final Type<UpdateSpeedSensorC2SPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(OritechThings.MOD_ID, "update_speed_sensor"));
 
     public static final StreamCodec<ByteBuf, UpdateSpeedSensorC2SPacket> STREAM_CODEC = StreamCodec.composite(
@@ -27,6 +27,8 @@ public record UpdateSpeedSensorC2SPacket(BlockPos pos, int speed, boolean active
             UpdateSpeedSensorC2SPacket::active,
             ByteBufCodecs.BOOL,
             UpdateSpeedSensorC2SPacket::checkGreater,
+            ByteBufCodecs.BOOL,
+            UpdateSpeedSensorC2SPacket::automaticMode,
             UpdateSpeedSensorC2SPacket::new
     );
 
@@ -46,5 +48,6 @@ public record UpdateSpeedSensorC2SPacket(BlockPos pos, int speed, boolean active
         be.setSpeedLimit(packet.speed());
         be.setEnabled(packet.active());
         be.setCheckGreater(packet.checkGreater());
+        be.setAutomaticMode(packet.automaticMode());
     }
 }

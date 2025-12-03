@@ -121,6 +121,8 @@ public class ModLangProviderPtBr extends LanguageProvider {
         add("block." + AspeedSensor + ".invalid_controller.to_far",
                 "⚠ Acelerador de Partículas Alvo muito longe - Distância máxima de 128 blocos ⚠");
         add("gui."+AspeedSensor+".speed_input","Entrada de Velocidade" );
+        add("gui." + AspeedSensor + ".auto", "Auto");
+        add("gui." + AspeedSensor + ".manual", "Manual");
         
         // Speed Sensor Block tooltips
         add("tooltip." + AspeedSensor, "Sensor de Velocidade do Acelerador de Partículas");
