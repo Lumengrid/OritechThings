@@ -194,11 +194,8 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
                 if (speedControl.isAutomaticMode()) {
                     targetSpeed = getRequiredVelocityFromRecipe(accelerator, speedControl.level);
                     if (targetSpeed <= 0) {
-                        powered = true;
-                    } else {
-                        return part.velocity > targetSpeed;
+                        return powered;
                     }
-                    return powered;
                 }
                 
                 if (speedControl.isCheckGreater() && part.velocity > targetSpeed) {

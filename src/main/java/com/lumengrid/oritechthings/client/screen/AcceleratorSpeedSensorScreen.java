@@ -98,7 +98,7 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
                                 },
                                 menu.be.isEnabled(),
                                 0xFF4a86e8,
-                                0xFF999999));
+                        0xFF4a86e8));
         }
 
         private void onSpeedEntered(String input) {
