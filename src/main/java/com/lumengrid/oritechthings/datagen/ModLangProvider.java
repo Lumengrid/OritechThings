@@ -66,6 +66,17 @@ public class ModLangProvider extends LanguageProvider {
         add("gui."+AspeedSensor+".speed_input","Speed Input" );
         add("gui." + AspeedSensor + ".auto", "Auto");
         add("gui." + AspeedSensor + ".manual", "Manual");
+        add("gui." + AspeedSensor + ".on", "ON");
+        add("gui." + AspeedSensor + ".off", "OFF");
+        add("gui." + AspeedSensor + ".linked", "Linked");
+        add("gui." + AspeedSensor + ".not_linked", "Not Linked");
+        add("gui." + AspeedSensor + ".coordinates", "Coordinates");
+        
+        // Mode tooltips
+        add("gui." + AspeedSensor + ".auto.tooltip", "Automatic mode: Sensor detects required velocity from active particle recipes");
+        add("gui." + AspeedSensor + ".manual.tooltip", "Manual mode: Set a specific velocity threshold for redstone output");
+        add("gui." + AspeedSensor + ".on.tooltip", "Sensor is active and monitoring particle velocity");
+        add("gui." + AspeedSensor + ".off.tooltip", "Sensor is disabled and will not output redstone signal");
         
         // Speed Sensor Block tooltips
         add("tooltip." + AspeedSensor, "Particle Accelerator Speed Sensor");

@@ -8,8 +8,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class ToggleButton extends Button {
     private boolean isEnabled;
-    private final int ENABLE_COLOR;
-    private final int DISABLE_COLOR;
+    private int ENABLE_COLOR;
+    private int DISABLE_COLOR;
 
     public ToggleButton(int x, int y, int width, int height, Component message, OnPress onPress, boolean initialState, int enableColor, int disableColor) {
         super(x, y, width, height, message, onPress, Button.DEFAULT_NARRATION);
@@ -17,6 +17,16 @@ public class ToggleButton extends Button {
         DISABLE_COLOR = disableColor;
         this.isEnabled = initialState;
     }
+    
+    public void setColors(int enableColor, int disableColor) {
+        this.ENABLE_COLOR = enableColor;
+        this.DISABLE_COLOR = disableColor;
+    }
+    
+    public void setToggleState(boolean state) {
+        this.isEnabled = state;
+    }
+    
     @Override
     public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         // Draw black border

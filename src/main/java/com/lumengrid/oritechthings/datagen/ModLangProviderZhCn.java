@@ -122,6 +122,17 @@ public class ModLangProviderZhCn extends LanguageProvider {
         add("gui."+AspeedSensor+".speed_input","速度输入" );
         add("gui." + AspeedSensor + ".auto", "自动");
         add("gui." + AspeedSensor + ".manual", "手动");
+        add("gui." + AspeedSensor + ".on", "开");
+        add("gui." + AspeedSensor + ".off", "关");
+        add("gui." + AspeedSensor + ".linked", "已连接");
+        add("gui." + AspeedSensor + ".not_linked", "未连接");
+        add("gui." + AspeedSensor + ".coordinates", "坐标");
+        
+        // Mode tooltips
+        add("gui." + AspeedSensor + ".auto.tooltip", "自动模式：传感器从活跃的粒子配方中检测所需速度");
+        add("gui." + AspeedSensor + ".manual.tooltip", "手动模式：设置特定的速度阈值以输出红石信号");
+        add("gui." + AspeedSensor + ".on.tooltip", "传感器已激活并正在监测粒子速度");
+        add("gui." + AspeedSensor + ".off.tooltip", "传感器已禁用，不会输出红石信号");
         
         // Speed Sensor Block tooltips
         add("tooltip." + AspeedSensor, "粒子加速器速度传感器");
