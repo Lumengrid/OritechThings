@@ -112,7 +112,7 @@ public class ModLangProviderRuRu extends LanguageProvider {
 
         var AspeedSensor = MOD_ID + "." + DataGenUtil.getName(ModBlocks.ACCELERATOR_SPEED_SENSOR);
         
-        add("gui." + AspeedSensor + ".title", "Датчик скорости");
+        add("gui." + AspeedSensor + ".title", "Датчик Скорости");
         add("gui." + AspeedSensor + ".controller_not_set", "НЕ УСТАНОВЛЕНО!");
         add("gui." + AspeedSensor + ".controller", "Ускоритель частиц ");
         add("block." + AspeedSensor + ".controller_set", "Целевой ускоритель частиц установлен: ");
@@ -122,6 +122,17 @@ public class ModLangProviderRuRu extends LanguageProvider {
         add("gui."+AspeedSensor+".speed_input","Вход скорости" );
         add("gui." + AspeedSensor + ".auto", "Авто");
         add("gui." + AspeedSensor + ".manual", "Ручной");
+        add("gui." + AspeedSensor + ".on", "ВКЛ");
+        add("gui." + AspeedSensor + ".off", "ВЫКЛ");
+        add("gui." + AspeedSensor + ".linked", "Связано");
+        add("gui." + AspeedSensor + ".not_linked", "Не связано");
+        add("gui." + AspeedSensor + ".coordinates", "Координаты");
+        
+        // Mode tooltips
+        add("gui." + AspeedSensor + ".auto.tooltip", "Автоматический режим: датчик определяет требуемую скорость из активных рецептов частиц");
+        add("gui." + AspeedSensor + ".manual.tooltip", "Ручной режим: установите определенный порог скорости для выхода редстоуна");
+        add("gui." + AspeedSensor + ".on.tooltip", "Датчик активен и отслеживает скорость частиц");
+        add("gui." + AspeedSensor + ".off.tooltip", "Датчик отключен и не будет выдавать сигнал редстоуна");
         
         // Speed Sensor Block tooltips
         add("tooltip." + AspeedSensor, "Датчик Скорости Ускорителя Частиц");

@@ -123,6 +123,17 @@ public class ModLangProviderPtBr extends LanguageProvider {
         add("gui."+AspeedSensor+".speed_input","Entrada de Velocidade" );
         add("gui." + AspeedSensor + ".auto", "Auto");
         add("gui." + AspeedSensor + ".manual", "Manual");
+        add("gui." + AspeedSensor + ".on", "LIGADO");
+        add("gui." + AspeedSensor + ".off", "DESLIGADO");
+        add("gui." + AspeedSensor + ".linked", "Vinculado");
+        add("gui." + AspeedSensor + ".not_linked", "Não Vinculado");
+        add("gui." + AspeedSensor + ".coordinates", "Coordenadas");
+        
+        // Mode tooltips
+        add("gui." + AspeedSensor + ".auto.tooltip", "Modo automático: O sensor detecta a velocidade necessária das receitas de partículas ativas");
+        add("gui." + AspeedSensor + ".manual.tooltip", "Modo manual: Defina um limite de velocidade específico para saída de redstone");
+        add("gui." + AspeedSensor + ".on.tooltip", "Sensor está ativo e monitorando a velocidade das partículas");
+        add("gui." + AspeedSensor + ".off.tooltip", "Sensor está desabilitado e não emitirá sinal de redstone");
         
         // Speed Sensor Block tooltips
         add("tooltip." + AspeedSensor, "Sensor de Velocidade do Acelerador de Partículas");
