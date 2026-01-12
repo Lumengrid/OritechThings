@@ -12,7 +12,7 @@
       "item": "oritech:machine_speed_addon"
     },
     {
-      "item": "oritech:biosteel_ingot"
+      "tag": "c:ingots/steel"
     },
     {
       "item": "oritech:motor"
