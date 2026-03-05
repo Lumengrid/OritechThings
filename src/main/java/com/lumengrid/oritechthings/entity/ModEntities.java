@@ -24,6 +24,7 @@ public class ModEntities {
                 // Register block entities with EnergyApi
                 if (EnergyApi.BLOCK != null) {
                     EnergyApi.BLOCK.registerBlockEntity(ACCELERATOR_MAGNETIC_FIELD_BLOCK_ENTITY::get);
+                    EnergyApi.BLOCK.registerBlockEntity(TIER_ADDON::get);
                 }
         }
 
