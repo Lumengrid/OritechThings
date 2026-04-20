@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import rearth.oritech.Oritech;
+import rearth.oritech.init.OritechConfig;
 import rearth.oritech.block.entity.accelerator.AcceleratorControllerBlockEntity;
 import rearth.oritech.block.entity.accelerator.AcceleratorMotorBlockEntity;
 import rearth.oritech.block.entity.accelerator.AcceleratorParticleLogic;
@@ -35,7 +35,7 @@ public class AcceleratorMotorInteractionMixin {
         var speed = particle.velocity;
         if (addonStats == null) {
             var availableEnergy = storage.getAmount();
-            var cost = speed * Oritech.CONFIG.accelerationRFCost();
+            var cost = speed * OritechConfig.accelerationRFCost.get();
             if (availableEnergy >= cost) {
                 storage.extract((long) cost, false);
                 storage.update();
@@ -45,7 +45,7 @@ public class AcceleratorMotorInteractionMixin {
             return;
         }
 
-        var baseMotorCost = speed * Oritech.CONFIG.accelerationRFCost();
+        var baseMotorCost = speed * OritechConfig.accelerationRFCost.get();
         float additionalVelocity = Math.max(Math.min(addonStats.speedBonus(), 10.0f), 0.0f);
         var totalCost = calculateEnergyCost(baseMotorCost, addonStats.energyCostMultiplier());
         var availableEnergy = storage.getAmount();
