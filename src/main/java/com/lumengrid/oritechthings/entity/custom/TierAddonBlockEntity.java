@@ -64,7 +64,10 @@ public class TierAddonBlockEntity extends AddonBlockEntity implements EnergyApi.
 
         // Keep parity with Oritech's base behavior: if the addon is marked as used,
         // controller lookup is expected to succeed.
-        return (MachineAddonController) Objects.requireNonNull(controllerEntity);
+        if (controllerEntity == null) {
+            return null;
+        }
+        return (MachineAddonController) controllerEntity;
     }
 
     @Override
