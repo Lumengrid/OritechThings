@@ -32,4 +32,3 @@ license = "${mod_license}"
     versionRange = "${oritech_version_range}"
     ordering = "BEFORE"
     side = "BOTH"
-
