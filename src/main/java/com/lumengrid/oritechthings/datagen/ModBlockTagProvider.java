@@ -9,60 +9,68 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 public class ModBlockTagProvider extends BlockTagsProvider {
-    public ModBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider,
-            @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, OritechThings.MOD_ID, existingFileHelper);
+
+    public ModBlockTagProvider(
+            PackOutput output,
+            CompletableFuture<HolderLookup.Provider> lookupProvider
+    ) {
+        super(output, lookupProvider, OritechThings.MOD_ID);
     }
 
     @Override
-    protected void addTags(HolderLookup.@NotNull Provider provider) {
-
-        for (DeferredBlock<?> data : Constants.getAllAddons()) {
+    protected void addTags(HolderLookup.Provider provider) {
+        for (DeferredBlock<?> data : Arrays.asList(Constants.getAllAddons())) {
             tag(ModTags.Blocks.ADDONS).add(data.get());
         }
 
-        tag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(ModTags.Blocks.ADDONS);
+        tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                .addTag(ModTags.Blocks.ADDONS)
+                .add(ModBlocks.ACCELERATOR_SPEED_SENSOR.get())
+                .add(ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get())
+                .add(ModBlocks.INFESTED_AMETHYST_BLOCK.get());
 
-        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ACCELERATOR_SPEED_SENSOR.get());
-        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get());
-        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.INFESTED_AMETHYST_BLOCK.get());
+        addBlocksToTag(
+                Arrays.asList(Constants.EFFICIENCY),
+                ModTags.Blocks.TIERED_ADDON_EFFICIENCY
+        );
+        addBlocksToTag(
+                Arrays.asList(Constants.SPEED),
+                ModTags.Blocks.TIERED_ADDON_SPEED
+        );
+        addBlocksToTag(
+                Arrays.asList(Constants.EFFICIENT),
+                ModTags.Blocks.TIERED_ADDON_EFFICIENT_SPEED
+        );
+        addBlocksToTag(
+                Arrays.asList(Constants.CAPACITOR),
+                ModTags.Blocks.TIERED_ADDON_CAPACITOR
+        );
+        addBlocksToTag(
+                Arrays.asList(Constants.ACCEPTOR),
+                ModTags.Blocks.TIERED_ADDON_ACCEPTOR
+        );
+        addBlocksToTag(
+                Arrays.asList(Constants.PROCESSING),
+                ModTags.Blocks.TIERED_ADDON_PROCESSING
+        );
 
-        for(DeferredBlock<?> data: Constants.EFFICIENCY){
-            tag(ModTags.Blocks.TIERED_ADDON_EFFICIENCY).add(data.get());
+        tag(ModTags.Blocks.PARTICLE_ACCELERATOR)
+                .add(ModBlocks.ACCELERATOR_SPEED_SENSOR.get())
+                .add(ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get());
+    }
+
+    private void addBlocksToTag(
+            Iterable<? extends DeferredBlock<?>> blocks,
+            net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> tagKey
+    ) {
+        for (DeferredBlock<?> data : blocks) {
+            tag(tagKey).add(data.get());
         }
-
-        for(DeferredBlock<?> data: Constants.SPEED){
-            tag(ModTags.Blocks.TIERED_ADDON_SPEED).add(data.get());
-        }
-
-        for(DeferredBlock<?> data: Constants.EFFICIENT){
-            tag(ModTags.Blocks.TIERED_ADDON_EFFICIENT_SPEED).add(data.get());
-        }
-
-        for(DeferredBlock<?> data: Constants.CAPACITOR){
-            tag(ModTags.Blocks.TIERED_ADDON_CAPACITOR).add(data.get());
-        }
-
-        for(DeferredBlock<?> data: Constants.ACCEPTOR){
-            tag(ModTags.Blocks.TIERED_ADDON_ACCEPTOR).add(data.get());
-        }
-
-        for(DeferredBlock<?> data: Constants.PROCESSING){
-            tag(ModTags.Blocks.TIERED_ADDON_PROCESSING).add(data.get());
-        }
-
-        tag(ModTags.Blocks.PARTICLE_ACCELERATOR).add(ModBlocks.ACCELERATOR_SPEED_SENSOR.get());
-        tag(ModTags.Blocks.PARTICLE_ACCELERATOR).add(ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get());
-
-
     }
 }

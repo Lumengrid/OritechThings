@@ -4,19 +4,19 @@ import com.lumengrid.oritechthings.client.screen.component.CustomButton;
 import com.lumengrid.oritechthings.client.screen.component.Slider;
 import com.lumengrid.oritechthings.network.packet.FramePlacerPacket;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import org.jetbrains.annotations.NotNull;
-import net.neoforged.neoforge.network.PacketDistributor;
+
+import java.awt.Color;
 
 import static com.lumengrid.oritechthings.main.OritechThings.MOD_ID;
-
-import java.awt.*;
 
 @OnlyIn(Dist.CLIENT)
 public class FramePlacerScreen extends Screen {
@@ -27,7 +27,7 @@ public class FramePlacerScreen extends Screen {
     private CustomButton xDecrementButton, xIncrementButton;
     private CustomButton yDecrementButton, yIncrementButton;
     private CustomButton offsetDecrementButton, offsetIncrementButton;
-    private int xValue = 5, yValue = 5, offsetValue  = 2;
+    private int xValue = 5, yValue = 5, offsetValue = 2;
     private int frameCountRequired;
 
     public FramePlacerScreen(BlockPos pos, Direction facing) {
@@ -61,32 +61,33 @@ public class FramePlacerScreen extends Screen {
                 Component.literal("+"), button -> incrementY(), Color.GRAY.getRGB(), Color.WHITE.getRGB(), Color.BLACK.getRGB());
 
         this.offsetSlider = new Slider(width / 2 - widthSlider / 2, height / 2, widthSlider, 14, 1,
-                63, Component.translatable("message."+MOD_ID+".frame_placer.offset"), offsetValue, slider -> this.offsetValue = slider.getValueInt());
+                63, Component.translatable("message." + MOD_ID + ".frame_placer.offset"), offsetValue, slider -> this.offsetValue = slider.getValueInt());
         this.offsetDecrementButton = new CustomButton(this.offsetSlider.getX() - 20, this.offsetSlider.getY(), 20, 14,
                 Component.literal("-"), button -> decrementOffset(), Color.GRAY.getRGB(), Color.WHITE.getRGB(), Color.BLACK.getRGB());
         this.offsetIncrementButton = new CustomButton(this.offsetSlider.getX() + widthSlider + 2, this.offsetSlider.getY(), 20, 14,
                 Component.literal("+"), button -> incrementOffset(), Color.GRAY.getRGB(), Color.WHITE.getRGB(), Color.BLACK.getRGB());
 
-        // Abort and Confirm Buttons
         this.abortButton = new CustomButton(this.width / 2 - 60, this.height / 2 + 40, 50, 20,
-                Component.translatable("message."+MOD_ID+".frame_placer.abort"), button -> abort(),
+                Component.translatable("message." + MOD_ID + ".frame_placer.abort"), button -> abort(),
                 Color.RED.getRGB(), Color.WHITE.getRGB(), Color.BLACK.getRGB());
 
         this.confirmButton = new CustomButton(this.width / 2 + 10, this.height / 2 + 40, 50, 20,
-                Component.translatable("message."+MOD_ID+".frame_placer.confirm"), button -> confirmDimensions(),
+                Component.translatable("message." + MOD_ID + ".frame_placer.confirm"), button -> confirmDimensions(),
                 Color.GREEN.getRGB(), Color.WHITE.getRGB(), Color.BLACK.getRGB());
+
         updateFrameCount();
-        this.addWidget(xSlider);
-        this.addWidget(ySlider);
-        this.addWidget(offsetSlider);
-        this.addWidget(xDecrementButton);
-        this.addWidget(xIncrementButton);
-        this.addWidget(yDecrementButton);
-        this.addWidget(yIncrementButton);
-        this.addWidget(offsetDecrementButton);
-        this.addWidget(offsetIncrementButton);
-        this.addWidget(abortButton);
-        this.addWidget(confirmButton);
+
+        this.addRenderableWidget(xSlider);
+        this.addRenderableWidget(ySlider);
+        this.addRenderableWidget(offsetSlider);
+        this.addRenderableWidget(xDecrementButton);
+        this.addRenderableWidget(xIncrementButton);
+        this.addRenderableWidget(yDecrementButton);
+        this.addRenderableWidget(yIncrementButton);
+        this.addRenderableWidget(offsetDecrementButton);
+        this.addRenderableWidget(offsetIncrementButton);
+        this.addRenderableWidget(abortButton);
+        this.addRenderableWidget(confirmButton);
     }
 
     private void updateOffsetSlider() {
@@ -147,24 +148,20 @@ public class FramePlacerScreen extends Screen {
         frameCountRequired = 2 * (xValue + yValue) - 4;
     }
 
+    // ✅ Firma ufficiale per Screen in 1.21.2+ esattamente come in AugmentSelectionScreen
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mx, int my, float partialTicks) {
-        super.render(guiGraphics, mx, my, partialTicks);
-        guiGraphics.drawCenteredString(this.font, Component.translatable("message."+MOD_ID+".frame_placer.frame_size"), this.width / 2, this.height / 2 - 60, Color.GREEN.getRGB());
-        this.xSlider.render(guiGraphics, mx, my, partialTicks);
-        this.ySlider.render(guiGraphics, mx, my, partialTicks);
-        this.offsetSlider.render(guiGraphics, mx, my, partialTicks);
-        this.xDecrementButton.render(guiGraphics, mx, my, partialTicks);
-        this.xIncrementButton.render(guiGraphics, mx, my, partialTicks);
-        this.yDecrementButton.render(guiGraphics, mx, my, partialTicks);
-        this.yIncrementButton.render(guiGraphics, mx, my, partialTicks);
-        this.offsetDecrementButton.render(guiGraphics, mx, my, partialTicks);
-        this.offsetIncrementButton.render(guiGraphics, mx, my, partialTicks);
-        this.abortButton.render(guiGraphics, mx, my, partialTicks);
-        this.confirmButton.render(guiGraphics, mx, my, partialTicks);
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mx, int my, float partialTicks) {
+        super.extractRenderState(graphics, mx, my, partialTicks);
 
-        guiGraphics.drawCenteredString(this.font, Component.translatable("message."+MOD_ID+".frame_placer.blocks_required").append(String.valueOf(frameCountRequired)),
-                this.width / 2, this.height / 2 - 80, Color.WHITE.getRGB());
+        var font = Minecraft.getInstance().font;
+        var sizeMsg = Component.translatable("message." + MOD_ID + ".frame_placer.frame_size");
+        var reqMsg = Component.translatable("message." + MOD_ID + ".frame_placer.blocks_required").append(String.valueOf(frameCountRequired));
+
+        int sizeX = this.width / 2 - font.width(sizeMsg) / 2;
+        int reqX = this.width / 2 - font.width(reqMsg) / 2;
+
+        graphics.text(font, sizeMsg, sizeX, this.height / 2 - 60, Color.GREEN.getRGB(), false);
+        graphics.text(font, reqMsg, reqX, this.height / 2 - 80, Color.WHITE.getRGB(), false);
     }
 
     private void abort() {
@@ -172,7 +169,7 @@ public class FramePlacerScreen extends Screen {
     }
 
     private void confirmDimensions() {
-        PacketDistributor.sendToServer(new FramePlacerPacket(startPos, xValue, yValue, offsetValue, facing));
+        ClientPacketDistributor.sendToServer(new FramePlacerPacket(startPos, xValue, yValue, offsetValue, facing));
         Minecraft.getInstance().setScreen(null);
     }
 

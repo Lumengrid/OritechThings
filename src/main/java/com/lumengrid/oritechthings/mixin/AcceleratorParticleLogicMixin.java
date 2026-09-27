@@ -6,6 +6,7 @@ import com.lumengrid.oritechthings.main.ConfigLoader;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -13,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import rearth.oritech.block.entity.accelerator.AcceleratorControllerBlockEntity;
+import rearth.oritech.block.entity.accelerator.ParticleAcceleratorBlockEntity;
 import rearth.oritech.block.entity.accelerator.AcceleratorParticleLogic;
 
 @Mixin(AcceleratorParticleLogic.class)
@@ -21,7 +22,7 @@ public class AcceleratorParticleLogicMixin {
 
     @Shadow
     @Final
-    private AcceleratorControllerBlockEntity entity;
+    private ParticleAcceleratorBlockEntity entity;
 
     @Shadow
     @Final
@@ -30,7 +31,7 @@ public class AcceleratorParticleLogicMixin {
     @Inject(method = "getRequiredBendDist", at = @At("RETURN"), cancellable = true)
     private static void getRequiredBendDistWithMagneticField(float speed, CallbackInfoReturnable<Float> cir) {
         float originalRequiredDist = cir.getReturnValue();
-        AcceleratorControllerBlockEntity currentEntity = currentAccelerator.get();
+        ParticleAcceleratorBlockEntity currentEntity = currentAccelerator.get();
 
         if (currentEntity != null && currentEntity.getParticle() != null) {
             float combinedDist = currentEntity.getParticle().lastBendDistance + currentEntity.getParticle().lastBendDistance2;
@@ -51,7 +52,7 @@ public class AcceleratorParticleLogicMixin {
             return false;
         }
         
-        AcceleratorControllerBlockEntity currentEntity = currentAccelerator.get();
+        ParticleAcceleratorBlockEntity currentEntity = currentAccelerator.get();
         if (currentEntity == null) {
             return false;
         }
@@ -98,11 +99,11 @@ public class AcceleratorParticleLogicMixin {
             if (alreadyConsumedThisTick) {
                 return true;
             }
-            
-            magnetEntity.energyStorage.update();
-            if (magnetEntity.energyStorage.getAmount() >= energyCostLong) {
-                magnetEntity.energyStorage.amount -= energyCostLong;
-                magnetEntity.energyStorage.update();
+
+            var transaction = Transaction.openRoot();
+            magnetEntity.energyStorage.extract(0, transaction);
+            if (magnetEntity.energyStorage.getAmountAsLong() >= energyCostLong) {
+                magnetEntity.energyStorage.extract((int) energyCostLong, transaction);
 
                 lastEnergyTick.put(magnetEntity.getBlockPos(), currentTick);
                 createMagneticFieldParticles(serverWorld, magnetEntity.getBlockPos());
@@ -133,9 +134,9 @@ public class AcceleratorParticleLogicMixin {
     private static void createMagneticFieldParticles(ServerLevel world, net.minecraft.core.BlockPos magnetPos) {
         Vec3 centerPos = Vec3.atCenterOf(magnetPos);
 
-        double offsetX = (world.random.nextDouble() - 0.5);
-        double offsetY = world.random.nextDouble() * 0.5;
-        double offsetZ = (world.random.nextDouble() - 0.5);
+        double offsetX = (world.getRandom().nextDouble() - 0.5);
+        double offsetY = world.getRandom().nextDouble() * 0.5;
+        double offsetZ = (world.getRandom().nextDouble() - 0.5);
 
         Vec3 particlePos = centerPos.add(offsetX, offsetY, offsetZ);
 
@@ -148,7 +149,7 @@ public class AcceleratorParticleLogicMixin {
         );
     }
 
-    private static final ThreadLocal<AcceleratorControllerBlockEntity> currentAccelerator = new ThreadLocal<>();
+    private static final ThreadLocal<ParticleAcceleratorBlockEntity> currentAccelerator = new ThreadLocal<>();
 
     private static final java.util.Map<net.minecraft.core.BlockPos, Long> lastTickLogged = new java.util.HashMap<>();
     private static final java.util.Map<net.minecraft.core.BlockPos, Integer> callsThisTick = new java.util.HashMap<>();

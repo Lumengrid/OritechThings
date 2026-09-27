@@ -5,93 +5,295 @@ import com.lumengrid.oritechthings.block.custom.TierAddonBlock;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.util.Constants;
 
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.ModelProvider;
+import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
+import net.minecraft.client.renderer.block.dispatch.VariantMutator;
+import net.minecraft.client.data.models.model.ModelLocationUtils;
+import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.AttachFace;
-import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
-import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
-public class ModBlockStateProvider extends BlockStateProvider {
-    public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
-        super(output, OritechThings.MOD_ID, exFileHelper);
+import java.util.Optional;
+
+public class ModBlockStateProvider extends ModelProvider {
+
+    public ModBlockStateProvider(PackOutput output) {
+        super(output, OritechThings.MOD_ID);
     }
 
     @Override
-    protected void registerStatesAndModels() {
+    protected void registerModels(
+            BlockModelGenerators blockModels,
+            ItemModelGenerators itemModels
+    ) {
         for (DeferredBlock<?> data : Constants.getAllAddons()) {
-            addonBlockState(data);
+            registerAddon(blockModels, data);
         }
-        
-        simpleBlockState(ModBlocks.ACCELERATOR_MAGNETIC_FIELD);
-        simpleBlockState(ModBlocks.ACCELERATOR_SPEED_SENSOR);
-        blockwithparentModel(ModBlocks.INFESTED_AMETHYST_BLOCK,"block/amethyst_block");
+
+        registerSimpleBlock(blockModels, ModBlocks.ACCELERATOR_MAGNETIC_FIELD);
+        registerSimpleBlock(blockModels, ModBlocks.ACCELERATOR_SPEED_SENSOR);
+        registerInfestedAmethyst(blockModels, ModBlocks.INFESTED_AMETHYST_BLOCK);
     }
 
-    @SuppressWarnings("unused")
-    private void blockWithItem(DeferredBlock<?> deferredBlock) {
-        simpleBlockWithItem(deferredBlock.get(), cubeAll(deferredBlock.get()));
-    }
+    private static void registerAddon(
+            BlockModelGenerators blockModels,
+            DeferredBlock<?> deferredBlock
+    ) {
+        Block block = deferredBlock.get();
+        Identifier modelId = ModelLocationUtils.getModelLocation(block);
 
-    private void blockwithparentModel(DeferredBlock<?> deferredBlock,String parent) {
-        simpleBlockWithItem(deferredBlock.get(),
-                models().withExistingParent(deferredBlock.getRegisteredName(), this.mcLoc(parent)));
-    }
+        blockModels.registerSimpleItemModel(block, modelId);
 
-    private void addonBlockState(DeferredBlock<?> deferredBlock) {
-        ModelFile model = model(deferredBlock);
-        simpleBlockItem(deferredBlock.get(), model);
-        
-        var block = deferredBlock.get();
-        if (block instanceof TierAddonBlock) {
-            var variantBuilder = getVariantBuilder(block);
-            
-            // Only generate variants for properties that actually vary (ADDON_USED, FACING, FACE)
-            // ADDON_TIER and ADDON_TYPE are constant for each block, so we don't need variants for them
-            // This dramatically reduces the blockstate file size from ~5940 lines to ~48 lines per block
-            for (boolean addonUsed : new boolean[]{false, true}) {
-                for (Direction facing : Direction.values()) {
-                    if (facing.getAxis().isHorizontal()) {
-                        for (AttachFace face : AttachFace.values()) {
-                            variantBuilder
-                                    .partialState()
-                                    .with(TierAddonBlock.ADDON_USED, addonUsed)
-                                    .with(TierAddonBlock.FACING, facing)
-                                    .with(TierAddonBlock.FACE, face)
-                                    .modelForState()
-                                    .modelFile(model)
-                                    .rotationY((int) facing.getOpposite().toYRot())
-                                    .rotationX(face.ordinal() * 90)
-                                    .addModel();
-                        }
-                    }
-                }
-            }
-        } else {
-            // Fallback for non-TierAddonBlock blocks
-            getVariantBuilder(block)
-                    .forAllStates(state -> ConfiguredModel.builder()
-                            .modelFile(model)
-                            .rotationY((int) state.getValue(TierAddonBlock.FACING).getOpposite().toYRot())
-                            .rotationX(state.getValue(TierAddonBlock.FACE).ordinal() * 90)
-                            .build());
+        if (!(block instanceof TierAddonBlock)) {
+            blockModels.blockStateOutput.accept(
+                    MultiVariantGenerator.dispatch(
+                            block,
+                            BlockModelGenerators.plainVariant(modelId)
+                    )
+            );
+            return;
         }
+
+        blockModels.blockStateOutput.accept(
+                MultiVariantGenerator.dispatch(block).with(
+                        PropertyDispatch.initial(
+                                        TierAddonBlock.ADDON_USED,
+                                        TierAddonBlock.FACING,
+                                        TierAddonBlock.FACE
+                                )
+                                .select(
+                                        Boolean.FALSE,
+                                        Direction.NORTH,
+                                        AttachFace.FLOOR,
+                                        variant(modelId, Direction.NORTH, AttachFace.FLOOR)
+                                )
+                                .select(
+                                        Boolean.FALSE,
+                                        Direction.EAST,
+                                        AttachFace.FLOOR,
+                                        variant(modelId, Direction.EAST, AttachFace.FLOOR)
+                                )
+                                .select(
+                                        Boolean.FALSE,
+                                        Direction.SOUTH,
+                                        AttachFace.FLOOR,
+                                        variant(modelId, Direction.SOUTH, AttachFace.FLOOR)
+                                )
+                                .select(
+                                        Boolean.FALSE,
+                                        Direction.WEST,
+                                        AttachFace.FLOOR,
+                                        variant(modelId, Direction.WEST, AttachFace.FLOOR)
+                                )
+                                .select(
+                                        Boolean.FALSE,
+                                        Direction.NORTH,
+                                        AttachFace.WALL,
+                                        variant(modelId, Direction.NORTH, AttachFace.WALL)
+                                )
+                                .select(
+                                        Boolean.FALSE,
+                                        Direction.EAST,
+                                        AttachFace.WALL,
+                                        variant(modelId, Direction.EAST, AttachFace.WALL)
+                                )
+                                .select(
+                                        Boolean.FALSE,
+                                        Direction.SOUTH,
+                                        AttachFace.WALL,
+                                        variant(modelId, Direction.SOUTH, AttachFace.WALL)
+                                )
+                                .select(
+                                        Boolean.FALSE,
+                                        Direction.WEST,
+                                        AttachFace.WALL,
+                                        variant(modelId, Direction.WEST, AttachFace.WALL)
+                                )
+                                .select(
+                                        Boolean.FALSE,
+                                        Direction.NORTH,
+                                        AttachFace.CEILING,
+                                        variant(modelId, Direction.NORTH, AttachFace.CEILING)
+                                )
+                                .select(
+                                        Boolean.FALSE,
+                                        Direction.EAST,
+                                        AttachFace.CEILING,
+                                        variant(modelId, Direction.EAST, AttachFace.CEILING)
+                                )
+                                .select(
+                                        Boolean.FALSE,
+                                        Direction.SOUTH,
+                                        AttachFace.CEILING,
+                                        variant(modelId, Direction.SOUTH, AttachFace.CEILING)
+                                )
+                                .select(
+                                        Boolean.FALSE,
+                                        Direction.WEST,
+                                        AttachFace.CEILING,
+                                        variant(modelId, Direction.WEST, AttachFace.CEILING)
+                                )
+                                .select(
+                                        Boolean.TRUE,
+                                        Direction.NORTH,
+                                        AttachFace.FLOOR,
+                                        variant(modelId, Direction.NORTH, AttachFace.FLOOR)
+                                )
+                                .select(
+                                        Boolean.TRUE,
+                                        Direction.EAST,
+                                        AttachFace.FLOOR,
+                                        variant(modelId, Direction.EAST, AttachFace.FLOOR)
+                                )
+                                .select(
+                                        Boolean.TRUE,
+                                        Direction.SOUTH,
+                                        AttachFace.FLOOR,
+                                        variant(modelId, Direction.SOUTH, AttachFace.FLOOR)
+                                )
+                                .select(
+                                        Boolean.TRUE,
+                                        Direction.WEST,
+                                        AttachFace.FLOOR,
+                                        variant(modelId, Direction.WEST, AttachFace.FLOOR)
+                                )
+                                .select(
+                                        Boolean.TRUE,
+                                        Direction.NORTH,
+                                        AttachFace.WALL,
+                                        variant(modelId, Direction.NORTH, AttachFace.WALL)
+                                )
+                                .select(
+                                        Boolean.TRUE,
+                                        Direction.EAST,
+                                        AttachFace.WALL,
+                                        variant(modelId, Direction.EAST, AttachFace.WALL)
+                                )
+                                .select(
+                                        Boolean.TRUE,
+                                        Direction.SOUTH,
+                                        AttachFace.WALL,
+                                        variant(modelId, Direction.SOUTH, AttachFace.WALL)
+                                )
+                                .select(
+                                        Boolean.TRUE,
+                                        Direction.WEST,
+                                        AttachFace.WALL,
+                                        variant(modelId, Direction.WEST, AttachFace.WALL)
+                                )
+                                .select(
+                                        Boolean.TRUE,
+                                        Direction.NORTH,
+                                        AttachFace.CEILING,
+                                        variant(modelId, Direction.NORTH, AttachFace.CEILING)
+                                )
+                                .select(
+                                        Boolean.TRUE,
+                                        Direction.EAST,
+                                        AttachFace.CEILING,
+                                        variant(modelId, Direction.EAST, AttachFace.CEILING)
+                                )
+                                .select(
+                                        Boolean.TRUE,
+                                        Direction.SOUTH,
+                                        AttachFace.CEILING,
+                                        variant(modelId, Direction.SOUTH, AttachFace.CEILING)
+                                )
+                                .select(
+                                        Boolean.TRUE,
+                                        Direction.WEST,
+                                        AttachFace.CEILING,
+                                        variant(modelId, Direction.WEST, AttachFace.CEILING)
+                                )
+                )
+        );
     }
 
-    private void simpleBlockState(DeferredBlock<?> deferredBlock) {
-        ModelFile model = model(deferredBlock);
-        simpleBlockItem(deferredBlock.get(), model);
-        getVariantBuilder(deferredBlock.get())
-                .forAllStates(state -> ConfiguredModel.builder().modelFile(model).build());
+    private static void registerSimpleBlock(
+            BlockModelGenerators blockModels,
+            DeferredBlock<?> deferredBlock
+    ) {
+        Block block = deferredBlock.get();
+        Identifier modelId = ModelLocationUtils.getModelLocation(block);
+
+        blockModels.registerSimpleItemModel(block, modelId);
+        blockModels.blockStateOutput.accept(
+                MultiVariantGenerator.dispatch(
+                        block,
+                        BlockModelGenerators.plainVariant(modelId)
+                )
+        );
     }
 
-    private static ModelFile model(DeferredBlock<?> deferredBlock) {
-        ResourceLocation model = ResourceLocation
-                .parse(deferredBlock.getId().getNamespace() + ":block/" + deferredBlock.getId().getPath());
+    private static void registerInfestedAmethyst(
+            BlockModelGenerators blockModels,
+            DeferredBlock<?> deferredBlock
+    ) {
+        Block block = deferredBlock.get();
 
-        return new ModelFile.UncheckedModelFile(model);
+        ModelTemplate amethystParent = new ModelTemplate(
+                Optional.of(
+                        Identifier.fromNamespaceAndPath(
+                                "minecraft",
+                                "block/amethyst_block"
+                        )
+                ),
+                Optional.empty()
+        );
+
+        Identifier modelId = amethystParent.create(
+                block,
+                new TextureMapping(),
+                blockModels.modelOutput
+        );
+
+        blockModels.registerSimpleItemModel(block, modelId);
+        blockModels.blockStateOutput.accept(
+                MultiVariantGenerator.dispatch(
+                        block,
+                        BlockModelGenerators.plainVariant(modelId)
+                )
+        );
+    }
+
+    private static MultiVariant variant(
+            Identifier modelId,
+            Direction facing,
+            AttachFace face
+    ) {
+        return BlockModelGenerators.plainVariant(modelId)
+                .with(yRotation(facing))
+                .with(xRotation(face));
+    }
+
+    private static VariantMutator yRotation(
+            Direction facing
+    ) {
+        return switch (facing) {
+            case NORTH -> BlockModelGenerators.Y_ROT_180;
+            case EAST -> BlockModelGenerators.Y_ROT_270;
+            case SOUTH -> BlockModelGenerators.NOP;
+            case WEST -> BlockModelGenerators.Y_ROT_90;
+            default -> BlockModelGenerators.NOP;
+        };
+    }
+
+    private static VariantMutator xRotation(
+            AttachFace face
+    ) {
+        return switch (face) {
+            case FLOOR -> BlockModelGenerators.NOP;
+            case WALL -> BlockModelGenerators.X_ROT_90;
+            case CEILING -> BlockModelGenerators.X_ROT_180;
+        };
     }
 }

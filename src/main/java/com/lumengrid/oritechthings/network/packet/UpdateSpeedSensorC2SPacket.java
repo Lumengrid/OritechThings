@@ -7,18 +7,33 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
-public record UpdateSpeedSensorC2SPacket(BlockPos pos, int speed, boolean active,
-                                         boolean checkGreater, boolean automaticMode) implements CustomPacketPayload {
-    public static final Type<UpdateSpeedSensorC2SPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(OritechThings.MOD_ID, "update_speed_sensor"));
+public record UpdateSpeedSensorC2SPacket(
+        BlockPos pos,
+        int speed,
+        boolean active,
+        boolean checkGreater,
+        boolean automaticMode
+) implements CustomPacketPayload {
 
-    public static final StreamCodec<ByteBuf, UpdateSpeedSensorC2SPacket> STREAM_CODEC = StreamCodec.composite(
+    public static final Type<UpdateSpeedSensorC2SPacket> TYPE =
+            new Type<>(
+                    Identifier.fromNamespaceAndPath(
+                            OritechThings.MOD_ID,
+                            "update_speed_sensor"
+                    )
+            );
+
+    public static final StreamCodec<
+            ByteBuf,
+            UpdateSpeedSensorC2SPacket
+            > STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC,
             UpdateSpeedSensorC2SPacket::pos,
             ByteBufCodecs.INT,
@@ -37,17 +52,30 @@ public record UpdateSpeedSensorC2SPacket(BlockPos pos, int speed, boolean active
         return TYPE;
     }
 
-    public static void handleDataOnServer(final UpdateSpeedSensorC2SPacket packet, final IPayloadContext context) {
-        if (!(context.player() instanceof ServerPlayer sPlayer)) return;
-        ServerLevel serverLevel = sPlayer.serverLevel();
+    public static void handleDataOnServer(
+            UpdateSpeedSensorC2SPacket packet,
+            IPayloadContext context
+    ) {
+        if (!(context.player() instanceof ServerPlayer player)) {
+            return;
+        }
 
-        BlockEntity e = serverLevel.getBlockEntity(packet.pos());
+        context.enqueueWork(() -> {
+            ServerLevel level = player.level();
 
-        if (!(e instanceof AcceleratorSpeedSensorBlockEntity be)) return;
 
-        be.setSpeedLimit(packet.speed());
-        be.setEnabled(packet.active());
-        be.setCheckGreater(packet.checkGreater());
-        be.setAutomaticMode(packet.automaticMode());
+            BlockEntity blockEntity =
+                    level.getBlockEntity(packet.pos());
+
+            if (!(blockEntity
+                    instanceof AcceleratorSpeedSensorBlockEntity sensor)) {
+                return;
+            }
+
+            sensor.setSpeedLimit(packet.speed());
+            sensor.setEnabled(packet.active());
+            sensor.setCheckGreater(packet.checkGreater());
+            sensor.setAutomaticMode(packet.automaticMode());
+        });
     }
 }

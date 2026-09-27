@@ -21,7 +21,7 @@ public class GameBusClientEvents {
 
     @SubscribeEvent
     public static void onBlockEntityRender(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(ModEntities.accelerator_speed_sensor.get(),
+        event.registerBlockEntityRenderer(ModEntities.ACCELERATOR_SPEED_SENSOR.get(),
                 AcceleratorSpeedSensorBlockEntityRender::new);
     }
 }

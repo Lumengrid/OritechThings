@@ -22,7 +22,7 @@ public class ModLangProviderZhCn extends LanguageProvider {
 
         //misc
         add("itemGroup." + MOD_ID, "Oritech Things");
-        add("message."+ToolsContent.EXO_JETPACK.getDescriptionId().replace("item.oritech.", "")+".energy_low", "§c⚠ 外骨骼喷气背包 - 能量不足 ⚠");
+        add("message."+ToolsContent.EXO_JETPACK.getId().getPath()+".energy_low", "§c⚠ 外骨骼喷气背包 - 能量不足 ⚠");
         add("tooltip." + MOD_ID + ".tiered_addons.chambers_desc", "额外舱室 ");
         add("tooltip."+MOD_ID+".tier_addon", "等级 ");
         add("tooltip."+MOD_ID+".state.on", "开启");

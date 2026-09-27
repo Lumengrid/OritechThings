@@ -4,57 +4,76 @@ import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.util.Constants;
 import com.lumengrid.oritechthings.util.ModTags;
+
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
-public class ModItemTagProvider extends ItemTagsProvider {
-    public ModItemTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider,
-                              CompletableFuture<TagLookup<Block>> blockTags,
-                              @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, blockTags, OritechThings.MOD_ID, existingFileHelper);
+public class ModItemTagProvider extends TagsProvider<Item> {
+
+    public ModItemTagProvider(
+            PackOutput output,
+            CompletableFuture<HolderLookup.Provider> lookupProvider
+    ) {
+        super(output, Registries.ITEM, lookupProvider, OritechThings.MOD_ID);
     }
 
     @Override
-    protected void addTags(HolderLookup.@NotNull Provider provider) {
+    protected void addTags(HolderLookup.Provider provider) {
+        addItemsToTag(
+                Arrays.asList(Constants.getAllAddons()),
+                ModTags.Items.ADDONS
+        );
+        addItemsToTag(
+                Arrays.asList(Constants.EFFICIENCY),
+                ModTags.Items.TIERED_ADDON_EFFICIENCY
+        );
+        addItemsToTag(
+                Arrays.asList(Constants.SPEED),
+                ModTags.Items.TIERED_ADDON_SPEED
+        );
+        addItemsToTag(
+                Arrays.asList(Constants.EFFICIENT),
+                ModTags.Items.TIERED_ADDON_EFFICIENT_SPEED
+        );
+        addItemsToTag(
+                Arrays.asList(Constants.CAPACITOR),
+                ModTags.Items.TIERED_ADDON_CAPACITOR
+        );
+        addItemsToTag(
+                Arrays.asList(Constants.ACCEPTOR),
+                ModTags.Items.TIERED_ADDON_ACCEPTOR
+        );
+        addItemsToTag(
+                Arrays.asList(Constants.PROCESSING),
+                ModTags.Items.TIERED_ADDON_PROCESSING
+        );
 
-        for (DeferredBlock<?> data : Constants.getAllAddons()) {
-            tag(ModTags.Items.ADDONS).add(data.get().asItem());
+        getOrCreateRawBuilder(ModTags.Items.PARTICLE_ACCELERATOR)
+                .addElement(itemId(ModBlocks.ACCELERATOR_SPEED_SENSOR.get().asItem()))
+                .addElement(itemId(ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get().asItem()));
+    }
+
+    private void addItemsToTag(
+            Iterable<? extends DeferredBlock<?>> blocks,
+            net.minecraft.tags.TagKey<Item> tagKey
+    ) {
+        var builder = getOrCreateRawBuilder(tagKey);
+
+        for (DeferredBlock<?> data : blocks) {
+            builder.addElement(itemId(data.get().asItem()));
         }
+    }
 
-        for(DeferredBlock<?> data: Constants.EFFICIENCY){
-            tag(ModTags.Items.TIERED_ADDON_EFFICIENCY).add(data.get().asItem());
-        }
-
-        for(DeferredBlock<?> data: Constants.SPEED){
-            tag(ModTags.Items.TIERED_ADDON_SPEED).add(data.get().asItem());
-        }
-
-        for(DeferredBlock<?> data: Constants.EFFICIENT){
-            tag(ModTags.Items.TIERED_ADDON_EFFICIENT_SPEED).add(data.get().asItem());
-        }
-
-        for(DeferredBlock<?> data: Constants.CAPACITOR){
-            tag(ModTags.Items.TIERED_ADDON_CAPACITOR).add(data.get().asItem());
-        }
-
-        for(DeferredBlock<?> data: Constants.ACCEPTOR){
-            tag(ModTags.Items.TIERED_ADDON_ACCEPTOR).add(data.get().asItem());
-        }
-
-        for(DeferredBlock<?> data: Constants.PROCESSING){
-            tag(ModTags.Items.TIERED_ADDON_PROCESSING).add(data.get().asItem());
-        }
-
-        tag(ModTags.Items.PARTICLE_ACCELERATOR).add(ModBlocks.ACCELERATOR_SPEED_SENSOR.get().asItem());
-        tag(ModTags.Items.PARTICLE_ACCELERATOR).add(ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get().asItem());
+    private static Identifier itemId(Item item) {
+        return BuiltInRegistries.ITEM.getKey(item);
     }
 }

@@ -14,17 +14,43 @@ import rearth.oritech.block.blocks.addons.MachineAddonBlock;
 @Mixin(AcceleratorMotorBlock.class)
 public class AcceleratorMotorBlockMixin {
 
-    @Inject(method = "onRemove", at = @At("HEAD"))
-    private void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved, CallbackInfo ci) {
-        if (world.isClientSide) return;
-
-        var addonPos = pos.offset(Direction.DOWN.getNormal());
-        var addonState = world.getBlockState(addonPos);
-        
-        if (addonState.getBlock() instanceof MachineAddonBlock) {
-            var newAddonState = addonState.setValue(MachineAddonBlock.ADDON_USED, false);
-            world.setBlockAndUpdate(addonPos, newAddonState);
-            world.updateNeighborsAt(addonPos, addonState.getBlock());
+    @Inject(
+            method = "onRemove",
+            at = @At("HEAD")
+    )
+    private void onRemove(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            BlockState newState,
+            boolean moved,
+            CallbackInfo callbackInfo
+    ) {
+        if (level.isClientSide()) {
+            return;
         }
+
+        BlockPos addonPos =
+                pos.relative(Direction.DOWN);
+
+        BlockState addonState =
+                level.getBlockState(addonPos);
+
+        if (!(addonState.getBlock()
+                instanceof MachineAddonBlock)) {
+            return;
+        }
+
+        BlockState newAddonState =
+                addonState.setValue(
+                        MachineAddonBlock.ADDON_USED,
+                        false
+                );
+
+        level.setBlockAndUpdate(addonPos, newAddonState);
+        level.updateNeighborsAt(
+                addonPos,
+                newAddonState.getBlock()
+        );
     }
 }

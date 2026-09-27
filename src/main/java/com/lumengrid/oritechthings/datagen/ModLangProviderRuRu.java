@@ -22,7 +22,7 @@ public class ModLangProviderRuRu extends LanguageProvider {
 
         //misc
         add("itemGroup." + MOD_ID, "Oritech: Вещи");
-        add("message."+ToolsContent.EXO_JETPACK.getDescriptionId().replace("item.oritech.", "")+".energy_low", "§c⚠ Экзо-джетпак — мало энергии ⚠");
+        add("message."+ToolsContent.EXO_JETPACK.getId().getPath()+".energy_low", "§c⚠ Экзо-джетпак — мало энергии ⚠");
         add("tooltip." + MOD_ID + ".tiered_addons.chambers_desc", "Дополнительные камеры ");
         add("tooltip."+MOD_ID+".tier_addon", "Уровень ");
         add("tooltip."+MOD_ID+".state.on", "ВКЛ.");

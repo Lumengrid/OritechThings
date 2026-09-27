@@ -7,7 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -20,46 +20,92 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 import rearth.oritech.block.base.entity.FrameInteractionBlockEntity;
 import rearth.oritech.util.Geometry;
+
 import java.util.List;
 
 import static net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING;
 import static rearth.oritech.block.base.block.MultiblockMachine.ASSEMBLED;
 
 public class FramePlacer extends Item {
-    public FramePlacer(Properties settings) {
-        super(settings);
+
+    public FramePlacer(Properties properties) {
+        super(properties);
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand handIn) {
+    public @NotNull InteractionResult use(
+            @NotNull Level level,
+            @NotNull Player player,
+            @NotNull InteractionHand hand
+    ) {
         if (!level.isClientSide()) {
-            return InteractionResultHolder.pass(player.getItemInHand(handIn));
+            return InteractionResult.PASS;
         }
-        HitResult hit = player.pick(5.0, 1.0F, false);
-        BlockHitResult hitResult = (BlockHitResult) hit;
-        if (hitResult.getType() == HitResult.Type.BLOCK) {
-            BlockPos pos = hitResult.getBlockPos();
-            BlockEntity targetEntity = level.getBlockEntity(pos);
-            if (targetEntity instanceof FrameInteractionBlockEntity entity) {
-                BlockState targetState = level.getBlockState(pos);
-                if (targetState.getValue(ASSEMBLED)) {
-                    Vec3i backRelative = new Vec3i(entity.getFrameOffset(), 0, 0);
-                    Direction facing = targetState.getValue(FACING);
-                    BlockPos searchStart = (BlockPos) Geometry.offsetToWorldPosition(facing, backRelative, pos);
-                    ScreenOpener.openFramePlacer(searchStart, facing.getOpposite());
-                    return InteractionResultHolder.success(player.getItemInHand(handIn));
-                } else {
-                    player.displayClientMessage(Component.translatable("message.oritechthings.frame_placer.not_assembled").withStyle(ChatFormatting.RED), true);
-                }
-            } else {
-                player.displayClientMessage(Component.translatable("message.oritechthings.frame_placer.wrong_machine").withStyle(ChatFormatting.RED), true);
-            }
+
+        HitResult hit = player.pick(5.0D, 1.0F, false);
+
+        if (!(hit instanceof BlockHitResult hitResult)) {
+            return InteractionResult.FAIL;
         }
-        return InteractionResultHolder.fail(player.getItemInHand(handIn));
+
+        BlockPos pos = hitResult.getBlockPos();
+        BlockEntity targetEntity = level.getBlockEntity(pos);
+
+        if (!(targetEntity instanceof FrameInteractionBlockEntity entity)) {
+            // ✅ Sostituito displayClientMessage con sendSystemMessage
+            player.sendSystemMessage(
+                    Component.translatable(
+                            "message.oritechthings.frame_placer.wrong_machine"
+                    ).withStyle(ChatFormatting.RED)
+            );
+
+            return InteractionResult.FAIL;
+        }
+
+        BlockState targetState = level.getBlockState(pos);
+
+        if (!targetState.getValue(ASSEMBLED)) {
+            // ✅ Sostituito displayClientMessage con sendSystemMessage
+            player.sendSystemMessage(
+                    Component.translatable(
+                            "message.oritechthings.frame_placer.not_assembled"
+                    ).withStyle(ChatFormatting.RED)
+            );
+
+            return InteractionResult.FAIL;
+        }
+
+        Vec3i backRelative = new Vec3i(entity.getFrameOffset(), 0, 0);
+        Direction facing = targetState.getValue(FACING);
+
+        Vec3i worldPosition =
+                Geometry.offsetToWorldPosition(facing, backRelative, pos);
+
+        BlockPos searchStart = BlockPos.containing(
+                worldPosition.getX(),
+                worldPosition.getY(),
+                worldPosition.getZ()
+        );
+
+        ScreenOpener.openFramePlacer(
+                searchStart,
+                facing.getOpposite()
+        );
+
+        return InteractionResult.SUCCESS;
     }
 
-    @Override
-    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, List<Component> tooltip, @NotNull TooltipFlag type) {
-        tooltip.add(Component.translatable("tooltip.oritechthings.frame_placer").withStyle(ChatFormatting.ITALIC));
+    // todo appendhovertext @Override
+    public void appendHoverText(
+            @NotNull ItemStack stack,
+            @NotNull TooltipContext context,
+            List<Component> tooltip,
+            @NotNull TooltipFlag flag
+    ) {
+        tooltip.add(
+                Component.translatable(
+                        "tooltip.oritechthings.frame_placer"
+                ).withStyle(ChatFormatting.ITALIC)
+        );
     }
 }

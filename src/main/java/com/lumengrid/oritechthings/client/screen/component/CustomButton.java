@@ -1,35 +1,111 @@
 package com.lumengrid.oritechthings.client.screen.component;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
 
 public class CustomButton extends Button {
-    private final int BACKGROUND_COLOR;
-    private final int TEXT_COLOR;
-    private final int BORDER_COLOR;
 
-    public CustomButton(int x, int y, int width, int height, Component message, OnPress onPress, int backGroundColor, int textColor, int borderColor) {
-        super(x, y, width, height, message, onPress, Button.DEFAULT_NARRATION);
-        BACKGROUND_COLOR = backGroundColor;
-        TEXT_COLOR = textColor;
-        BORDER_COLOR = borderColor;
+    private final int backgroundColor;
+    private final int textColor;
+    private final int borderColor;
+
+    public CustomButton(
+            int x,
+            int y,
+            int width,
+            int height,
+            Component message,
+            OnPress onPress,
+            int backgroundColor,
+            int textColor,
+            int borderColor
+    ) {
+        super(
+                x,
+                y,
+                width,
+                height,
+                message,
+                onPress,
+                Button.DEFAULT_NARRATION
+        );
+
+        this.backgroundColor = backgroundColor;
+        this.textColor = textColor;
+        this.borderColor = borderColor;
     }
+
     @Override
-    public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        // Draw black border
-        guiGraphics.fill(this.getX() - 1, this.getY() - 1, this.getX() + this.width + 1, this.getY(), BORDER_COLOR); // Top border
-        guiGraphics.fill(this.getX() - 1, this.getY(), this.getX(), this.getY() + this.height, BORDER_COLOR); // Left border
-        guiGraphics.fill(this.getX() + this.width, this.getY(), this.getX() + this.width + 1, this.getY() + this.height, BORDER_COLOR); // Right border
-        guiGraphics.fill(this.getX() - 1, this.getY() + this.height, this.getX() + this.width + 1, this.getY() + this.height + 1, BORDER_COLOR); // Bottom border
+    public void extractContents(
+            GuiGraphicsExtractor graphics,
+            int mouseX,
+            int mouseY,
+            float partialTick
+    ) {
+        int x = getX();
+        int y = getY();
 
-        // Draw button background
-        guiGraphics.fill(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, BACKGROUND_COLOR);
+        graphics.fill(
+                x - 1,
+                y - 1,
+                x + width + 1,
+                y,
+                borderColor
+        );
 
-        // Draw button text
-        Minecraft mc = Minecraft.getInstance();
-        guiGraphics.drawCenteredString(mc.font, this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, TEXT_COLOR);
+        graphics.fill(
+                x - 1,
+                y,
+                x,
+                y + height,
+                borderColor
+        );
+
+        graphics.fill(
+                x + width,
+                y,
+                x + width + 1,
+                y + height,
+                borderColor
+        );
+
+        graphics.fill(
+                x - 1,
+                y + height,
+                x + width + 1,
+                y + height + 1,
+                borderColor
+        );
+
+        graphics.fill(
+                x,
+                y,
+                x + width,
+                y + height,
+                backgroundColor
+        );
+
+        Minecraft minecraft = Minecraft.getInstance();
+
+        Component message = getMessage();
+        int textX = x + (width - minecraft.font.width(message)) / 2;
+        int textY = y + (height - 8) / 2;
+
+        graphics.text(
+                minecraft.font,
+                message,
+                textX,
+                textY,
+                opaque(textColor),
+                false
+        );
+    }
+
+    private static int opaque(int color) {
+        return (color & 0xFF000000) == 0
+                ? color | 0xFF000000
+                : color;
     }
 }
