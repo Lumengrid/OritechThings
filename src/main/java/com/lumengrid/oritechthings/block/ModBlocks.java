@@ -228,7 +228,6 @@ public class ModBlocks {
         return toReturn;
     }
 
-    // ✅ Aggiornato con ComponentContent.ENERGY.get()
     private static <T extends Block> void registerEnergyStorageBlockItem(String name, DeferredBlock<T> block) {
         ModItems.BLOCKITEMS.register(name, () ->
                 new AcceleratorMagneticFieldBlockItem(

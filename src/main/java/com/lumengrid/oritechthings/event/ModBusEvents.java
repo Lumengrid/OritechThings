@@ -35,7 +35,6 @@ public class ModBusEvents {
 
     @SubscribeEvent
     public static void addReloadListener(AddClientReloadListenersEvent event) {
-        // ✅ Passato l'Identifier identificativo come primo parametro
         event.addListener(
                 Identifier.fromNamespaceAndPath(OritechThings.MOD_ID, "config_reload"),
                 new ConfigReloadListener()

@@ -28,7 +28,6 @@ public class ModItems {
         public static final DeferredItem<Item> ADVANCED_TARGET_DESIGNATOR = ITEMS.register("advanced_target_designator",
                 () -> new AdvancedTargetDesignator(new Item.Properties().stacksTo(1)));
 
-        // ✅ Sintassi ufficiale NeoForge per 1.21.2+ / 1.21.4:
         public static final DeferredItem<Item> AMETHYST_FISH_SPAWN_EGG = ITEMS.registerItem(
                 "amethyst_fish_spawn_egg",
                 properties -> new SpawnEggItem(

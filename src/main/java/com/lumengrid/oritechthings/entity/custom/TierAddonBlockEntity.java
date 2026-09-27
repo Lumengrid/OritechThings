@@ -66,7 +66,6 @@ public class TierAddonBlockEntity extends AddonBlockEntity implements EnergyProv
         return (MachineAddonController) controllerEntity;
     }
 
-    // ✅ Implementazione corretta per Oritech 1.21.2+ usando EnergyHandler
     @Override
     public EnergyHandler getEnergyLookup(@Nullable Direction direction) {
         if (!isConnected()) {

@@ -2,9 +2,8 @@ package com.lumengrid.oritechthings.mixin;
 
 import com.lumengrid.oritechthings.api.MagneticFieldController;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,39 +18,30 @@ public class AcceleratorControllerBlockEntityMixin implements MagneticFieldContr
 
     private final List<BlockPos> linkedMagneticFields = new ArrayList<>();
 
+    // ✅ Aggiornato con ValueOutput per Oritech 1.21.2+
     @Inject(method = "saveAdditional", at = @At("TAIL"))
-    private void saveMagneticFields(CompoundTag nbt, HolderLookup.Provider registryLookup, CallbackInfo ci) {
-        ListTag magneticFieldsTag = new ListTag();
-        for (BlockPos pos : linkedMagneticFields) {
-            CompoundTag posTag = new CompoundTag();
-            posTag.putInt("x", pos.getX());
-            posTag.putInt("y", pos.getY());
-            posTag.putInt("z", pos.getZ());
-            magneticFieldsTag.add(posTag);
+    private void saveMagneticFields(ValueOutput output, CallbackInfo ci) {
+        if (!linkedMagneticFields.isEmpty()) {
+            BlockPos pos = linkedMagneticFields.get(0);
+            output.putInt("magnetX", pos.getX());
+            output.putInt("magnetY", pos.getY());
+            output.putInt("magnetZ", pos.getZ());
+            output.putBoolean("hasMagnet", true);
+        } else {
+            output.putBoolean("hasMagnet", false);
         }
-        nbt.put("linkedMagneticFields", magneticFieldsTag);
     }
 
+    // ✅ Aggiornato con ValueInput per Oritech 1.21.2+
     @Inject(method = "loadAdditional", at = @At("TAIL"))
-    private void loadMagneticFields(CompoundTag nbt, HolderLookup.Provider registryLookup, CallbackInfo ci) {
+    private void loadMagneticFields(ValueInput input, CallbackInfo ci) {
         linkedMagneticFields.clear();
-
-        // ✅ 1. 'contains' prende 1 solo argomento
-        if (nbt.contains("linkedMagneticFields")) {
-            // ✅ 2. 'getList' prende 1 solo argomento
-            ListTag magneticFieldsTag = nbt.getListOrEmpty("linkedMagneticFields");
-
-            for (int i = 0; i < magneticFieldsTag.size(); i++) {
-                // ✅ 3. getCompound(i) restituisce Optional<CompoundTag>
-                magneticFieldsTag.getCompound(i).ifPresent(posTag -> {
-                    // ✅ 4. getInt(...) restituisce Optional<Integer>, estraiamo con .orElse(0)
-                    int x = posTag.getInt("x").orElse(0);
-                    int y = posTag.getInt("y").orElse(0);
-                    int z = posTag.getInt("z").orElse(0);
-
-                    linkedMagneticFields.add(new BlockPos(x, y, z));
-                });
-            }
+        boolean hasMagnet = input.getBooleanOr("hasMagnet", false);
+        if (hasMagnet) {
+            int x = input.getIntOr("magnetX", 0);
+            int y = input.getIntOr("magnetY", 0);
+            int z = input.getIntOr("magnetZ", 0);
+            linkedMagneticFields.add(new BlockPos(x, y, z));
         }
     }
 

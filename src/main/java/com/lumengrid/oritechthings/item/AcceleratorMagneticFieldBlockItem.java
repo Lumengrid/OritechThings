@@ -22,7 +22,6 @@ public class AcceleratorMagneticFieldBlockItem extends BlockItem {
 // todo appendhovertext
 //    @Override
 //    public void appendHoverText(ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag type) {
-//        // ✅ Utilizza ComponentContent.ENERGY
 //        int storedEnergy = stack.getOrDefault(ComponentContent.ENERGY, 0);
 //
 //        if (storedEnergy != 0) {
@@ -41,7 +40,7 @@ public class AcceleratorMagneticFieldBlockItem extends BlockItem {
 
     @Override
     public int getBarColor(@NotNull ItemStack stack) {
-        return 0xFF7007; // Arancione per la barra dell'energia
+        return 0xFF7007;
     }
 
     @Override
@@ -53,7 +52,7 @@ public class AcceleratorMagneticFieldBlockItem extends BlockItem {
             return 0;
         }
         if (fillAmount >= capacity) {
-            return 13; // Dimensione massima della barra in Vanilla (13px)
+            return 13;
         }
 
         return Math.round((fillAmount * 13.0f) / capacity);

@@ -24,8 +24,6 @@ public class ModEntities {
     public static void register(IEventBus bus) {
         MOD_BLOCK_ENTITIES.register(bus);
         MOD_MOB_ENTITIES.register(bus);
-        // ✅ EnergyApi rimosso: la registrazione della capability energetica
-        // avvengono in automatico tramite le interfacce EnergyProvider / ExpandableEnergyStorageBlockEntity
     }
 
     public static final DeferredRegister<BlockEntityType<?>> MOD_BLOCK_ENTITIES =
@@ -44,7 +42,6 @@ public class ModEntities {
                     () -> new BlockEntityType<>(AcceleratorMagneticFieldBlockEntity::new,
                             Set.of(ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get())));
 
-    // ✅ ResourceLocation.fromNamespaceAndPath per NeoForge 26.1+
     public static final DeferredHolder<EntityType<?>, EntityType<AmethystFishEntity>> AMETHYST_FISH =
             MOD_MOB_ENTITIES.register("amethyst_fish",
                     () -> EntityType.Builder.of(AmethystFishEntity::new, MobCategory.MONSTER)

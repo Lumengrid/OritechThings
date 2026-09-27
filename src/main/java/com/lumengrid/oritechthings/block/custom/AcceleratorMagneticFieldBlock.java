@@ -115,7 +115,6 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
 
             machineEntity.initAddons();
 
-            // ✅ Sostituito MenuRegistry con il metodo Vanilla openMenu
             player.openMenu((MenuProvider) world.getBlockEntity(pos), pos);
         }
 
@@ -128,7 +127,6 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
 
         var blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
         if (blockEntity instanceof AcceleratorMagneticFieldBlockEntity storageEntity) {
-            // ✅ Sostituito getHeldStacks() e clearContent() con getStacks()
             droppedStacks.addAll(storageEntity.inventory.getStacks());
             storageEntity.inventory.getStacks().clear();
         }
@@ -141,7 +139,6 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
         var stack = new ItemStack(com.lumengrid.oritechthings.block.ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get().asItem());
 
         var storageEntity = (AcceleratorMagneticFieldBlockEntity) world.getBlockEntity(pos);
-        // ✅ Accede direttamente a .energy
         if (storageEntity != null && storageEntity.energyStorage.energy > 0) {
             stack.set(ComponentContent.ENERGY.get(), (int) storageEntity.energyStorage.energy);
         }
