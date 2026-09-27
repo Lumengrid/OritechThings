@@ -22,14 +22,13 @@ public class ModItems {
         public static final DeferredRegister.Items ADDONS = DeferredRegister.createItems(OritechThings.MOD_ID);
         public static final DeferredRegister.Items BLOCKITEMS = DeferredRegister.createItems(OritechThings.MOD_ID);
 
-        public static final DeferredItem<Item> FRAME_PLACER = ITEMS.register("frame_placer",
-                () -> new FramePlacer(new Item.Properties().stacksTo(1)));
+        public static final DeferredItem<Item> FRAME_PLACER = ITEMS.registerItem("frame_placer",
+                properties -> new FramePlacer(properties.stacksTo(1)));
 
-        public static final DeferredItem<Item> ADVANCED_TARGET_DESIGNATOR = ITEMS.register("advanced_target_designator",
-                () -> new AdvancedTargetDesignator(new Item.Properties().stacksTo(1)));
+        public static final DeferredItem<Item> ADVANCED_TARGET_DESIGNATOR = ITEMS.registerItem("advanced_target_designator",
+                properties -> new AdvancedTargetDesignator(properties.stacksTo(1)));
 
-        public static final DeferredItem<Item> AMETHYST_FISH_SPAWN_EGG = ITEMS.registerItem(
-                "amethyst_fish_spawn_egg",
+        public static final DeferredItem<Item> AMETHYST_FISH_SPAWN_EGG = ITEMS.registerItem("amethyst_fish_spawn_egg",
                 properties -> new SpawnEggItem(
                         properties.spawnEgg(ModEntities.AMETHYST_FISH.get())
                 )
