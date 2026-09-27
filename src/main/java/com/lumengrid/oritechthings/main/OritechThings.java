@@ -3,7 +3,6 @@ package com.lumengrid.oritechthings.main;
 import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.entity.ModEntities;
 import com.lumengrid.oritechthings.entity.client.AmethystFishRenderer;
-import com.lumengrid.oritechthings.entity.custom.AmethystFishEntity;
 import com.lumengrid.oritechthings.event.RenderWorldLastEvent;
 import com.lumengrid.oritechthings.item.ModCreativeModeTabs;
 import com.lumengrid.oritechthings.item.ModItems;
@@ -14,7 +13,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -39,7 +37,6 @@ public class OritechThings
         ModDataComponents.register(modEventBus);
         ModCreativeModeTabs.register(modEventBus);
         ModMenuTypes.MENUS.register(modEventBus);
-        modEventBus.addListener(OritechThings::registerEntityAttributes);
     }
 
     @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
@@ -49,9 +46,5 @@ public class OritechThings
             EntityRenderers.register(ModEntities.AMETHYST_FISH.get(), AmethystFishRenderer::new);
             NeoForge.EVENT_BUS.register(RenderWorldLastEvent.class);
         }
-    }
-
-    private static void registerEntityAttributes(EntityAttributeCreationEvent event) {
-        event.put(ModEntities.AMETHYST_FISH.get(), AmethystFishEntity.createAttributes().build());
     }
 }

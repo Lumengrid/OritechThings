@@ -93,6 +93,7 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> ADDON_BLOCK_CROSS_DIMENSIONAL = registerAddon(
             "addon_block_cross_dimensional", props -> new TierAddonBlock(
+                    props,
                     MachineAddonBlock.AddonSettings.getDefaultSettings()
                             .withNeedsSupport(true)
                             .withBoundingShape(generateAddonShape(7)),
@@ -112,6 +113,7 @@ public class ModBlocks {
     private static DeferredBlock<Block> processingAddonBuilder(int tier) {
         return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.PROCESSING, tier), props -> new TierAddonBlock(
+                        props,
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
                                 .withEfficiencyMultiplier(
                                         ConfigLoader.getInstance().addonSettings.get(tier - 2).processingEfficiency())
@@ -125,6 +127,7 @@ public class ModBlocks {
     private static DeferredBlock<Block> capacitorAddonBuilder(int tier) {
         return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.CAPACITOR, tier), props -> new TierAddonBlock(
+                        props,
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
                                 .withAddedCapacity(
                                         ConfigLoader.getInstance().addonSettings.get(tier - 2).capacitorCapacity())
@@ -137,6 +140,7 @@ public class ModBlocks {
     private static DeferredBlock<Block> acceptorAddonBuilder(int tier) {
         return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.ACCEPTOR, tier), props -> new TierAddonBlock(
+                        props,
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
                                 .withAddedCapacity(
                                         ConfigLoader.getInstance().addonSettings.get(tier - 2).acceptorCapacity())
@@ -150,6 +154,7 @@ public class ModBlocks {
     private static DeferredBlock<Block> efficientSpeedAddonBuilder(int tier) {
         return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.EFFICIENT + NameUtil.Type.SPEED, tier), props -> new TierAddonBlock(
+                        props,
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
                                 .withSpeedMultiplier(
                                         ConfigLoader.getInstance().addonSettings.get(tier - 2).speedMultiplier())
@@ -163,6 +168,7 @@ public class ModBlocks {
     private static DeferredBlock<Block> speedAddonBuilder(int tier) {
         return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.SPEED, tier), props -> new TierAddonBlock(
+                        props,
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
                                 .withSpeedMultiplier(
                                         ConfigLoader.getInstance().addonSettings.get(tier - 2).speedMultiplier())
@@ -176,6 +182,7 @@ public class ModBlocks {
     private static DeferredBlock<Block> efficiencyAddonBuilder(int tier) {
         return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.EFFICIENCY, tier), props -> new TierAddonBlock(
+                        props,
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
                                 .withEfficiencyMultiplier(
                                         ConfigLoader.getInstance().addonSettings.get(tier - 2).efficiencyUp())
@@ -201,7 +208,6 @@ public class ModBlocks {
         return shape;
     }
 
-    // ✅ registerBlock nativo di NeoForge assegna l'ID alle Properties prima dell'istanziazione
     private static <T extends Block> DeferredBlock<T> registerAddon(String name, Function<BlockBehaviour.Properties, T> blockFactory) {
         DeferredBlock<T> toReturn = ADDONS.registerBlock(name, blockFactory);
         registerBlockItem(name, toReturn, ModItems.ADDONS);
@@ -229,10 +235,10 @@ public class ModBlocks {
     }
 
     private static <T extends Block> void registerEnergyStorageBlockItem(String name, DeferredBlock<T> block) {
-        ModItems.BLOCKITEMS.register(name, () ->
+        ModItems.BLOCKITEMS.registerItem(name, properties ->
                 new AcceleratorMagneticFieldBlockItem(
                         block.get(),
-                        new Item.Properties()
+                        properties
                 )
         );
     }
