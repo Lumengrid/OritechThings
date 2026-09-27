@@ -1,29 +1,28 @@
 package com.lumengrid.oritechthings.entity.client;
 
-import com.lumengrid.oritechthings.entity.custom.AmethystFishEntity;
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-public class AmethystFishModel<T extends AmethystFishEntity> extends HierarchicalModel<T> {
-    private final ModelPart root;
+public class AmethystFishModel<S extends EntityRenderState> extends EntityModel<S> {
     private final ModelPart[] bodyParts = new ModelPart[7];
     private final ModelPart[] bodyLayers = new ModelPart[3];
     private static final int[][] BODY_SIZES = new int[][]{{3, 2, 2}, {4, 3, 2}, {6, 4, 3}, {3, 3, 3}, {2, 2, 3}, {2, 1, 2}, {1, 1, 2}};
     private static final int[][] BODY = new int[][]{{0, 0}, {0, 4}, {0, 9}, {0, 16}, {0, 22}, {11, 0}, {13, 4}};
 
     public AmethystFishModel(ModelPart root) {
-        this.root = root;
-        Arrays.setAll(this.bodyParts, p_170939_ -> root.getChild(getSegmentName(p_170939_)));
-        Arrays.setAll(this.bodyLayers, p_170933_ -> root.getChild(getLayerName(p_170933_)));
+        super(root); // Il costruttore di EntityModel memorizza e gestisce la root
+        Arrays.setAll(this.bodyParts, index -> root.getChild(getSegmentName(index)));
+        Arrays.setAll(this.bodyLayers, index -> root.getChild(getLayerName(index)));
     }
 
     private static String getLayerName(int index) {
@@ -80,12 +79,10 @@ public class AmethystFishModel<T extends AmethystFishEntity> extends Hierarchica
     }
 
     @Override
-    public @NotNull ModelPart root() {
-        return this.root;
-    }
+    public void setupAnim(@NotNull S state) {
+        super.setupAnim(state);
+        float ageInTicks = state.ageInTicks;
 
-    @Override
-    public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         for (int i = 0; i < this.bodyParts.length; i++) {
             this.bodyParts[i].yRot = Mth.cos(ageInTicks * 0.9F + (float)i * 0.15F * (float) Math.PI) * (float) Math.PI * 0.05F * (float)(1 + Math.abs(i - 2));
             this.bodyParts[i].x = Mth.sin(ageInTicks * 0.9F + (float)i * 0.15F * (float) Math.PI) * (float) Math.PI * 0.2F * (float)Math.abs(i - 2);

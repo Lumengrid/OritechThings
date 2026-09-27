@@ -10,7 +10,6 @@ import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.util.Constants;
 import com.lumengrid.oritechthings.util.Constants.NameUtil;
 import com.lumengrid.oritechthings.util.ShapeUtil;
-import rearth.oritech.api.energy.EnergyApi;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -24,20 +23,21 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import rearth.oritech.block.blocks.addons.MachineAddonBlock;
+import rearth.oritech.init.ComponentContent;
 import rearth.oritech.util.Geometry;
 
 import java.util.function.Supplier;
 
 public class ModBlocks {
 
-        public static void register(IEventBus bus){
-                OTHER.register(bus);
-                ADDONS.register(bus);
-        }
-        
+    public static void register(IEventBus bus) {
+        OTHER.register(bus);
+        ADDONS.register(bus);
+    }
+
     public static final DeferredRegister.Blocks OTHER = DeferredRegister.createBlocks(OritechThings.MOD_ID);
     public static final DeferredRegister.Blocks ADDONS = DeferredRegister.createBlocks(OritechThings.MOD_ID);
-    
+
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_2 = speedAddonBuilder(2);
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_3 = speedAddonBuilder(3);
     public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_4 = speedAddonBuilder(4);
@@ -109,6 +109,7 @@ public class ModBlocks {
             "infested_amethyst_block", () -> new InfestedAmethystBlock(Blocks.AMETHYST_BLOCK,
                     BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).strength(1.5F).sound(SoundType.AMETHYST))
     );
+
     private static DeferredBlock<Block> processingAddonBuilder(int tier) {
         return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.PROCESSING, tier), () -> new TierAddonBlock(
@@ -120,7 +121,6 @@ public class ModBlocks {
                                 .withNeedsSupport(true)
                                 .withBoundingShape(generateAddonShape(7)),
                         tier, Constants.AddonType.PROCESSING));
-
     }
 
     private static DeferredBlock<Block> capacitorAddonBuilder(int tier) {
@@ -204,7 +204,7 @@ public class ModBlocks {
 
     private static <T extends Block> DeferredBlock<T> registerAddon(String name, Supplier<T> block) {
         DeferredBlock<T> toReturn = ADDONS.register(name, block);
-        registerBlockItem(name, toReturn,ModItems.ADDONS);
+        registerBlockItem(name, toReturn, ModItems.ADDONS);
         return toReturn;
     }
 
@@ -218,7 +218,7 @@ public class ModBlocks {
         ModItems.BLOCKITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
 
-    private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block,DeferredRegister.Items items) {
+    private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block, DeferredRegister.Items items) {
         items.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
 
@@ -228,16 +228,13 @@ public class ModBlocks {
         return toReturn;
     }
 
+    // ✅ Aggiornato con ComponentContent.ENERGY.get()
     private static <T extends Block> void registerEnergyStorageBlockItem(String name, DeferredBlock<T> block) {
-        ModItems.BLOCKITEMS.register(name, () -> {
-            if (EnergyApi.ITEM != null) {
-                var item = new AcceleratorMagneticFieldBlockItem(block.get(), new Item.Properties().component(EnergyApi.ITEM.getEnergyComponent(), 0L));
-                EnergyApi.ITEM.registerForItem(() -> item);
-                return item;
-            } else {
-                return new BlockItem(block.get(), new Item.Properties());
-            }
-        });
+        ModItems.BLOCKITEMS.register(name, () ->
+                new AcceleratorMagneticFieldBlockItem(
+                        block.get(),
+                        new Item.Properties().component(ComponentContent.ENERGY.get(), 0)
+                )
+        );
     }
-
 }

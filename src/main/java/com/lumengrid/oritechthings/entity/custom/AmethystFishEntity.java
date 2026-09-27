@@ -8,7 +8,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -53,7 +53,7 @@ public class AmethystFishEntity extends Monster {
 
     @Override
     public void aiStep() {
-        if (this.isAlive() && this.isSunSensitive() && this.isSunBurnTick()) {
+        if (this.isAlive() && this.isSunSensitive() && this.isSunSensitive()) {
             this.igniteForSeconds(4.0F);
         }
         super.aiStep();
@@ -98,7 +98,7 @@ public class AmethystFishEntity extends Monster {
 
 
     public static boolean checkAmethystFishSpawnRules(
-            EntityType<AmethystFishEntity> amethystFish, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random
+            EntityType<AmethystFishEntity> amethystFish, LevelAccessor level, EntitySpawnReason spawnType, BlockPos pos, RandomSource random
     ) {
         if (level.getDifficulty() == Difficulty.PEACEFUL) {
             return false;

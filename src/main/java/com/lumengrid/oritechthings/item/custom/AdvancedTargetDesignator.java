@@ -7,12 +7,13 @@ import com.lumengrid.oritechthings.main.ConfigLoader;
 import com.lumengrid.oritechthings.main.ModDataComponents;
 import com.lumengrid.oritechthings.api.CrossDimensionalDrone;
 import com.lumengrid.oritechthings.main.OritechThings;
+import com.lumengrid.oritechthings.util.Utility;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -26,7 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import rearth.oritech.block.blocks.processing.MachineCoreBlock;
 import rearth.oritech.block.entity.interaction.DronePortEntity;
-import rearth.oritech.block.entity.interaction.LaserArmBlockEntity;
+import rearth.oritech.block.entity.interaction.EndericLaserBlockEntity;
 import rearth.oritech.init.BlockContent;
 import rearth.oritech.item.tools.LaserTargetDesignator;
 
@@ -54,7 +55,7 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
             BlockState clickedBlockState = level.getBlockState(clickedPos);
             if (clickedBlockState.getBlock() instanceof MachineCoreBlock && clickedBlockState.getValue(MachineCoreBlock.USED)) {
                 BlockEntity machineEntity = MachineCoreBlock.getControllerEntity(level, clickedPos);
-                if (machineEntity instanceof LaserArmBlockEntity) {
+                if (machineEntity instanceof EndericLaserBlockEntity) {
                     clickedPos = clickedPos.below();
                     clickedBlockState = level.getBlockState(clickedPos);
                 }
@@ -67,12 +68,12 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
                 targetPos = itemInHand.get(ModDataComponents.TARGET_POSITION.get());
                 targetDimension = itemInHand.get(ModDataComponents.TARGET_DIMENSION.get());
             }
-            if (clickedBlockState.getBlock().equals(BlockContent.LASER_ARM_BLOCK)) {
-                if (clickedEntity instanceof LaserArmBlockEntity) {
+            if (clickedBlockState.getBlock().equals(BlockContent.ENDERIC_LASER)) {
+                if (clickedEntity instanceof EndericLaserBlockEntity) {
                     return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
                 }
             }
-            if (clickedBlockState.getBlock().equals(BlockContent.DRONE_PORT_BLOCK)) {
+            if (clickedBlockState.getBlock().equals(BlockContent.DRONE_PORT)) {
                 if (clickedEntity instanceof DronePortEntity) {
                     return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
                 }
@@ -88,8 +89,8 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
                 }
             }
             // Check if clicking on a particle accelerator controller
-            if (clickedBlockState.getBlock().equals(BlockContent.ACCELERATOR_CONTROLLER)) {
-                if (clickedEntity instanceof rearth.oritech.block.entity.accelerator.AcceleratorControllerBlockEntity) {
+            if (clickedBlockState.getBlock().equals(BlockContent.PARTICLE_ACCELERATOR)) {
+                if (clickedEntity instanceof rearth.oritech.block.entity.accelerator.ParticleAcceleratorBlockEntity) {
                     // Save the accelerator position in the designator
                     itemInHand.set(ModDataComponents.TARGET_POSITION.get(), context.getClickedPos());
                     itemInHand.set(ModDataComponents.TARGET_DIMENSION.get(), level.dimension());
@@ -123,7 +124,7 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
             } else {
                 // Same dimension - proceed normally
                 switch (entity) {
-                    case LaserArmBlockEntity laserEntity -> {
+                    case EndericLaserBlockEntity laserEntity -> {
                         if (laserEntity.hunterAddons > 0) {
                             laserEntity.cycleHunterTargetMode();
                             player.sendSystemMessage(Component.translatable("message.oritech.target_designator.hunter_target",
@@ -147,7 +148,7 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
         return success ? InteractionResult.SUCCESS : InteractionResult.FAIL;
     }
 
-    @Override
+    // TODO CHECK APPENAHOVERTEXT @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag type) {
         if (stack.has(ModDataComponents.TARGET_POSITION.get())) {
             BlockPos data = stack.get(ModDataComponents.TARGET_POSITION.get());
@@ -162,7 +163,7 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
                     .append(Component.literal(getDimensionName(dimension)).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.BOLD)));
         }
         tooltip.add(Component.empty());
-        if (Screen.hasControlDown()) {
+        if (Utility.isControlDown()) {
             tooltip.add(Component.translatable("tooltip.oritechthings.advanced_target_designator.usage")
                     .withStyle(ChatFormatting.GRAY));
             tooltip.add(Component.translatable("tooltip.oritechthings.advanced_target_designator.speed_sensor")
@@ -183,21 +184,18 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
             tooltip.add(Component.translatable("tooltip.oritech.item_extra_info").withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
         }
     }
-
     private String getDimensionName(ResourceKey<Level> dimensionKey) {
         if (dimensionKey == null) {
             return "Unknown";
         }
-        ResourceLocation location = dimensionKey.location();
 
-        String namespace = location.getNamespace();
-        String path = location.getPath();
+        Identifier identifier = dimensionKey.identifier();
 
-        return " " + switch (path) {
+        return switch (identifier.getPath()) {
             case "overworld" -> "Overworld";
             case "the_nether" -> "Nether";
             case "the_end" -> "End";
-            default -> namespace + ":" + path;
+            default -> identifier.toString();
         };
     }
 }

@@ -6,34 +6,81 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.InfestedBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gamerules.GameRules;
 import org.jetbrains.annotations.NotNull;
 
 public class InfestedAmethystBlock extends InfestedBlock {
-    public InfestedAmethystBlock(Block hostBlock, Properties properties) {
+
+    public InfestedAmethystBlock(
+            Block hostBlock,
+            Properties properties
+    ) {
         super(hostBlock, properties);
     }
 
     @Override
-    protected void spawnAfterBreak(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull ItemStack stack, boolean dropExperience) {
-        if (!level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS) || EnchantmentHelper.hasTag(stack, EnchantmentTags.PREVENTS_INFESTED_SPAWNS)) {
+    protected void spawnAfterBreak(
+            @NotNull BlockState state,
+            @NotNull ServerLevel level,
+            @NotNull BlockPos pos,
+            @NotNull ItemStack stack,
+            boolean dropExperience
+    ) {
+        boolean blockDropsEnabled =
+                level.getGameRules()
+                        .get(GameRules.BLOCK_DROPS);
+
+        if (!blockDropsEnabled) {
             return;
         }
-        if (!AmethystFishEntity.checkAmethystFishSpawnRules(ModEntities.AMETHYST_FISH.get(), level,
-                MobSpawnType.SPAWNER, pos, RandomSource.create())) {
+
+        if (EnchantmentHelper.hasTag(
+                stack,
+                EnchantmentTags.PREVENTS_INFESTED_SPAWNS
+        )) {
             return;
         }
-        AmethystFishEntity amethystFish = ModEntities.AMETHYST_FISH.get().create(level);
-        if (amethystFish != null) {
-            amethystFish.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-            amethystFish.setDeltaMovement(level.random.nextDouble() * 0.2 - 0.1, 0.2, level.random.nextDouble() * 0.2 - 0.1);
-            level.addFreshEntity(amethystFish);
+
+        RandomSource random = level.getRandom();
+
+        if (!AmethystFishEntity.checkAmethystFishSpawnRules(
+                ModEntities.AMETHYST_FISH.get(),
+                level,
+                EntitySpawnReason.SPAWNER,
+                pos,
+                random
+        )) {
+            return;
         }
+
+        AmethystFishEntity fish =
+                ModEntities.AMETHYST_FISH.get().create(
+                        level,
+                        EntitySpawnReason.SPAWNER
+                );
+
+        if (fish == null) {
+            return;
+        }
+
+        fish.setPos(
+                pos.getX() + 0.5D,
+                pos.getY() + 0.5D,
+                pos.getZ() + 0.5D
+        );
+
+        fish.setDeltaMovement(
+                random.nextDouble() * 0.2D - 0.1D,
+                0.2D,
+                random.nextDouble() * 0.2D - 0.1D
+        );
+
+        level.addFreshEntity(fish);
     }
 }
-

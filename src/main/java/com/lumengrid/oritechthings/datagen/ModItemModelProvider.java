@@ -5,31 +5,57 @@ import com.lumengrid.oritechthings.item.ModItems;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.util.Constants;
 
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.ModelProvider;
+import net.minecraft.client.data.models.model.ModelLocationUtils;
+import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
-public class ModItemModelProvider extends ItemModelProvider {
-    public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, OritechThings.MOD_ID, existingFileHelper);
+public class ModItemModelProvider extends ModelProvider {
+
+    public ModItemModelProvider(PackOutput output) {
+        super(output, OritechThings.MOD_ID);
     }
 
     @Override
-    protected void registerModels() {
-
-        for(DeferredBlock<?> data: Constants.getAllAddons()){
-            customItemModel(data.getId().getPath());
+    protected void registerModels(
+            BlockModelGenerators blockModels,
+            ItemModelGenerators itemModels
+    ) {
+        for (DeferredBlock<?> data : Constants.getAllAddons()) {
+            registerBlockItem(blockModels, data);
         }
-        customItemModel(ModBlocks.ACCELERATOR_SPEED_SENSOR.getId().getPath());
-        customItemModel(ModBlocks.ACCELERATOR_MAGNETIC_FIELD.getId().getPath());
-        basicItem(ModItems.ADVANCED_TARGET_DESIGNATOR.get());
-        basicItem(ModItems.FRAME_PLACER.get());
-        withExistingParent(ModItems.AMETHYST_FISH_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+
+        registerBlockItem(blockModels, ModBlocks.ACCELERATOR_SPEED_SENSOR);
+        registerBlockItem(blockModels, ModBlocks.ACCELERATOR_MAGNETIC_FIELD);
+
+        itemModels.generateFlatItem(
+                ModItems.ADVANCED_TARGET_DESIGNATOR.get(),
+                ModelTemplates.FLAT_ITEM
+        );
+
+        itemModels.generateFlatItem(
+                ModItems.FRAME_PLACER.get(),
+                ModelTemplates.FLAT_ITEM
+        );
+
+        itemModels.generateFlatItem(
+                ModItems.AMETHYST_FISH_SPAWN_EGG.get(),
+                ModelTemplates.FLAT_ITEM
+        );
     }
 
-    private void customItemModel(String blockName) {
-        String registryName = OritechThings.MOD_ID + ":" + blockName;
-        withExistingParent(registryName, modLoc("block/" + blockName));
+    private static void registerBlockItem(
+            BlockModelGenerators blockModels,
+            DeferredBlock<?> deferredBlock
+    ) {
+        Block block = deferredBlock.get();
+        blockModels.registerSimpleItemModel(
+                block,
+                ModelLocationUtils.getModelLocation(block)
+        );
     }
 }

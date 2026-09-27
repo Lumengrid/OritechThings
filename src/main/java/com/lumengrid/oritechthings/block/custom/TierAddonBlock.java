@@ -3,6 +3,7 @@ package com.lumengrid.oritechthings.block.custom;
 import com.lumengrid.oritechthings.entity.custom.TierAddonBlockEntity;
 import com.lumengrid.oritechthings.main.ConfigLoader;
 import com.lumengrid.oritechthings.util.Constants;
+import com.lumengrid.oritechthings.util.Utility;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -82,7 +83,7 @@ public class TierAddonBlock extends MachineAddonBlock {
         builder.add(ADDON_USED, FACING, FACE, ADDON_TIER, ADDON_TYPE);
     }
 
-    @Override
+    // TODO CHECK APPENDHOVERTEXT @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip,
             TooltipFlag options) {
         if (this.defaultBlockState().getValue(ADDON_TYPE).toString().equals(Constants.AddonType.CROSS_DIMENSIONAL.toString())) {
@@ -93,7 +94,7 @@ public class TierAddonBlock extends MachineAddonBlock {
                 return;
             }
             
-            if (Screen.hasControlDown()) {
+            if (Utility.isControlDown()) {
                 tooltip.add(Component.translatable("tooltip." + MOD_ID + ".addon_block_cross_dimensional").withStyle(ChatFormatting.DARK_GRAY));
             } else {
                 tooltip.add(Component.translatable("tooltip.oritech.item_extra_info").withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
@@ -101,7 +102,7 @@ public class TierAddonBlock extends MachineAddonBlock {
         } else {
             tooltip.add(Component.translatable("tooltip." + MOD_ID + ".tier_addon").withStyle(ChatFormatting.AQUA).append(
                     Component.literal(this.defaultBlockState().getValue(ADDON_TIER).toString()).withStyle(ChatFormatting.AQUA)));
-            if (Screen.hasControlDown()) {
+            if (Utility.isControlDown()) {
                 if (addonSettings.speedMultiplier() != 1) {
                     var displayedNumber = Math.round((1 - addonSettings.speedMultiplier()) * 100);
                     tooltip.add(Component.translatable("tooltip.oritech.addon_speed_desc").withStyle(ChatFormatting.DARK_GRAY)

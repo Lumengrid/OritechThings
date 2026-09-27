@@ -1,53 +1,170 @@
 package com.lumengrid.oritechthings.client.screen.component;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
 
 public class ToggleButton extends Button {
-    private boolean isEnabled;
-    private int ENABLE_COLOR;
-    private int DISABLE_COLOR;
 
-    public ToggleButton(int x, int y, int width, int height, Component message, OnPress onPress, boolean initialState, int enableColor, int disableColor) {
-        super(x, y, width, height, message, onPress, Button.DEFAULT_NARRATION);
-        ENABLE_COLOR = enableColor;
-        DISABLE_COLOR = disableColor;
-        this.isEnabled = initialState;
+    private boolean enabled;
+
+    private int enableColor;
+    private int disableColor;
+
+    public ToggleButton(
+            int x,
+            int y,
+            int width,
+            int height,
+            Component message,
+            OnPress onPress,
+            boolean initialState,
+            int enableColor,
+            int disableColor
+    ) {
+        this(
+                new TogglePressHandler(onPress),
+                x,
+                y,
+                width,
+                height,
+                message,
+                initialState,
+                enableColor,
+                disableColor
+        );
     }
-    
-    public void setColors(int enableColor, int disableColor) {
-        this.ENABLE_COLOR = enableColor;
-        this.DISABLE_COLOR = disableColor;
+
+    private ToggleButton(
+            TogglePressHandler pressHandler,
+            int x,
+            int y,
+            int width,
+            int height,
+            Component message,
+            boolean initialState,
+            int enableColor,
+            int disableColor
+    ) {
+        super(
+                x,
+                y,
+                width,
+                height,
+                message,
+                pressHandler,
+                Button.DEFAULT_NARRATION
+        );
+
+        this.enabled = initialState;
+        this.enableColor = enableColor;
+        this.disableColor = disableColor;
+
+        pressHandler.owner = this;
     }
-    
+
+    public void setColors(
+            int enableColor,
+            int disableColor
+    ) {
+        this.enableColor = enableColor;
+        this.disableColor = disableColor;
+    }
+
     public void setToggleState(boolean state) {
-        this.isEnabled = state;
+        this.enabled = state;
     }
-    
-    @Override
-    public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        // Draw black border
-        int borderColor = 0xFF000000; // Black color
-        guiGraphics.fill(this.getX() - 1, this.getY() - 1, this.getX() + this.width + 1, this.getY(), borderColor); // Top border
-        guiGraphics.fill(this.getX() - 1, this.getY(), this.getX(), this.getY() + this.height, borderColor); // Left border
-        guiGraphics.fill(this.getX() + this.width, this.getY(), this.getX() + this.width + 1, this.getY() + this.height, borderColor); // Right border
-        guiGraphics.fill(this.getX() - 1, this.getY() + this.height, this.getX() + this.width + 1, this.getY() + this.height + 1, borderColor); // Bottom border
 
-        // Draw button background
-        int backgroundColor = this.isEnabled ? ENABLE_COLOR : DISABLE_COLOR;
-        guiGraphics.fill(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, backgroundColor);
-
-        // Draw button text
-        Minecraft mc = Minecraft.getInstance();
-        guiGraphics.drawCenteredString(mc.font, this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, 0xFFFFFF);
+    public boolean isToggleEnabled() {
+        return enabled;
     }
 
     @Override
-    public void onPress() {
-        super.onPress();
-        this.isEnabled = !this.isEnabled; // Toggle the state
+    public void extractContents(
+            GuiGraphicsExtractor graphics,
+            int mouseX,
+            int mouseY,
+            float partialTick
+    ) {
+        int x = getX();
+        int y = getY();
+        int borderColor = 0xFF000000;
+
+        graphics.fill(
+                x - 1,
+                y - 1,
+                x + width + 1,
+                y,
+                borderColor
+        );
+
+        graphics.fill(
+                x - 1,
+                y,
+                x,
+                y + height,
+                borderColor
+        );
+
+        graphics.fill(
+                x + width,
+                y,
+                x + width + 1,
+                y + height,
+                borderColor
+        );
+
+        graphics.fill(
+                x - 1,
+                y + height,
+                x + width + 1,
+                y + height + 1,
+                borderColor
+        );
+
+        graphics.fill(
+                x,
+                y,
+                x + width,
+                y + height,
+                enabled ? enableColor : disableColor
+        );
+
+        Minecraft minecraft = Minecraft.getInstance();
+
+        Component message = getMessage();
+        int textX = x + (width - minecraft.font.width(message)) / 2;
+        int textY = y + (height - 8) / 2;
+
+        graphics.text(
+                minecraft.font,
+                message,
+                textX,
+                textY,
+                0xFFFFFFFF,
+                false
+        );
+    }
+
+    private static final class TogglePressHandler implements OnPress {
+
+        private final OnPress delegate;
+        private ToggleButton owner;
+
+        private TogglePressHandler(OnPress delegate) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public void onPress(Button button) {
+            if (owner != null) {
+                owner.enabled = !owner.enabled;
+            }
+
+            if (delegate != null) {
+                delegate.onPress(button);
+            }
+        }
     }
 }

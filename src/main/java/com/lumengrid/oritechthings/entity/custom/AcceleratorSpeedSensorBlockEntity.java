@@ -7,6 +7,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -18,21 +19,21 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.NotNull;
-import rearth.oritech.block.entity.accelerator.AcceleratorControllerBlockEntity;
-import rearth.oritech.block.entity.accelerator.AcceleratorParticleLogic;
-import rearth.oritech.init.recipes.RecipeContent;
-import rearth.oritech.util.SimpleCraftingInventory;
 
 import javax.annotation.Nullable;
-import java.util.Objects;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
-public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements MenuProvider {
+public class AcceleratorSpeedSensorBlockEntity
+        extends BlockEntity
+        implements MenuProvider {
+
     private int speedLimit = 1000;
     private boolean enabled = false;
     private boolean checkGreater = true;
@@ -41,20 +42,11 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
     @Nullable
     private BlockPos targetDesignator;
 
-    private final ItemStackHandler inventory = new ItemStackHandler(1) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            sync();
-        }
-
-        @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return true;
-        }
-    };
-
-    public AcceleratorSpeedSensorBlockEntity(BlockPos pos, BlockState state) {
-        super(ModEntities.accelerator_speed_sensor.get(), pos, state);
+    public AcceleratorSpeedSensorBlockEntity(
+            BlockPos pos,
+            BlockState state
+    ) {
+        super(ModEntities.ACCELERATOR_SPEED_SENSOR.get(), pos, state);
     }
 
     public int getSpeedLimit() {
@@ -62,9 +54,9 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
     }
 
     public void setSpeedLimit(int speed) {
-        speedLimit = speed;
+        this.speedLimit = speed;
+        sync();
     }
-
 
     public boolean isCheckGreater() {
         return checkGreater;
@@ -95,8 +87,14 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
 
     public void sync() {
         setChanged();
+
         if (level != null) {
-            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), AcceleratorSpeedSensorBlock.UPDATE_ALL);
+            level.sendBlockUpdated(
+                    getBlockPos(),
+                    getBlockState(),
+                    getBlockState(),
+                    AcceleratorSpeedSensorBlock.UPDATE_ALL
+            );
         }
     }
 
@@ -105,26 +103,65 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
         return targetDesignator;
     }
 
-    @SuppressWarnings("null")
-    public boolean setTargetDesignator(@Nullable BlockPos targetPos, Player player) {
-        BlockEntity blockEntity = targetPos == null ? null : Objects.requireNonNull(level).getBlockEntity(targetPos);
-        if(targetPos == null || !(blockEntity instanceof AcceleratorControllerBlockEntity)) {
-            player.sendSystemMessage(Component.translatable("block.oritechthings.particle_accelerator_speed_sensor.invalid_controller").withStyle(ChatFormatting.RED));
+    public boolean setTargetDesignator(
+            @Nullable BlockPos targetPos,
+            Player player
+    ) {
+        if (targetPos == null || level == null) {
             return false;
         }
-        int distance = targetPos.distManhattan(this.getBlockPos());
-        if (distance > 128) {
-            player.sendSystemMessage(Component.translatable("block.oritechthings.particle_accelerator_speed_sensor.invalid_controller.to_far")
-                    .append(Component.literal(" (" + distance + ")").withStyle(ChatFormatting.ITALIC)) .withStyle(ChatFormatting.RED));
-            return false;
-        }
-        this.targetDesignator = targetPos;
-        this.setEnabled(true);
-        level.playSound(player, this.getBlockPos(), SoundEvents.ALLAY_AMBIENT_WITH_ITEM, SoundSource.BLOCKS, 1f, 1f);
-        player.sendSystemMessage(Component.translatable("block.oritechthings.particle_accelerator_speed_sensor.controller_set")
-                .append(Component.literal(targetPos.toShortString()).withStyle(ChatFormatting.BLUE)));
-        sync();
 
+        BlockEntity targetEntity = level.getBlockEntity(targetPos);
+
+        if (targetEntity == null) {
+            player.sendSystemMessage(
+                    Component.translatable(
+                            "block.oritechthings.particle_accelerator_speed_sensor.invalid_controller"
+                    ).withStyle(ChatFormatting.RED)
+            );
+
+            return false;
+        }
+
+        int distance = targetPos.distManhattan(getBlockPos());
+
+        if (distance > 128) {
+            player.sendSystemMessage(
+                    Component.translatable(
+                                    "block.oritechthings.particle_accelerator_speed_sensor.invalid_controller.to_far"
+                            )
+                            .append(
+                                    Component.literal(" (" + distance + ")")
+                                            .withStyle(ChatFormatting.ITALIC)
+                            )
+                            .withStyle(ChatFormatting.RED)
+            );
+
+            return false;
+        }
+
+        this.targetDesignator = targetPos;
+        this.enabled = true;
+
+        level.playSound(
+                player,
+                getBlockPos(),
+                SoundEvents.ALLAY_AMBIENT_WITH_ITEM,
+                SoundSource.BLOCKS,
+                1.0F,
+                1.0F
+        );
+
+        player.sendSystemMessage(
+                Component.translatable(
+                        "block.oritechthings.particle_accelerator_speed_sensor.controller_set"
+                ).append(
+                        Component.literal(targetPos.toShortString())
+                                .withStyle(ChatFormatting.BLUE)
+                )
+        );
+
+        sync();
         return true;
     }
 
@@ -135,127 +172,250 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
     }
 
     @Override
-    public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider registries) {
-        CompoundTag tag = new CompoundTag();
-        saveAdditional(tag, registries);
-        return tag;
+    public @NotNull CompoundTag getUpdateTag(
+            HolderLookup.@NotNull Provider registries
+    ) {
+        return saveWithoutMetadata(registries);
     }
 
-    protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registryLookup) {
-        super.saveAdditional(tag, registryLookup);
-        tag.putInt("SpeedLimit", this.speedLimit);
-        tag.putBoolean("Enabled", this.enabled);
-        tag.putBoolean("CheckGreater", this.checkGreater);
-        tag.putBoolean("AutomaticMode", this.automaticMode);
-        if (this.targetDesignator != null) {
-            tag.putLong("TargetDesignator", this.targetDesignator.asLong());
+    @Override
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+
+        output.putInt("SpeedLimit", speedLimit);
+        output.putBoolean("Enabled", enabled);
+        output.putBoolean("CheckGreater", checkGreater);
+        output.putBoolean("AutomaticMode", automaticMode);
+
+        if (targetDesignator != null) {
+            output.putInt("TargetX", targetDesignator.getX());
+            output.putInt("TargetY", targetDesignator.getY());
+            output.putInt("TargetZ", targetDesignator.getZ());
         }
-        tag.put("Inventory", this.inventory.serializeNBT(registryLookup));
     }
 
-    protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registryLookup) {
-        super.loadAdditional(tag, registryLookup);
-        this.speedLimit = tag.getInt("SpeedLimit");
-        this.enabled = tag.getBoolean("Enabled");
-        this.checkGreater = tag.getBoolean("CheckGreater");
-        this.automaticMode = tag.getBoolean("AutomaticMode");
-        if (tag.contains("TargetDesignator")) {
-            this.targetDesignator = BlockPos.of(tag.getLong("TargetDesignator"));
+    @Override
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+
+        speedLimit = input
+                .getInt("SpeedLimit")
+                .orElse(1000);
+
+        enabled = input
+                .read("Enabled", Codec.BOOL)
+                .orElse(false);
+
+        checkGreater = input
+                .read("CheckGreater", Codec.BOOL)
+                .orElse(true);
+
+        automaticMode = input
+                .read("AutomaticMode", Codec.BOOL)
+                .orElse(false);
+
+        int x = input
+                .getInt("TargetX")
+                .orElse(Integer.MIN_VALUE);
+
+        int y = input
+                .getInt("TargetY")
+                .orElse(Integer.MIN_VALUE);
+
+        int z = input
+                .getInt("TargetZ")
+                .orElse(Integer.MIN_VALUE);
+
+        if (x != Integer.MIN_VALUE
+                && y != Integer.MIN_VALUE
+                && z != Integer.MIN_VALUE) {
+            targetDesignator = new BlockPos(x, y, z);
+        } else {
+            targetDesignator = null;
         }
-        inventory.deserializeNBT(registryLookup, tag.getCompound("Inventory"));
     }
 
-    public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState state, T ignoredT) {
-        if (level.isClientSide) return;
-        if (!(level.getBlockEntity(pos) instanceof AcceleratorSpeedSensorBlockEntity speedControl)) return;
-        if (!speedControl.isEnabled() || speedControl.getTargetDesignator() == null) {
+
+    public static <T extends BlockEntity> void tick(
+            Level level,
+            BlockPos pos,
+            BlockState state,
+            T ignored
+    ) {
+        if (level.isClientSide()) {
+            return;
+        }
+
+        if (!(level.getBlockEntity(pos)
+                instanceof AcceleratorSpeedSensorBlockEntity sensor)) {
+            return;
+        }
+
+        if (!sensor.enabled || sensor.targetDesignator == null) {
             setPowered(level, pos, state, false);
             return;
         }
-        @SuppressWarnings("null")
-        BlockEntity entity = level.getBlockEntity(speedControl.getTargetDesignator());
-        boolean powered = isPowered(speedControl, entity);
-        if (powered != state.getValue(AcceleratorSpeedSensorBlock.POWERED)) {
+
+        BlockEntity target =
+                level.getBlockEntity(sensor.targetDesignator);
+
+        boolean powered = isPowered(sensor, target);
+
+        if (powered != state.getValue(
+                AcceleratorSpeedSensorBlock.POWERED
+        )) {
             setPowered(level, pos, state, powered);
         }
     }
 
-    private static void setPowered(Level level, BlockPos pos, BlockState state, boolean powered) {
-        level.setBlock(pos, state.setValue(AcceleratorSpeedSensorBlock.POWERED, powered), 3);
+    private static boolean isPowered(
+            AcceleratorSpeedSensorBlockEntity sensor,
+            BlockEntity target
+    ) {
+        if (target == null) {
+            return false;
+        }
+
+        Object particle = invokeNoArg(target, "getParticle");
+
+        if (particle == null) {
+            return false;
+        }
+
+        Number velocity = readNumber(
+                particle,
+                "velocity",
+                "getVelocity"
+        );
+
+        if (velocity == null) {
+            return false;
+        }
+
+        /*
+         * La vecchia modalità automatica usava
+         * SimpleCraftingInventory e RecipeContent.
+         * Queste API non esistono più in Oritech 2.0.0-exp7.
+         *
+         * Temporaneamente viene usato speedLimit anche in automaticMode.
+         */
+        int targetSpeed = sensor.speedLimit;
+        double currentVelocity = velocity.doubleValue();
+
+        if (sensor.checkGreater) {
+            return currentVelocity > targetSpeed;
+        }
+
+        return currentVelocity < targetSpeed;
+    }
+
+    private static void setPowered(
+            Level level,
+            BlockPos pos,
+            BlockState state,
+            boolean powered
+    ) {
+        level.setBlock(
+                pos,
+                state.setValue(
+                        AcceleratorSpeedSensorBlock.POWERED,
+                        powered
+                ),
+                3
+        );
+
         notifyNeighbors(level, pos);
     }
 
-    private static boolean isPowered(AcceleratorSpeedSensorBlockEntity speedControl, BlockEntity entity) {
-        boolean powered = false;
-        if (entity instanceof AcceleratorControllerBlockEntity accelerator) {
-            AcceleratorParticleLogic.ActiveParticle part = accelerator.getParticle();
-            if (part != null) {
-                int targetSpeed = speedControl.speedLimit;
-                if (speedControl.isAutomaticMode()) {
-                    targetSpeed = getRequiredVelocityFromRecipe(accelerator, speedControl.level);
-                    if (targetSpeed <= 0) {
-                        return powered;
-                    }
-                }
-                
-                if (speedControl.isCheckGreater() && part.velocity > targetSpeed) {
-                    powered = true;
-                } else {
-                    if (!speedControl.isCheckGreater() && part.velocity < targetSpeed) {
-                        powered = true;
-                    }
-                }
-            }
-        }
-        return powered;
-    }
-    
-    private static int getRequiredVelocityFromRecipe(AcceleratorControllerBlockEntity accelerator, Level level) {
-        ItemStack activeItem = accelerator.activeItemParticle;
-        
-        if (activeItem == null || activeItem.isEmpty()) {
-            return 0;
-        }
+    private static void notifyNeighbors(
+            Level level,
+            BlockPos pos
+    ) {
+        level.updateNeighborsAt(
+                pos,
+                level.getBlockState(pos).getBlock()
+        );
 
-        var inputInv = new SimpleCraftingInventory(activeItem.copy(), activeItem.copy());
-        var recipeOptional = level.getRecipeManager().getRecipeFor(RecipeContent.PARTICLE_COLLISION, inputInv, level);
-        
-        if (recipeOptional.isPresent()) {
-            var recipe = recipeOptional.get().value();
-            return recipe.getTime();
-        }
-
-        var allRecipes = level.getRecipeManager().getAllRecipesFor(RecipeContent.PARTICLE_COLLISION);
-        int maxVelocity = 0;
-        for (var recipeHolder : allRecipes) {
-            var recipe = recipeHolder.value();
-            var inputs = recipe.getInputs();
-            for (var ingredient : inputs) {
-                if (ingredient.test(activeItem)) {
-                    maxVelocity = Math.max(maxVelocity, recipe.getTime());
-                    break;
-                }
-            }
-        }
-
-        return maxVelocity;
-    }
-
-    private static void notifyNeighbors(Level level, BlockPos pos) {
-        level.updateNeighborsAt(pos, level.getBlockState(pos).getBlock());
         for (Direction direction : Direction.values()) {
-            level.updateNeighborsAt(pos.relative(direction), level.getBlockState(pos).getBlock());
+            BlockPos neighbor = pos.relative(direction);
+
+            level.updateNeighborsAt(
+                    neighbor,
+                    level.getBlockState(neighbor).getBlock()
+            );
         }
+    }
+
+    @Nullable
+    private static Object invokeNoArg(
+            Object object,
+            String methodName
+    ) {
+        Class<?> current = object.getClass();
+
+        while (current != null) {
+            try {
+                Method method = current.getDeclaredMethod(methodName);
+                method.setAccessible(true);
+                return method.invoke(object);
+            } catch (ReflectiveOperationException ignored) {
+                current = current.getSuperclass();
+            }
+        }
+
+        return null;
+    }
+
+    @Nullable
+    private static Number readNumber(
+            Object object,
+            String fieldName,
+            String getterName
+    ) {
+        Object getterValue = invokeNoArg(object, getterName);
+
+        if (getterValue instanceof Number number) {
+            return number;
+        }
+
+        Class<?> current = object.getClass();
+
+        while (current != null) {
+            try {
+                Field field = current.getDeclaredField(fieldName);
+                field.setAccessible(true);
+
+                Object value = field.get(object);
+
+                if (value instanceof Number number) {
+                    return number;
+                }
+            } catch (ReflectiveOperationException ignored) {
+                current = current.getSuperclass();
+            }
+        }
+
+        return null;
     }
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.translatable("block.oritechthings.particle_accelerator_speed_sensor");
+        return Component.translatable(
+                "block.oritechthings.particle_accelerator_speed_sensor"
+        );
     }
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int i, @NotNull Inventory inventory, @NotNull Player player) {
-        return new AcceleratorSpeedSensorMenu(i, inventory, this);
+    public AbstractContainerMenu createMenu(
+            int containerId,
+            @NotNull Inventory inventory,
+            @NotNull Player player
+    ) {
+        return new AcceleratorSpeedSensorMenu(
+                containerId,
+                inventory,
+                this
+        );
     }
 }

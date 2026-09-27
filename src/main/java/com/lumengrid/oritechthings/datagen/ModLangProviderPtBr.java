@@ -22,7 +22,7 @@ public class ModLangProviderPtBr extends LanguageProvider {
 
         //misc
         add("itemGroup." + MOD_ID, "Oritech Things");
-        add("message."+ToolsContent.EXO_JETPACK.getDescriptionId().replace("item.oritech.", "")+".energy_low", "§c⚠ Exo Jetpack - Energia Baixa ⚠");
+        add("message."+ToolsContent.EXO_JETPACK.getId().getPath()+".energy_low", "§c⚠ Exo Jetpack - Energia Baixa ⚠");
         add("tooltip." + MOD_ID + ".tiered_addons.chambers_desc", "Câmaras Adicionais ");
         add("tooltip."+MOD_ID+".tier_addon", "Nível ");
         add("tooltip."+MOD_ID+".state.on", "LIGADO");

@@ -4,16 +4,14 @@ import com.lumengrid.oritechthings.entity.ModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
-import rearth.oritech.api.energy.EnergyApi;
-import rearth.oritech.api.energy.containers.DelegatingEnergyStorage;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import org.jetbrains.annotations.Nullable;
+import rearth.oritech.api.transfer.energy.EnergyProvider;
 import rearth.oritech.block.blocks.addons.MachineAddonBlock;
 import rearth.oritech.block.entity.addons.AddonBlockEntity;
 import rearth.oritech.util.MachineAddonController;
 
-import java.util.Objects;
-
-public class TierAddonBlockEntity extends AddonBlockEntity implements EnergyApi.BlockProvider {
-    private final DelegatingEnergyStorage delegatedStorage = new DelegatingEnergyStorage(this::getMainStorage, this::isConnected);
+public class TierAddonBlockEntity extends AddonBlockEntity implements EnergyProvider {
 
     private MachineAddonController cachedController;
 
@@ -29,7 +27,7 @@ public class TierAddonBlockEntity extends AddonBlockEntity implements EnergyApi.
         return isUsed && getCachedController() != null;
     }
 
-    private EnergyApi.EnergyStorage getMainStorage() {
+    private EnergyHandler getMainStorage() {
         if (!acceptsEnergy()) {
             return null;
         }
@@ -62,16 +60,18 @@ public class TierAddonBlockEntity extends AddonBlockEntity implements EnergyApi.
             return cachedController;
         }
 
-        // Keep parity with Oritech's base behavior: if the addon is marked as used,
-        // controller lookup is expected to succeed.
         if (controllerEntity == null) {
             return null;
         }
         return (MachineAddonController) controllerEntity;
     }
 
+    // ✅ Implementazione corretta per Oritech 1.21.2+ usando EnergyHandler
     @Override
-    public EnergyApi.EnergyStorage getEnergyStorage(Direction direction) {
-        return delegatedStorage;
+    public EnergyHandler getEnergyLookup(@Nullable Direction direction) {
+        if (!isConnected()) {
+            return null;
+        }
+        return getMainStorage();
     }
 }

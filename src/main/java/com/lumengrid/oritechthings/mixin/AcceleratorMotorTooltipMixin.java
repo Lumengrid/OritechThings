@@ -1,5 +1,6 @@
 package com.lumengrid.oritechthings.mixin;
 
+import com.lumengrid.oritechthings.util.Utility;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -16,12 +17,33 @@ import java.util.List;
 @Mixin(AcceleratorMotorBlock.class)
 public class AcceleratorMotorTooltipMixin {
 
-    @Inject(method = "appendHoverText", at = @At("TAIL"))
-    private void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag options, CallbackInfo ci) {
-        if (Screen.hasControlDown()) {
-            tooltip.add(Component.empty());
-            tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_motor.addon_info"));
-            tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_motor.addon_placement"));
+    @Inject(
+            method = "appendHoverText",
+            at = @At("TAIL")
+    )
+    private void appendHoverText(
+            ItemStack stack,
+            Item.TooltipContext context,
+            List<Component> tooltip,
+            TooltipFlag options,
+            CallbackInfo callbackInfo
+    ) {
+        if (!Utility.isControlDown()) {
+            return;
         }
+
+        tooltip.add(Component.empty());
+
+        tooltip.add(
+                Component.translatable(
+                        "tooltip.oritechthings.accelerator_motor.addon_info"
+                )
+        );
+
+        tooltip.add(
+                Component.translatable(
+                        "tooltip.oritechthings.accelerator_motor.addon_placement"
+                )
+        );
     }
 }

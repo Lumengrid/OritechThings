@@ -19,11 +19,9 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 @OnlyIn(Dist.CLIENT)
 public class RenderWorldLastEvent {
 
+    // ✅ Ascolta direttamente il sotto-evento per la fase desiderata:
     @SubscribeEvent
-    static void renderWorldLastEvent(RenderLevelStageEvent evt) {
-        if (evt.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
-            return;
-        }
+    static void renderWorldLastEvent(RenderLevelStageEvent.AfterTranslucentBlocks evt) {
         Player player = Minecraft.getInstance().player;
         if (player == null) {
             return;
@@ -35,7 +33,6 @@ public class RenderWorldLastEvent {
     private static void checkTargetDesignator(Player player, InteractionHand hand) {
         try {
             ItemStack item = player.getItemInHand(hand);
-            // Only render for AdvancedTargetDesignator items
             if (item.isEmpty() || !(item.getItem() instanceof AdvancedTargetDesignator) || !item.has(ModDataComponents.TARGET_POSITION)) {
                 return;
             }

@@ -1,7 +1,7 @@
 package com.lumengrid.oritechthings.util;
 
 import com.lumengrid.oritechthings.main.OritechThings;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -33,10 +33,10 @@ public class ModTags {
     }
 
     private static TagKey<Block> createBlockTag(String name) {
-        return BlockTags.create(ResourceLocation.fromNamespaceAndPath(OritechThings.MOD_ID, name));
+        return BlockTags.create(Identifier.fromNamespaceAndPath(OritechThings.MOD_ID, name));
     }
 
     private static TagKey<Item> createItemTag(String name) {
-        return ItemTags.create(ResourceLocation.fromNamespaceAndPath(OritechThings.MOD_ID, name));
+        return ItemTags.create(Identifier.fromNamespaceAndPath(OritechThings.MOD_ID, name));
     }
 }

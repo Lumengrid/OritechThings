@@ -4,12 +4,13 @@ import com.lumengrid.oritechthings.entity.ModEntities;
 import com.lumengrid.oritechthings.entity.custom.AmethystFishEntity;
 import com.lumengrid.oritechthings.main.ConfigReloadListener;
 import com.lumengrid.oritechthings.main.OritechThings;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 
@@ -33,7 +34,11 @@ public class ModBusEvents {
     }
 
     @SubscribeEvent
-    public static void addReloadListener(RegisterClientReloadListenersEvent event) {
-        event.registerReloadListener(new ConfigReloadListener());
+    public static void addReloadListener(AddClientReloadListenersEvent event) {
+        // ✅ Passato l'Identifier identificativo come primo parametro
+        event.addListener(
+                Identifier.fromNamespaceAndPath(OritechThings.MOD_ID, "config_reload"),
+                new ConfigReloadListener()
+        );
     }
 }
