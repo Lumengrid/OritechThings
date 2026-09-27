@@ -47,7 +47,12 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
     public static final EnumProperty<Direction> TARGET_DIR = BlockStateProperties.FACING;
 
     public AcceleratorMagneticFieldBlock() {
-        super(BlockBehaviour.Properties.of()
+        this(BlockBehaviour.Properties.of());
+    }
+
+    // ✅ Costruttore con Properties per la registrazione in NeoForge 26.1+
+    public AcceleratorMagneticFieldBlock(BlockBehaviour.Properties properties) {
+        super(properties
                 .mapColor(MapColor.METAL)
                 .strength(3.0f, 6.0f)
                 .requiresCorrectToolForDrops()
@@ -182,7 +187,6 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
         return super.playerWillDestroy(world, pos, state, player);
     }
 
-    // TODO APPENDHOVERTEXT
     public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context, @NotNull List<Component> tooltip, TooltipFlag options) {
         if (!ConfigLoader.getInstance().magneticFieldSettings.enabled()) {
             tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field_disabled")

@@ -16,21 +16,8 @@ import java.util.List;
 public class AcceleratorMagneticFieldBlockItem extends BlockItem {
 
     public AcceleratorMagneticFieldBlockItem(Block block, Properties settings) {
-        super(block, settings);
+        super(block, settings.component(ComponentContent.ENERGY, 0));
     }
-
-// todo appendhovertext
-//    @Override
-//    public void appendHoverText(ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag type) {
-//        int storedEnergy = stack.getOrDefault(ComponentContent.ENERGY, 0);
-//
-//        if (storedEnergy != 0) {
-//            var text = Component.translatable("tooltip.oritech.energy_stored", TooltipHelper.getEnergyText(storedEnergy));
-//            tooltip.add(text.withStyle(ChatFormatting.GOLD));
-//        }
-//
-//        super.appendHoverText(stack, context, tooltip, type);
-//    }
 
     @Override
     public boolean isBarVisible(ItemStack stack) {

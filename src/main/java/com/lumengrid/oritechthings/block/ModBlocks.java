@@ -1,5 +1,6 @@
 package com.lumengrid.oritechthings.block;
 
+import com.lumengrid.oritechthings.block.custom.AcceleratorMagneticFieldBlock;
 import com.lumengrid.oritechthings.block.custom.AcceleratorSpeedSensorBlock;
 import com.lumengrid.oritechthings.block.custom.InfestedAmethystBlock;
 import com.lumengrid.oritechthings.block.custom.TierAddonBlock;
@@ -11,7 +12,6 @@ import com.lumengrid.oritechthings.util.Constants;
 import com.lumengrid.oritechthings.util.Constants.NameUtil;
 import com.lumengrid.oritechthings.util.ShapeUtil;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -23,10 +23,9 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import rearth.oritech.block.blocks.addons.MachineAddonBlock;
-import rearth.oritech.init.ComponentContent;
 import rearth.oritech.util.Geometry;
 
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 public class ModBlocks {
 
@@ -93,7 +92,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_9 = processingAddonBuilder(9);
 
     public static final DeferredBlock<Block> ADDON_BLOCK_CROSS_DIMENSIONAL = registerAddon(
-            "addon_block_cross_dimensional", () -> new TierAddonBlock(
+            "addon_block_cross_dimensional", props -> new TierAddonBlock(
                     MachineAddonBlock.AddonSettings.getDefaultSettings()
                             .withNeedsSupport(true)
                             .withBoundingShape(generateAddonShape(7)),
@@ -103,16 +102,16 @@ public class ModBlocks {
             "particle_accelerator_speed_sensor", AcceleratorSpeedSensorBlock::new);
 
     public static final DeferredBlock<Block> ACCELERATOR_MAGNETIC_FIELD = registerEnergyStorageBlock(
-            "accelerator_magnetic_field", com.lumengrid.oritechthings.block.custom.AcceleratorMagneticFieldBlock::new);
+            "accelerator_magnetic_field", AcceleratorMagneticFieldBlock::new);
 
     public static final DeferredBlock<Block> INFESTED_AMETHYST_BLOCK = registerBlock(
-            "infested_amethyst_block", () -> new InfestedAmethystBlock(Blocks.AMETHYST_BLOCK,
-                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).strength(1.5F).sound(SoundType.AMETHYST))
+            "infested_amethyst_block", props -> new InfestedAmethystBlock(Blocks.AMETHYST_BLOCK,
+                    props.mapColor(MapColor.COLOR_PURPLE).strength(1.5F).sound(SoundType.AMETHYST))
     );
 
     private static DeferredBlock<Block> processingAddonBuilder(int tier) {
         return registerAddon(
-                NameUtil.genAddonName(NameUtil.Type.PROCESSING, tier), () -> new TierAddonBlock(
+                NameUtil.genAddonName(NameUtil.Type.PROCESSING, tier), props -> new TierAddonBlock(
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
                                 .withEfficiencyMultiplier(
                                         ConfigLoader.getInstance().addonSettings.get(tier - 2).processingEfficiency())
@@ -125,7 +124,7 @@ public class ModBlocks {
 
     private static DeferredBlock<Block> capacitorAddonBuilder(int tier) {
         return registerAddon(
-                NameUtil.genAddonName(NameUtil.Type.CAPACITOR, tier), () -> new TierAddonBlock(
+                NameUtil.genAddonName(NameUtil.Type.CAPACITOR, tier), props -> new TierAddonBlock(
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
                                 .withAddedCapacity(
                                         ConfigLoader.getInstance().addonSettings.get(tier - 2).capacitorCapacity())
@@ -137,7 +136,7 @@ public class ModBlocks {
 
     private static DeferredBlock<Block> acceptorAddonBuilder(int tier) {
         return registerAddon(
-                NameUtil.genAddonName(NameUtil.Type.ACCEPTOR, tier), () -> new TierAddonBlock(
+                NameUtil.genAddonName(NameUtil.Type.ACCEPTOR, tier), props -> new TierAddonBlock(
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
                                 .withAddedCapacity(
                                         ConfigLoader.getInstance().addonSettings.get(tier - 2).acceptorCapacity())
@@ -150,7 +149,7 @@ public class ModBlocks {
 
     private static DeferredBlock<Block> efficientSpeedAddonBuilder(int tier) {
         return registerAddon(
-                NameUtil.genAddonName(NameUtil.Type.EFFICIENT + NameUtil.Type.SPEED, tier), () -> new TierAddonBlock(
+                NameUtil.genAddonName(NameUtil.Type.EFFICIENT + NameUtil.Type.SPEED, tier), props -> new TierAddonBlock(
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
                                 .withSpeedMultiplier(
                                         ConfigLoader.getInstance().addonSettings.get(tier - 2).speedMultiplier())
@@ -163,7 +162,7 @@ public class ModBlocks {
 
     private static DeferredBlock<Block> speedAddonBuilder(int tier) {
         return registerAddon(
-                NameUtil.genAddonName(NameUtil.Type.SPEED, tier), () -> new TierAddonBlock(
+                NameUtil.genAddonName(NameUtil.Type.SPEED, tier), props -> new TierAddonBlock(
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
                                 .withSpeedMultiplier(
                                         ConfigLoader.getInstance().addonSettings.get(tier - 2).speedMultiplier())
@@ -176,7 +175,7 @@ public class ModBlocks {
 
     private static DeferredBlock<Block> efficiencyAddonBuilder(int tier) {
         return registerAddon(
-                NameUtil.genAddonName(NameUtil.Type.EFFICIENCY, tier), () -> new TierAddonBlock(
+                NameUtil.genAddonName(NameUtil.Type.EFFICIENCY, tier), props -> new TierAddonBlock(
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
                                 .withEfficiencyMultiplier(
                                         ConfigLoader.getInstance().addonSettings.get(tier - 2).efficiencyUp())
@@ -202,28 +201,29 @@ public class ModBlocks {
         return shape;
     }
 
-    private static <T extends Block> DeferredBlock<T> registerAddon(String name, Supplier<T> block) {
-        DeferredBlock<T> toReturn = ADDONS.register(name, block);
+    // ✅ registerBlock nativo di NeoForge assegna l'ID alle Properties prima dell'istanziazione
+    private static <T extends Block> DeferredBlock<T> registerAddon(String name, Function<BlockBehaviour.Properties, T> blockFactory) {
+        DeferredBlock<T> toReturn = ADDONS.registerBlock(name, blockFactory);
         registerBlockItem(name, toReturn, ModItems.ADDONS);
         return toReturn;
     }
 
-    private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
-        DeferredBlock<T> toReturn = OTHER.register(name, block);
+    private static <T extends Block> DeferredBlock<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> blockFactory) {
+        DeferredBlock<T> toReturn = OTHER.registerBlock(name, blockFactory);
         registerBlockItem(name, toReturn);
         return toReturn;
     }
 
     private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block) {
-        ModItems.BLOCKITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+        ModItems.BLOCKITEMS.registerSimpleBlockItem(name, block);
     }
 
     private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block, DeferredRegister.Items items) {
-        items.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+        items.registerSimpleBlockItem(name, block);
     }
 
-    private static <T extends Block> DeferredBlock<T> registerEnergyStorageBlock(String name, Supplier<T> block) {
-        DeferredBlock<T> toReturn = OTHER.register(name, block);
+    private static <T extends Block> DeferredBlock<T> registerEnergyStorageBlock(String name, Function<BlockBehaviour.Properties, T> blockFactory) {
+        DeferredBlock<T> toReturn = OTHER.registerBlock(name, blockFactory);
         registerEnergyStorageBlockItem(name, toReturn);
         return toReturn;
     }
@@ -232,7 +232,7 @@ public class ModBlocks {
         ModItems.BLOCKITEMS.register(name, () ->
                 new AcceleratorMagneticFieldBlockItem(
                         block.get(),
-                        new Item.Properties().component(ComponentContent.ENERGY.get(), 0)
+                        new Item.Properties()
                 )
         );
     }
