@@ -37,7 +37,10 @@ public class AcceleratorSpeedSensorBlock extends BaseEntityBlock {
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-    // ✅ Costruttore unico che accetta le Properties fornite con ID da NeoForge
+    public AcceleratorSpeedSensorBlock() {
+        this(BlockBehaviour.Properties.of());
+    }
+
     public AcceleratorSpeedSensorBlock(BlockBehaviour.Properties properties) {
         super(properties
                 .strength(2.0F)

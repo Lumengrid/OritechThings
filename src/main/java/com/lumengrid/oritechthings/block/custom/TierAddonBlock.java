@@ -5,7 +5,6 @@ import com.lumengrid.oritechthings.main.ConfigLoader;
 import com.lumengrid.oritechthings.util.Constants;
 import com.lumengrid.oritechthings.util.Utility;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -16,6 +15,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.AttachFace;
@@ -36,8 +36,13 @@ public class TierAddonBlock extends MachineAddonBlock {
     public static final EnumProperty<Constants.AddonType> ADDON_TYPE = EnumProperty.create("addon_type", Constants.AddonType.class);
     public static final IntegerProperty ADDON_TIER = IntegerProperty.create("tier", 2, 9);
 
-    public TierAddonBlock(AddonSettings addonSettings, int tier, Constants.AddonType type) {
-        super(Properties.of().strength(2f).requiresCorrectToolForDrops().lightLevel(state -> state.getValue(ADDON_USED) ? 10 : 0), addonSettings);
+    // ✅ Costruttore aggiornato per NeoForge 1.21.2+: accetta BlockBehaviour.Properties
+    public TierAddonBlock(BlockBehaviour.Properties properties, AddonSettings addonSettings, int tier, Constants.AddonType type) {
+        super(properties
+                        .strength(2f)
+                        .requiresCorrectToolForDrops()
+                        .lightLevel(state -> state.getValue(ADDON_USED) ? 10 : 0),
+                addonSettings);
         this.registerDefaultState(this.stateDefinition.any().setValue(ADDON_USED, false).setValue(ADDON_TIER, tier).setValue(ADDON_TYPE, type));
     }
 
@@ -49,7 +54,6 @@ public class TierAddonBlock extends MachineAddonBlock {
             throw new RuntimeException(e);
         }
     }
-
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
@@ -83,17 +87,15 @@ public class TierAddonBlock extends MachineAddonBlock {
         builder.add(ADDON_USED, FACING, FACE, ADDON_TIER, ADDON_TYPE);
     }
 
-    // TODO CHECK APPENDHOVERTEXT @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip,
-            TooltipFlag options) {
+                                TooltipFlag options) {
         if (this.defaultBlockState().getValue(ADDON_TYPE).toString().equals(Constants.AddonType.CROSS_DIMENSIONAL.toString())) {
-            // Check if cross-dimensional addons are enabled
             if (!ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
                 tooltip.add(Component.translatable("tooltip." + MOD_ID + ".addon_block_cross_dimensional_disabled")
                         .withStyle(ChatFormatting.RED));
                 return;
             }
-            
+
             if (Utility.isControlDown()) {
                 tooltip.add(Component.translatable("tooltip." + MOD_ID + ".addon_block_cross_dimensional").withStyle(ChatFormatting.DARK_GRAY));
             } else {
@@ -135,5 +137,4 @@ public class TierAddonBlock extends MachineAddonBlock {
             }
         }
     }
-
 }
