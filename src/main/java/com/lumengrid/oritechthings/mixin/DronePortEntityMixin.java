@@ -9,15 +9,12 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-// ✅ 2. Import per la gestione NBT in 1.21.2+ (da ExpandableEnergyStorageBlockEntity)
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -25,7 +22,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import rearth.oritech.api.transfer.energy.DynamicEnergyStorage;
 import rearth.oritech.block.blocks.interaction.DronePortBlock;
 import rearth.oritech.block.blocks.processing.MachineCoreBlock;
 import rearth.oritech.block.entity.MachineCoreEntity;
@@ -33,16 +29,10 @@ import rearth.oritech.block.entity.interaction.DronePortEntity;
 
 @Mixin(DronePortEntity.class)
 public class DronePortEntityMixin implements CrossDimensionalDrone {
-    @Shadow @Final private long baseEnergyUsage;
-    @Shadow @Final private int takeOffTime;
-    @Shadow @Final private int landTime;
-    @Shadow private BlockPos targetPosition;
-    @Shadow private long lastSentAt;
-    @Shadow private DronePortEntity.DroneTransferData incomingPacket;
-    @Shadow private String statusMessage;
-    @Shadow protected SimpleContainer cardInventory;
 
-    @Shadow @Final protected DynamicEnergyStorage energyStorage;
+    // ✅ Rimossi i campi @Shadow non utilizzati/rinominati (baseEnergyUsage, takeOffTime, landTime, lastSentAt, incomingPacket, cardInventory, energyStorage)
+    @Shadow private BlockPos targetPosition;
+    @Shadow private String statusMessage;
 
     @Unique
     private ResourceKey<Level> targetDimension = null;
@@ -75,7 +65,6 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
         }
     }
 
-    // ✅ 3. Signature aggiornata per ValueOutput (Oritech 1.21.2+)
     @Inject(method = "saveAdditional", at = @At("TAIL"))
     private void saveAdditional(ValueOutput output, CallbackInfo ci) {
         if (targetDimension != null) {
@@ -84,7 +73,6 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
         output.putBoolean("has_cross_dimensional_addon", hasCrossDimensionalAddon);
     }
 
-    // ✅ 4. Signature aggiornata per ValueInput con ResourceLocation.parse(...)
     @Inject(method = "loadAdditional", at = @At("TAIL"))
     private void loadAdditional(ValueInput input, CallbackInfo ci) {
         String dimensionString = input.getStringOr("target_dimension", "");

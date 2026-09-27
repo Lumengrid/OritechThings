@@ -19,7 +19,6 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 @OnlyIn(Dist.CLIENT)
 public class RenderWorldLastEvent {
 
-    // ✅ Ascolta direttamente il sotto-evento per la fase desiderata:
     @SubscribeEvent
     static void renderWorldLastEvent(RenderLevelStageEvent.AfterTranslucentBlocks evt) {
         Player player = Minecraft.getInstance().player;

@@ -43,7 +43,6 @@ public final class RenderBlockUtils {
             PoseStack poseStack,
             BlockPos pos
     ) {
-        // ✅ Usa RenderTypes.lines() (plurale!) come fa Oritech
         var consumer = bufferSource.getBuffer(RenderTypes.lines());
 
         poseStack.pushPose();
@@ -55,7 +54,6 @@ public final class RenderBlockUtils {
                 pos.getZ() - cameraPos.z
         );
 
-        // ✅ Disegno del cubo tramite ShapeRenderer (ARBG arancione, spessore linea 2.0f)
         ShapeRenderer.renderShape(
                 poseStack,
                 consumer,

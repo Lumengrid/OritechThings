@@ -5,7 +5,6 @@ import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.menu.AcceleratorSpeedSensorMenu;
 import com.lumengrid.oritechthings.network.packet.UpdateSpeedSensorC2SPacket;
 
-// ✅ Usiamo GuiGraphicsExtractor e RenderPipelines
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
@@ -22,7 +21,6 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
         private final Component title = Component
                 .translatable("gui.oritechthings.particle_accelerator_speed_sensor.title");
 
-        // ✅ Identifier anziché ResourceLocation
         public static final Identifier BACKGROUND = Identifier.fromNamespaceAndPath(OritechThings.MOD_ID,
                 "textures/gui/speed_sensor.png");
 
@@ -172,13 +170,11 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
                 }
         }
 
-        // ✅ Nuovo metodo extractContents di AbstractContainerScreen
         @Override
         public void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
                 int x = (width - imageWidth) / 2;
                 int y = (height - imageHeight) / 2;
 
-                // ✅ Disegno del background usando RenderPipelines.GUI_TEXTURED
                 graphics.blit(
                         RenderPipelines.GUI_TEXTURED,
                         BACKGROUND,
@@ -213,11 +209,9 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
                 int statusX = leftPos + 8;
                 int statusY = topPos + 72;
 
-                // ✅ Uso di graphics.text(...)
                 graphics.text(this.font, statusText, statusX, statusY, statusColor, false);
         }
 
-        // ✅ Override di extractLabels
         @Override
         protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
                 graphics.text(this.font, this.title, this.titleLabelX, this.titleLabelY, 0xFFFFFF, false);

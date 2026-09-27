@@ -292,13 +292,6 @@ public class AcceleratorSpeedSensorBlockEntity
             return false;
         }
 
-        /*
-         * La vecchia modalità automatica usava
-         * SimpleCraftingInventory e RecipeContent.
-         * Queste API non esistono più in Oritech 2.0.0-exp7.
-         *
-         * Temporaneamente viene usato speedLimit anche in automaticMode.
-         */
         int targetSpeed = sensor.speedLimit;
         double currentVelocity = velocity.doubleValue();
 

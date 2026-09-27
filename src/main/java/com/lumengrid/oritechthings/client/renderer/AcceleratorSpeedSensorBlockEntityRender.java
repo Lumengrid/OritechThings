@@ -19,8 +19,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class AcceleratorSpeedSensorBlockEntityRender implements BlockEntityRenderer<AcceleratorSpeedSensorBlockEntity, AcceleratorSpeedSensorBlockEntityRender.SpeedSensorRenderState> {
-
-    // ✅ Istanza statica riutilizzabile per evitare di allocare nuove ItemStack ad ogni render state
     private static final ItemStack DISPLAY_ITEM = new ItemStack(Items.ENDER_EYE);
 
     private final ItemModelResolver itemModelResolver;
@@ -41,11 +39,9 @@ public class AcceleratorSpeedSensorBlockEntityRender implements BlockEntityRende
         var level = blockEntity.getLevel();
         if (level == null) return;
 
-        // Calcolo della rotazione tramite il game time e i partialTicks
         double renderTime = level.getGameTime() + (double) partialTicks;
         state.rotation = (float) ((renderTime * 4.0) % 360.0);
 
-        // Prepara lo stato del modello item nell'extract phase
         this.itemModelResolver.updateForTopItem(
                 state.itemRenderState,
                 DISPLAY_ITEM,
@@ -64,13 +60,12 @@ public class AcceleratorSpeedSensorBlockEntityRender implements BlockEntityRende
         poseStack.mulPose(Axis.YP.rotationDegrees(state.rotation));
         poseStack.scale(0.75F, 0.75F, 0.75F);
 
-        // ✅ Sottomissione dell'Item con OverlayTexture.NO_OVERLAY per chiarezza
         state.itemRenderState.submit(
                 poseStack,
                 collector,
-                15728880,                 // Max Light (Bagliore)
-                OverlayTexture.NO_OVERLAY, // Overlay senza variazioni di colore
-                0                          // Outline / Seed
+                15728880,
+                OverlayTexture.NO_OVERLAY,
+                0
         );
 
         poseStack.popPose();

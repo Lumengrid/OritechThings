@@ -142,7 +142,6 @@ public class AcceleratorMagneticFieldBlockEntity extends ExpandableEnergyStorage
         return 5;
     }
 
-    // ✅ Utilizza getBlockFacingProperty() tipizzato
     public Direction getFacing() {
         var state = getBlockState();
         var prop = getBlockFacingProperty();
@@ -152,7 +151,6 @@ public class AcceleratorMagneticFieldBlockEntity extends ExpandableEnergyStorage
         return Direction.NORTH;
     }
 
-    // ✅ Utilizza getBlockFacingProperty() tipizzato
     @Override
     public Direction getFacingForAddon() {
         var state = Objects.requireNonNull(level).getBlockState(getBlockPos());
@@ -168,7 +166,6 @@ public class AcceleratorMagneticFieldBlockEntity extends ExpandableEnergyStorage
         return Direction.NORTH;
     }
 
-    // ✅ Cast esplicito del generic <Direction> per soddisfare il contratto di ExpandableEnergyStorageBlockEntity
     @SuppressWarnings("unchecked")
     @Override
     public Property<Direction> getBlockFacingProperty() {

@@ -52,7 +52,6 @@ public class FramePlacer extends Item {
         BlockEntity targetEntity = level.getBlockEntity(pos);
 
         if (!(targetEntity instanceof FrameInteractionBlockEntity entity)) {
-            // ✅ Sostituito displayClientMessage con sendSystemMessage
             player.sendSystemMessage(
                     Component.translatable(
                             "message.oritechthings.frame_placer.wrong_machine"
@@ -65,7 +64,6 @@ public class FramePlacer extends Item {
         BlockState targetState = level.getBlockState(pos);
 
         if (!targetState.getValue(ASSEMBLED)) {
-            // ✅ Sostituito displayClientMessage con sendSystemMessage
             player.sendSystemMessage(
                     Component.translatable(
                             "message.oritechthings.frame_placer.not_assembled"

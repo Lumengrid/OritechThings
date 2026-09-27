@@ -34,7 +34,6 @@ public class AcceleratorMotorInteractionMixin {
 
         AddonStats addonStats = findMotorAddon(motorBlock, self);
 
-        // ✅ 1. getEnergyStorage() senza parametri
         var storage = motorEntity.getEnergyLookup(null);
         if (storage == null) return;
 
@@ -42,7 +41,6 @@ public class AcceleratorMotorInteractionMixin {
         long baseRfCost = OritechConfig.accelerationRFCost.get();
 
         if (addonStats == null) {
-            // ✅ 2. Uso corretto dell'API DynamicEnergyStorage
             long availableEnergy = storage.getAmountAsLong();
             long cost = (long) (speed * baseRfCost);
             if (availableEnergy >= cost) {

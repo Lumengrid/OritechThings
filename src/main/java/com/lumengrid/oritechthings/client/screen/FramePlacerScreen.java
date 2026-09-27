@@ -148,7 +148,6 @@ public class FramePlacerScreen extends Screen {
         frameCountRequired = 2 * (xValue + yValue) - 4;
     }
 
-    // ✅ Firma ufficiale per Screen in 1.21.2+ esattamente come in AugmentSelectionScreen
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, int mx, int my, float partialTicks) {
         super.extractRenderState(graphics, mx, my, partialTicks);

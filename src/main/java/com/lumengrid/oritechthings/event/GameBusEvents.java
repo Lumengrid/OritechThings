@@ -25,7 +25,6 @@ public class GameBusEvents {
     @SuppressWarnings("deprecation")
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
-        // 1. Corretto: uso del metodo isClientSide() invece del campo privato
         if (!event.getEntity().level().isClientSide()) {
             Player player = event.getEntity();
             UUID playerId = player.getUUID();
@@ -47,7 +46,6 @@ public class GameBusEvents {
             if (isWearingJetpackNow) {
                 long energy = 0;
                 if (currentArmor.getItem() instanceof OritechEnergyItem energyItem) {
-                    // ✅ Uso di ItemAccess.forStack(currentArmor) valido per NeoForge 1.21.2+
                     energy = energyItem.getStoredEnergy(currentArmor, ItemAccess.forStack(currentArmor));
                 }
                 if (energy <= ConfigLoader.getInstance().exoJetPackSettings.rfThreshold()) {
