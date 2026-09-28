@@ -6,6 +6,7 @@ import com.lumengrid.oritechthings.block.custom.InfestedAmethystBlock;
 import com.lumengrid.oritechthings.block.custom.TierAddonBlock;
 import com.lumengrid.oritechthings.item.AcceleratorMagneticFieldBlockItem;
 import com.lumengrid.oritechthings.item.ModItems;
+import com.lumengrid.oritechthings.item.custom.ModBlockItem; // <--- Aggiunto questo import
 import com.lumengrid.oritechthings.main.ConfigLoader;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.util.Constants;
@@ -221,11 +222,11 @@ public class ModBlocks {
     }
 
     private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block) {
-        ModItems.BLOCKITEMS.registerSimpleBlockItem(name, block);
+        ModItems.BLOCKITEMS.registerItem(name, properties -> new ModBlockItem(block.get(), properties));
     }
 
     private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block, DeferredRegister.Items items) {
-        items.registerSimpleBlockItem(name, block);
+        items.registerItem(name, properties -> new ModBlockItem(block.get(), properties));
     }
 
     private static <T extends Block> DeferredBlock<T> registerEnergyStorageBlock(String name, Function<BlockBehaviour.Properties, T> blockFactory) {

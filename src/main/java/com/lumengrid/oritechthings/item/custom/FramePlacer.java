@@ -12,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import rearth.oritech.block.base.entity.FrameInteractionBlockEntity;
 import rearth.oritech.util.Geometry;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 import static net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING;
 import static rearth.oritech.block.base.block.MultiblockMachine.ASSEMBLED;
@@ -93,14 +94,15 @@ public class FramePlacer extends Item {
         return InteractionResult.SUCCESS;
     }
 
-    // todo appendhovertext @Override
+    @Override
     public void appendHoverText(
             @NotNull ItemStack stack,
-            @NotNull TooltipContext context,
-            List<Component> tooltip,
+            @NotNull Item.TooltipContext context,
+            @NotNull TooltipDisplay display,
+            @NotNull Consumer<Component> tooltipOutput,
             @NotNull TooltipFlag flag
     ) {
-        tooltip.add(
+        tooltipOutput.accept(
                 Component.translatable(
                         "tooltip.oritechthings.frame_placer"
                 ).withStyle(ChatFormatting.ITALIC)

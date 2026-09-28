@@ -3,8 +3,10 @@ package com.lumengrid.oritechthings.block.custom;
 import com.lumengrid.oritechthings.entity.custom.AcceleratorMagneticFieldBlockEntity;
 import com.lumengrid.oritechthings.main.ConfigLoader;
 import com.lumengrid.oritechthings.util.Utility;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -13,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipProvider;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -40,8 +43,9 @@ import rearth.oritech.util.MachineAddonController;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
-public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock {
+public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock, TooltipProvider {
 
     public static final EnumProperty<Direction> TARGET_DIR = EnumProperty.create("target_dir", Direction.class);
 
@@ -185,26 +189,33 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
         return super.playerWillDestroy(world, pos, state, player);
     }
 
-    public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context, @NotNull List<Component> tooltip, TooltipFlag options) {
+    @Override
+    public void addToTooltip(
+            Item.TooltipContext tooltipContext,
+            Consumer<Component> consumer,
+            TooltipFlag tooltipFlag,
+            DataComponentGetter dataComponentGetter
+    ) {
         if (!ConfigLoader.getInstance().magneticFieldSettings.enabled()) {
-            tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field_disabled")
-                    .withStyle(net.minecraft.ChatFormatting.RED));
+            consumer.accept(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field_disabled")
+                    .withStyle(ChatFormatting.RED));
             return;
         }
 
-        tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field").withStyle(net.minecraft.ChatFormatting.GRAY));
-        tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field_desc").withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
-        tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field_limitation").withStyle(net.minecraft.ChatFormatting.RED));
-        tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field_addon_info").withStyle(net.minecraft.ChatFormatting.GOLD));
-        tooltip.add(Component.empty());
+        consumer.accept(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field").withStyle(ChatFormatting.GRAY));
+        consumer.accept(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field_desc").withStyle(ChatFormatting.DARK_GRAY));
+        consumer.accept(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field_limitation").withStyle(ChatFormatting.RED));
+        consumer.accept(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field_addon_info").withStyle(ChatFormatting.GOLD));
+        consumer.accept(Component.empty());
+
         if (Utility.isControlDown()) {
-            tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_usage"));
-            tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_step1"));
-            tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_step2"));
-            tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_step3"));
-            tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_benefit"));
+            consumer.accept(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_usage"));
+            consumer.accept(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_step1"));
+            consumer.accept(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_step2"));
+            consumer.accept(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_step3"));
+            consumer.accept(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field.target_designator_benefit"));
         } else {
-            tooltip.add(Component.translatable("tooltip.oritech.item_extra_info").withStyle(net.minecraft.ChatFormatting.DARK_GRAY).withStyle(net.minecraft.ChatFormatting.ITALIC));
+            consumer.accept(Component.translatable("tooltip.oritech.item_extra_info").withStyle(ChatFormatting.DARK_GRAY).withStyle(ChatFormatting.ITALIC));
         }
     }
 }

@@ -9,7 +9,6 @@ import com.lumengrid.oritechthings.api.CrossDimensionalDrone;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.util.Utility;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -19,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -31,8 +31,8 @@ import rearth.oritech.block.entity.interaction.EndericLaserBlockEntity;
 import rearth.oritech.init.BlockContent;
 import rearth.oritech.item.tools.LaserTargetDesignator;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class AdvancedTargetDesignator extends LaserTargetDesignator {
     public AdvancedTargetDesignator(Properties settings) {
@@ -148,42 +148,43 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
         return success ? InteractionResult.SUCCESS : InteractionResult.FAIL;
     }
 
-    // TODO CHECK APPENAHOVERTEXT @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag type) {
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
         if (stack.has(ModDataComponents.TARGET_POSITION.get())) {
             BlockPos data = stack.get(ModDataComponents.TARGET_POSITION.get());
             assert data != null;
-            tooltip.add(Component.translatable("tooltip.oritech.target_designator.set_to", data.toShortString()));
+            tooltip.accept(Component.translatable("tooltip.oritech.target_designator.set_to", data.toShortString()));
         } else {
-            tooltip.add(Component.translatable("tooltip.oritech.target_designator.no_target"));
+            tooltip.accept(Component.translatable("tooltip.oritech.target_designator.no_target"));
         }
         if (ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
             ResourceKey<Level> dimension = stack.get(ModDataComponents.TARGET_DIMENSION.get());
-            tooltip.add(Component.translatable("tooltip.oritechthings.advanced_target_designator.dimension")
+            tooltip.accept(Component.translatable("tooltip.oritechthings.advanced_target_designator.dimension")
                     .append(Component.literal(getDimensionName(dimension)).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.BOLD)));
         }
-        tooltip.add(Component.empty());
+        tooltip.accept(Component.empty());
         if (Utility.isControlDown()) {
-            tooltip.add(Component.translatable("tooltip.oritechthings.advanced_target_designator.usage")
+            tooltip.accept(Component.translatable("tooltip.oritechthings.advanced_target_designator.usage")
                     .withStyle(ChatFormatting.GRAY));
-            tooltip.add(Component.translatable("tooltip.oritechthings.advanced_target_designator.speed_sensor")
+            tooltip.accept(Component.translatable("tooltip.oritechthings.advanced_target_designator.speed_sensor")
                     .withStyle(ChatFormatting.BLUE));
             if (ConfigLoader.getInstance().magneticFieldSettings.enabled()) {
-                tooltip.add(Component.translatable("tooltip.oritechthings.advanced_target_designator.magnetic_field")
+                tooltip.accept(Component.translatable("tooltip.oritechthings.advanced_target_designator.magnetic_field")
                         .withStyle(ChatFormatting.BLUE));
             }
-            tooltip.add(Component.translatable("tooltip.oritechthings.advanced_target_designator.drone_port")
+            tooltip.accept(Component.translatable("tooltip.oritechthings.advanced_target_designator.drone_port")
                     .withStyle(ChatFormatting.BLUE));
-            tooltip.add(Component.translatable("tooltip.oritechthings.advanced_target_designator.laser_arm")
+            tooltip.accept(Component.translatable("tooltip.oritechthings.advanced_target_designator.laser_arm")
                     .withStyle(ChatFormatting.BLUE));
             if (ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
-                tooltip.add(Component.translatable("tooltip.oritechthings.advanced_target_designator.cross_dimensional")
+                tooltip.accept(Component.translatable("tooltip.oritechthings.advanced_target_designator.cross_dimensional")
                         .withStyle(ChatFormatting.GOLD));
             }
         } else {
-            tooltip.add(Component.translatable("tooltip.oritech.item_extra_info").withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
+            tooltip.accept(Component.translatable("tooltip.oritech.item_extra_info").withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
         }
     }
+
     private String getDimensionName(ResourceKey<Level> dimensionKey) {
         if (dimensionKey == null) {
             return "Unknown";
