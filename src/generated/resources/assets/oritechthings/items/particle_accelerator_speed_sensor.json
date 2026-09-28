@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "oritechthings:block/particle_accelerator_speed_sensor"
+  }
+}

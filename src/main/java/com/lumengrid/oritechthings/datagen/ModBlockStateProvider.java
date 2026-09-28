@@ -2,6 +2,7 @@ package com.lumengrid.oritechthings.datagen;
 
 import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.block.custom.TierAddonBlock;
+import com.lumengrid.oritechthings.item.ModItems;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.util.Constants;
 
@@ -11,10 +12,11 @@ import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
-import net.minecraft.client.renderer.block.dispatch.VariantMutator;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.renderer.block.dispatch.VariantMutator;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
@@ -42,6 +44,21 @@ public class ModBlockStateProvider extends ModelProvider {
         registerSimpleBlock(blockModels, ModBlocks.ACCELERATOR_MAGNETIC_FIELD);
         registerSimpleBlock(blockModels, ModBlocks.ACCELERATOR_SPEED_SENSOR);
         registerInfestedAmethyst(blockModels, ModBlocks.INFESTED_AMETHYST_BLOCK);
+
+        itemModels.generateFlatItem(
+                ModItems.ADVANCED_TARGET_DESIGNATOR.get(),
+                ModelTemplates.FLAT_ITEM
+        );
+
+        itemModels.generateFlatItem(
+                ModItems.FRAME_PLACER.get(),
+                ModelTemplates.FLAT_ITEM
+        );
+
+        itemModels.generateFlatItem(
+                ModItems.AMETHYST_FISH_SPAWN_EGG.get(),
+                ModelTemplates.FLAT_ITEM
+        );
     }
 
     private static void registerAddon(
@@ -70,150 +87,30 @@ public class ModBlockStateProvider extends ModelProvider {
                                         TierAddonBlock.FACING,
                                         TierAddonBlock.FACE
                                 )
-                                .select(
-                                        Boolean.FALSE,
-                                        Direction.NORTH,
-                                        AttachFace.FLOOR,
-                                        variant(modelId, Direction.NORTH, AttachFace.FLOOR)
-                                )
-                                .select(
-                                        Boolean.FALSE,
-                                        Direction.EAST,
-                                        AttachFace.FLOOR,
-                                        variant(modelId, Direction.EAST, AttachFace.FLOOR)
-                                )
-                                .select(
-                                        Boolean.FALSE,
-                                        Direction.SOUTH,
-                                        AttachFace.FLOOR,
-                                        variant(modelId, Direction.SOUTH, AttachFace.FLOOR)
-                                )
-                                .select(
-                                        Boolean.FALSE,
-                                        Direction.WEST,
-                                        AttachFace.FLOOR,
-                                        variant(modelId, Direction.WEST, AttachFace.FLOOR)
-                                )
-                                .select(
-                                        Boolean.FALSE,
-                                        Direction.NORTH,
-                                        AttachFace.WALL,
-                                        variant(modelId, Direction.NORTH, AttachFace.WALL)
-                                )
-                                .select(
-                                        Boolean.FALSE,
-                                        Direction.EAST,
-                                        AttachFace.WALL,
-                                        variant(modelId, Direction.EAST, AttachFace.WALL)
-                                )
-                                .select(
-                                        Boolean.FALSE,
-                                        Direction.SOUTH,
-                                        AttachFace.WALL,
-                                        variant(modelId, Direction.SOUTH, AttachFace.WALL)
-                                )
-                                .select(
-                                        Boolean.FALSE,
-                                        Direction.WEST,
-                                        AttachFace.WALL,
-                                        variant(modelId, Direction.WEST, AttachFace.WALL)
-                                )
-                                .select(
-                                        Boolean.FALSE,
-                                        Direction.NORTH,
-                                        AttachFace.CEILING,
-                                        variant(modelId, Direction.NORTH, AttachFace.CEILING)
-                                )
-                                .select(
-                                        Boolean.FALSE,
-                                        Direction.EAST,
-                                        AttachFace.CEILING,
-                                        variant(modelId, Direction.EAST, AttachFace.CEILING)
-                                )
-                                .select(
-                                        Boolean.FALSE,
-                                        Direction.SOUTH,
-                                        AttachFace.CEILING,
-                                        variant(modelId, Direction.SOUTH, AttachFace.CEILING)
-                                )
-                                .select(
-                                        Boolean.FALSE,
-                                        Direction.WEST,
-                                        AttachFace.CEILING,
-                                        variant(modelId, Direction.WEST, AttachFace.CEILING)
-                                )
-                                .select(
-                                        Boolean.TRUE,
-                                        Direction.NORTH,
-                                        AttachFace.FLOOR,
-                                        variant(modelId, Direction.NORTH, AttachFace.FLOOR)
-                                )
-                                .select(
-                                        Boolean.TRUE,
-                                        Direction.EAST,
-                                        AttachFace.FLOOR,
-                                        variant(modelId, Direction.EAST, AttachFace.FLOOR)
-                                )
-                                .select(
-                                        Boolean.TRUE,
-                                        Direction.SOUTH,
-                                        AttachFace.FLOOR,
-                                        variant(modelId, Direction.SOUTH, AttachFace.FLOOR)
-                                )
-                                .select(
-                                        Boolean.TRUE,
-                                        Direction.WEST,
-                                        AttachFace.FLOOR,
-                                        variant(modelId, Direction.WEST, AttachFace.FLOOR)
-                                )
-                                .select(
-                                        Boolean.TRUE,
-                                        Direction.NORTH,
-                                        AttachFace.WALL,
-                                        variant(modelId, Direction.NORTH, AttachFace.WALL)
-                                )
-                                .select(
-                                        Boolean.TRUE,
-                                        Direction.EAST,
-                                        AttachFace.WALL,
-                                        variant(modelId, Direction.EAST, AttachFace.WALL)
-                                )
-                                .select(
-                                        Boolean.TRUE,
-                                        Direction.SOUTH,
-                                        AttachFace.WALL,
-                                        variant(modelId, Direction.SOUTH, AttachFace.WALL)
-                                )
-                                .select(
-                                        Boolean.TRUE,
-                                        Direction.WEST,
-                                        AttachFace.WALL,
-                                        variant(modelId, Direction.WEST, AttachFace.WALL)
-                                )
-                                .select(
-                                        Boolean.TRUE,
-                                        Direction.NORTH,
-                                        AttachFace.CEILING,
-                                        variant(modelId, Direction.NORTH, AttachFace.CEILING)
-                                )
-                                .select(
-                                        Boolean.TRUE,
-                                        Direction.EAST,
-                                        AttachFace.CEILING,
-                                        variant(modelId, Direction.EAST, AttachFace.CEILING)
-                                )
-                                .select(
-                                        Boolean.TRUE,
-                                        Direction.SOUTH,
-                                        AttachFace.CEILING,
-                                        variant(modelId, Direction.SOUTH, AttachFace.CEILING)
-                                )
-                                .select(
-                                        Boolean.TRUE,
-                                        Direction.WEST,
-                                        AttachFace.CEILING,
-                                        variant(modelId, Direction.WEST, AttachFace.CEILING)
-                                )
+                                .select(Boolean.FALSE, Direction.NORTH, AttachFace.FLOOR, variant(modelId, Direction.NORTH, AttachFace.FLOOR))
+                                .select(Boolean.FALSE, Direction.EAST, AttachFace.FLOOR, variant(modelId, Direction.EAST, AttachFace.FLOOR))
+                                .select(Boolean.FALSE, Direction.SOUTH, AttachFace.FLOOR, variant(modelId, Direction.SOUTH, AttachFace.FLOOR))
+                                .select(Boolean.FALSE, Direction.WEST, AttachFace.FLOOR, variant(modelId, Direction.WEST, AttachFace.FLOOR))
+                                .select(Boolean.FALSE, Direction.NORTH, AttachFace.WALL, variant(modelId, Direction.NORTH, AttachFace.WALL))
+                                .select(Boolean.FALSE, Direction.EAST, AttachFace.WALL, variant(modelId, Direction.EAST, AttachFace.WALL))
+                                .select(Boolean.FALSE, Direction.SOUTH, AttachFace.WALL, variant(modelId, Direction.SOUTH, AttachFace.WALL))
+                                .select(Boolean.FALSE, Direction.WEST, AttachFace.WALL, variant(modelId, Direction.WEST, AttachFace.WALL))
+                                .select(Boolean.FALSE, Direction.NORTH, AttachFace.CEILING, variant(modelId, Direction.NORTH, AttachFace.CEILING))
+                                .select(Boolean.FALSE, Direction.EAST, AttachFace.CEILING, variant(modelId, Direction.EAST, AttachFace.CEILING))
+                                .select(Boolean.FALSE, Direction.SOUTH, AttachFace.CEILING, variant(modelId, Direction.SOUTH, AttachFace.CEILING))
+                                .select(Boolean.FALSE, Direction.WEST, AttachFace.CEILING, variant(modelId, Direction.WEST, AttachFace.CEILING))
+                                .select(Boolean.TRUE, Direction.NORTH, AttachFace.FLOOR, variant(modelId, Direction.NORTH, AttachFace.FLOOR))
+                                .select(Boolean.TRUE, Direction.EAST, AttachFace.FLOOR, variant(modelId, Direction.EAST, AttachFace.FLOOR))
+                                .select(Boolean.TRUE, Direction.SOUTH, AttachFace.FLOOR, variant(modelId, Direction.SOUTH, AttachFace.FLOOR))
+                                .select(Boolean.TRUE, Direction.WEST, AttachFace.FLOOR, variant(modelId, Direction.WEST, AttachFace.FLOOR))
+                                .select(Boolean.TRUE, Direction.NORTH, AttachFace.WALL, variant(modelId, Direction.NORTH, AttachFace.WALL))
+                                .select(Boolean.TRUE, Direction.EAST, AttachFace.WALL, variant(modelId, Direction.EAST, AttachFace.WALL))
+                                .select(Boolean.TRUE, Direction.SOUTH, AttachFace.WALL, variant(modelId, Direction.SOUTH, AttachFace.WALL))
+                                .select(Boolean.TRUE, Direction.WEST, AttachFace.WALL, variant(modelId, Direction.WEST, AttachFace.WALL))
+                                .select(Boolean.TRUE, Direction.NORTH, AttachFace.CEILING, variant(modelId, Direction.NORTH, AttachFace.CEILING))
+                                .select(Boolean.TRUE, Direction.EAST, AttachFace.CEILING, variant(modelId, Direction.EAST, AttachFace.CEILING))
+                                .select(Boolean.TRUE, Direction.SOUTH, AttachFace.CEILING, variant(modelId, Direction.SOUTH, AttachFace.CEILING))
+                                .select(Boolean.TRUE, Direction.WEST, AttachFace.CEILING, variant(modelId, Direction.WEST, AttachFace.CEILING))
                 )
         );
     }
