@@ -25,7 +25,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.redstone.Orientation;
@@ -44,13 +43,12 @@ import java.util.Objects;
 
 public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock {
 
-    public static final EnumProperty<Direction> TARGET_DIR = BlockStateProperties.FACING;
+    public static final EnumProperty<Direction> TARGET_DIR = EnumProperty.create("target_dir", Direction.class);
 
     public AcceleratorMagneticFieldBlock() {
         this(BlockBehaviour.Properties.of());
     }
 
-    // ✅ Costruttore con Properties per la registrazione in NeoForge 26.1+
     public AcceleratorMagneticFieldBlock(BlockBehaviour.Properties properties) {
         super(properties
                 .mapColor(MapColor.METAL)
