@@ -8,11 +8,13 @@ import com.lumengrid.oritechthings.util.Constants;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
-import net.minecraft.client.data.models.model.ModelLocationUtils;
-import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.*;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredBlock;
+
+import java.util.Optional;
 
 public class ModItemModelProvider extends ModelProvider {
 
@@ -43,9 +45,15 @@ public class ModItemModelProvider extends ModelProvider {
                 ModelTemplates.FLAT_ITEM
         );
 
-        itemModels.generateFlatItem(
-                ModItems.AMETHYST_FISH_SPAWN_EGG.get(),
-                ModelTemplates.FLAT_ITEM
+        ModelTemplate spawnEggTemplate = new ModelTemplate(
+                Optional.of(Identifier.fromNamespaceAndPath("minecraft", "item/template_spawn_egg")),
+                Optional.empty()
+        );
+
+        spawnEggTemplate.create(
+                ModelLocationUtils.getModelLocation(ModItems.AMETHYST_FISH_SPAWN_EGG.get()),
+                new TextureMapping(),
+                blockModels.modelOutput
         );
     }
 

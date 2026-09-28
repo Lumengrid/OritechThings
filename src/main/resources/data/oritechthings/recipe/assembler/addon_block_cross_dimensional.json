@@ -4,7 +4,7 @@
   "fluidInputVariant": "minecraft:empty",
   "fluidOutputAmount": 0,
   "fluidOutputVariant": "minecraft:empty",
-  "ingredients": [
+  "itemInputs": [
     {
       "tag": "c:ingots/electrum"
     },
@@ -18,10 +18,10 @@
       "item": "minecraft:ender_pearl"
     }
   ],
-  "results": [
+  "itemResults": [
     {
       "count": 1,
-      "id": "oritechthings:addon_block_cross_dimensional"
+      "item": "oritechthings:addon_block_cross_dimensional"
     }
   ],
   "time": 200

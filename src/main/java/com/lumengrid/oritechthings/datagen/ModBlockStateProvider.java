@@ -28,6 +28,11 @@ import java.util.Optional;
 
 public class ModBlockStateProvider extends ModelProvider {
 
+    private static final ModelTemplate SPAWN_EGG_TEMPLATE = new ModelTemplate(
+            Optional.of(Identifier.fromNamespaceAndPath("minecraft", "item/template_spawn_egg")),
+            Optional.empty()
+    );
+
     public ModBlockStateProvider(PackOutput output) {
         super(output, OritechThings.MOD_ID);
     }
@@ -57,7 +62,7 @@ public class ModBlockStateProvider extends ModelProvider {
 
         itemModels.generateFlatItem(
                 ModItems.AMETHYST_FISH_SPAWN_EGG.get(),
-                ModelTemplates.FLAT_ITEM
+                SPAWN_EGG_TEMPLATE
         );
     }
 

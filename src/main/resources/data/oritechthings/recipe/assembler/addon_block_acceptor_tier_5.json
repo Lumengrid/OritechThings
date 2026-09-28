@@ -4,7 +4,7 @@
   "fluidInputVariant": "minecraft:empty",
   "fluidOutputAmount": 0,
   "fluidOutputVariant": "minecraft:empty",
-  "ingredients": [
+  "itemInputs": [
     {
       "item": "oritechthings:addon_block_acceptor_tier_4"
     },
@@ -18,10 +18,10 @@
       "item": "oritech:flux_gate"
     }
   ],
-  "results": [
+  "itemResults": [
     {
       "count": 1,
-      "id": "oritechthings:addon_block_acceptor_tier_5"
+      "item": "oritechthings:addon_block_acceptor_tier_5"
     }
   ],
   "time": 250

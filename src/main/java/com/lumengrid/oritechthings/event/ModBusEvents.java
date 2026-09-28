@@ -2,6 +2,7 @@ package com.lumengrid.oritechthings.event;
 
 import com.lumengrid.oritechthings.entity.ModEntities;
 import com.lumengrid.oritechthings.entity.custom.AmethystFishEntity;
+import com.lumengrid.oritechthings.item.ModItems;
 import com.lumengrid.oritechthings.main.ConfigReloadListener;
 import com.lumengrid.oritechthings.main.OritechThings;
 import net.minecraft.resources.Identifier;
