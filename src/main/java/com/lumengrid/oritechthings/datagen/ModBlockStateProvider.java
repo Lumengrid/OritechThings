@@ -173,18 +173,19 @@ public class ModBlockStateProvider extends ModelProvider {
             AttachFace face
     ) {
         return BlockModelGenerators.plainVariant(modelId)
-                .with(yRotation(facing))
+                .with(yRotation(facing, face))
                 .with(xRotation(face));
     }
 
     private static VariantMutator yRotation(
-            Direction facing
+            Direction facing,
+            AttachFace face
     ) {
+
         return switch (facing) {
-            case NORTH -> BlockModelGenerators.Y_ROT_180;
-            case EAST -> BlockModelGenerators.Y_ROT_270;
-            case SOUTH -> BlockModelGenerators.NOP;
-            case WEST -> BlockModelGenerators.Y_ROT_90;
+            case EAST -> BlockModelGenerators.Y_ROT_90;
+            case SOUTH -> BlockModelGenerators.Y_ROT_180;
+            case WEST -> BlockModelGenerators.Y_ROT_270;
             default -> BlockModelGenerators.NOP;
         };
     }

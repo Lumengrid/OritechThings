@@ -56,20 +56,7 @@ public class TierAddonBlock extends MachineAddonBlock {
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        Direction dir = switch (ctx.getClickedFace()) {
-            case DOWN, UP, NORTH -> Direction.NORTH;
-            case SOUTH -> Direction.SOUTH;
-            case WEST -> Direction.WEST;
-            case EAST -> Direction.EAST;
-        };
-        Direction face = ctx.getClickedFace();
-        AttachFace f = switch (face) {
-            case DOWN -> AttachFace.CEILING;
-            case UP -> AttachFace.FLOOR;
-            case NORTH, EAST, WEST, SOUTH -> AttachFace.WALL;
-        };
-
-        return defaultBlockState().setValue(FACING, dir).setValue(FACE, f);
+        return super.getStateForPlacement(ctx);
     }
 
     @NotNull
