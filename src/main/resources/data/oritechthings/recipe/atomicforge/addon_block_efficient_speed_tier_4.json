@@ -1,25 +1,15 @@
 {
   "type": "oritech:atomic_forge",
-  "fluidInputAmount": 0,
-  "fluidInputVariant": "minecraft:empty",
-  "fluidOutputAmount": 0,
-  "fluidOutputVariant": "minecraft:empty",
+  "time": 200,
   "itemInputs": [
-    {
-      "item": "oritechthings:addon_block_speed_tier_4"
-    },
-    {
-      "item": "oritechthings:addon_block_efficiency_tier_4"
-    },
-    {
-      "item": "oritech:motor"
-    }
+    "oritechthings:addon_block_speed_tier_4",
+    "oritechthings:addon_block_efficiency_tier_4",
+    "oritech:motor"
   ],
   "itemResults": [
     {
-      "count": 1,
-      "item": "oritechthings:addon_block_efficient_speed_tier_4"
+      "id": "oritechthings:addon_block_efficient_speed_tier_4",
+      "count": 1
     }
-  ],
-  "time": 200
+  ]
 }

@@ -1,28 +1,16 @@
 {
   "type": "oritech:assembler",
-  "fluidInputAmount": 0,
-  "fluidInputVariant": "minecraft:empty",
-  "fluidOutputAmount": 0,
-  "fluidOutputVariant": "minecraft:empty",
+  "time": 150,
   "itemInputs": [
-    {
-      "item": "oritechthings:addon_block_speed_tier_2"
-    },
-    {
-      "item": "oritech:machine_speed_addon"
-    },
-    {
-      "tag": "c:ingots/steel"
-    },
-    {
-      "item": "oritech:magnetic_coil"
-    }
+    "oritechthings:addon_block_speed_tier_2",
+    "oritech:machine_speed_addon",
+    "#c:ingots/steel",
+    "oritech:magnetic_coil"
   ],
   "itemResults": [
     {
-      "count": 1,
-      "item": "oritechthings:addon_block_speed_tier_3"
+      "id": "oritechthings:addon_block_speed_tier_3",
+      "count": 1
     }
-  ],
-  "time": 150
+  ]
 }

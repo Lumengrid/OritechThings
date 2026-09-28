@@ -1,25 +1,15 @@
 {
   "type": "oritech:atomic_forge",
-  "fluidInputAmount": 0,
-  "fluidInputVariant": "minecraft:empty",
-  "fluidOutputAmount": 0,
-  "fluidOutputVariant": "minecraft:empty",
+  "time": 100,
   "itemInputs": [
-    {
-      "item": "oritech:accelerator_sensor"
-    },
-    {
-      "item": "oritech:duratium_ingot"
-    },
-    {
-      "item": "minecraft:ender_eye"
-    }
+    "oritech:accelerator_sensor",
+    "oritech:duratium_ingot",
+    "minecraft:ender_eye"
   ],
   "itemResults": [
     {
-      "count": 1,
-      "item": "oritechthings:particle_accelerator_speed_sensor"
+      "id": "oritechthings:particle_accelerator_speed_sensor",
+      "count": 1
     }
-  ],
-  "time": 100
+  ]
 }

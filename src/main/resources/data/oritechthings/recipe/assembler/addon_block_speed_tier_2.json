@@ -1,28 +1,16 @@
 {
   "type": "oritech:assembler",
-  "fluidInputAmount": 0,
-  "fluidInputVariant": "minecraft:empty",
-  "fluidOutputAmount": 0,
-  "fluidOutputVariant": "minecraft:empty",
+  "time": 100,
   "itemInputs": [
-    {
-      "item": "oritech:machine_speed_addon"
-    },
-    {
-      "item": "oritech:machine_speed_addon"
-    },
-    {
-      "item": "oritech:biosteel_block"
-    },
-    {
-      "item": "oritech:machine_extender"
-    }
+    "oritech:machine_speed_addon",
+    "oritech:machine_speed_addon",
+    "oritech:biosteel",
+    "oritech:machine_extender"
   ],
   "itemResults": [
     {
-      "count": 1,
-      "item": "oritechthings:addon_block_speed_tier_2"
+      "id": "oritechthings:addon_block_speed_tier_2",
+      "count": 1
     }
-  ],
-  "time": 100
+  ]
 }

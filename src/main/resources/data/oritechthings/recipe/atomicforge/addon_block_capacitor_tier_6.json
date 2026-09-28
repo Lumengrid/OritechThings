@@ -1,25 +1,15 @@
 {
   "type": "oritech:atomic_forge",
-  "fluidInputAmount": 0,
-  "fluidInputVariant": "minecraft:empty",
-  "fluidOutputAmount": 0,
-  "fluidOutputVariant": "minecraft:empty",
+  "time": 300,
   "itemInputs": [
-    {
-      "item": "oritechthings:addon_block_capacitor_tier_5"
-    },
-    {
-      "item": "oritech:machine_capacitor_addon"
-    },
-    {
-      "item": "oritech:advanced_computing_engine"
-    }
+    "oritechthings:addon_block_capacitor_tier_5",
+    "oritech:machine_capacitor_addon",
+    "oritech:advanced_computing_engine"
   ],
   "itemResults": [
     {
-      "count": 1,
-      "item": "oritechthings:addon_block_capacitor_tier_6"
+      "id": "oritechthings:addon_block_capacitor_tier_6",
+      "count": 1
     }
-  ],
-  "time": 300
+  ]
 }
