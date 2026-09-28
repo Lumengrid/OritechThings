@@ -48,7 +48,7 @@ public final class DataGenerators {
         event.createProvider(ModLangProviderZhCn::new);
         event.createProvider(ModLangProviderRuRu::new);
         event.createProvider(ModLangProviderPtBr::new);
-        event.createProvider(ModItemModelProvider::new);
+        // event.createProvider(ModItemModelProvider::new);
         event.createProvider(ModBlockStateProvider::new);
     }
 }

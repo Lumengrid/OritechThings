@@ -3,8 +3,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "oritech:item/magnetic_coil",
-		"particle": "oritech:item/magnetic_coil"
+		"0": "oritechthings:block/magnetic_coil",
+		"particle": "oritechthings:block/magnetic_coil"
 	},
 	"elements": [
 		{
@@ -31,7 +31,7 @@
 				"south": {"uv": [6, 5.25, 9.75, 12.5], "texture": "#0"},
 				"west": {"uv": [6, 5.25, 9.75, 12.5], "texture": "#0"},
 				"up": {"uv": [12.25, 5.25, 4, 11.25], "texture": "#0"},
-				"down": {"uv": [5.25, 1.75, 3.5, 3.5], "texture": "#1"}
+				"down": {"uv": [5.25, 1.75, 3.5, 3.5], "texture": "#0"}
 			}
 		},
 		{
@@ -44,7 +44,7 @@
 				"south": {"uv": [6, 0.75, 9.75, 0], "texture": "#0"},
 				"west": {"uv": [6, 0.75, 9.75, 0], "texture": "#0"},
 				"up": {"uv": [6, 0.75, 9.75, 0], "texture": "#0"},
-				"down": {"uv": [5.25, 1.75, 3.5, 3.5], "texture": "#1"}
+				"down": {"uv": [5.25, 1.75, 3.5, 3.5], "texture": "#0"}
 			}
 		},
 		{
@@ -57,7 +57,7 @@
 				"south": {"uv": [6, 0.75, 9.75, 0], "texture": "#0"},
 				"west": {"uv": [6, 0.75, 9.75, 0], "texture": "#0"},
 				"up": {"uv": [6, 0.75, 9.75, 0], "texture": "#0"},
-				"down": {"uv": [5.25, 1.75, 3.5, 3.5], "texture": "#1"}
+				"down": {"uv": [5.25, 1.75, 3.5, 3.5], "texture": "#0"}
 			}
 		}
 	],

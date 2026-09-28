@@ -31,6 +31,7 @@ public class ModItemModelProvider extends ModelProvider {
 
         registerBlockItem(blockModels, ModBlocks.ACCELERATOR_SPEED_SENSOR);
         registerBlockItem(blockModels, ModBlocks.ACCELERATOR_MAGNETIC_FIELD);
+        registerBlockItem(blockModels, ModBlocks.INFESTED_AMETHYST_BLOCK);
 
         itemModels.generateFlatItem(
                 ModItems.ADVANCED_TARGET_DESIGNATOR.get(),
