@@ -19,12 +19,19 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class AcceleratorSpeedSensorBlockEntityRender implements BlockEntityRenderer<AcceleratorSpeedSensorBlockEntity, AcceleratorSpeedSensorBlockEntityRender.SpeedSensorRenderState> {
-    private static final ItemStack DISPLAY_ITEM = new ItemStack(Items.ENDER_EYE);
 
     private final ItemModelResolver itemModelResolver;
+    private ItemStack displayItem;
 
     public AcceleratorSpeedSensorBlockEntityRender(BlockEntityRendererProvider.Context context) {
         this.itemModelResolver = context.itemModelResolver();
+    }
+
+    private ItemStack getDisplayItem() {
+        if (this.displayItem == null) {
+            this.displayItem = new ItemStack(Items.ENDER_EYE);
+        }
+        return this.displayItem;
     }
 
     @Override
@@ -44,7 +51,7 @@ public class AcceleratorSpeedSensorBlockEntityRender implements BlockEntityRende
 
         this.itemModelResolver.updateForTopItem(
                 state.itemRenderState,
-                DISPLAY_ITEM,
+                getDisplayItem(), // ✅ Chiamata al getter pigro
                 ItemDisplayContext.GROUND,
                 level,
                 null,

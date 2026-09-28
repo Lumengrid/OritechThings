@@ -26,7 +26,7 @@ public class AcceleratorParticleLogicMixin {
 
     @Shadow
     @Final
-    private net.minecraft.server.level.ServerLevel world;
+    private ServerLevel level;
 
     @Inject(method = "getRequiredBendDist", at = @At("RETURN"), cancellable = true)
     private static void getRequiredBendDistWithMagneticField(float speed, CallbackInfoReturnable<Float> cir) {
@@ -51,7 +51,7 @@ public class AcceleratorParticleLogicMixin {
         if (!config.enabled()) {
             return false;
         }
-        
+
         ParticleAcceleratorBlockEntity currentEntity = currentAccelerator.get();
         if (currentEntity == null) {
             return false;
@@ -79,7 +79,7 @@ public class AcceleratorParticleLogicMixin {
                 lastTickLogged.put(magnetEntity.getBlockPos(), -1L);
                 callsThisTick.put(magnetEntity.getBlockPos(), 0);
             }
-            
+
             if (lastTickLogged.get(magnetEntity.getBlockPos()) != currentTick) {
                 lastTickLogged.put(magnetEntity.getBlockPos(), currentTick);
                 callsThisTick.put(magnetEntity.getBlockPos(), 1);
@@ -164,5 +164,4 @@ public class AcceleratorParticleLogicMixin {
     private void clearCurrentAcceleratorContext(AcceleratorParticleLogic.ActiveParticle particle, CallbackInfo ci) {
         currentAccelerator.remove();
     }
-
 }
