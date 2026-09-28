@@ -46,7 +46,7 @@ public class AcceleratorParticleLogicMixin {
     }
 
     private static boolean canMagneticFieldAssistStatic(float requiredDist, float speed) {
-        // Check if magnetic fields are enabled in config
+        // Controlla se i campi magnetici sono abilitati nella config
         var config = ConfigLoader.getInstance().magneticFieldSettings;
         if (!config.enabled()) {
             return false;
@@ -100,15 +100,17 @@ public class AcceleratorParticleLogicMixin {
                 return true;
             }
 
-            var transaction = Transaction.openRoot();
-            magnetEntity.energyStorage.extract(0, transaction);
+            // Estrazione sicura dell'energia con try-with-resources e commit
             if (magnetEntity.energyStorage.getAmountAsLong() >= energyCostLong) {
-                magnetEntity.energyStorage.extract((int) energyCostLong, transaction);
-
-                lastEnergyTick.put(magnetEntity.getBlockPos(), currentTick);
-                createMagneticFieldParticles(serverWorld, magnetEntity.getBlockPos());
-
-                return true;
+                try (var transaction = Transaction.openRoot()) {
+                    long extracted = magnetEntity.energyStorage.extract((int) energyCostLong, transaction);
+                    if (extracted > 0) {
+                        transaction.commit();
+                        lastEnergyTick.put(magnetEntity.getBlockPos(), currentTick);
+                        createMagneticFieldParticles(serverWorld, magnetEntity.getBlockPos());
+                        return true;
+                    }
+                }
             }
         }
 

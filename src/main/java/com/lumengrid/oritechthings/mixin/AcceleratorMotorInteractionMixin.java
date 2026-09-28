@@ -4,7 +4,6 @@ import com.lumengrid.oritechthings.block.custom.TierAddonBlock;
 import com.lumengrid.oritechthings.util.Constants;
 import net.minecraft.core.BlockPos;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -23,7 +22,7 @@ public class AcceleratorMotorInteractionMixin {
     @Shadow
     private AcceleratorParticleLogic.ActiveParticle particle;
 
-    @Inject(method = "handleParticleMotorInteraction", at = @At("HEAD"))
+    @Inject(method = "handleParticleMotorInteraction", at = @At("HEAD"), cancellable = true)
     private void handleParticleMotorInteraction(BlockPos motorBlock, CallbackInfo ci) {
         if (particle == null) return;
 
@@ -44,11 +43,15 @@ public class AcceleratorMotorInteractionMixin {
             long availableEnergy = storage.getAmountAsLong();
             long cost = (long) (speed * baseRfCost);
             if (availableEnergy >= cost) {
-                var transaction = Transaction.openRoot();
-                storage.extract((int) cost, transaction);
-                particle.velocity += 1.0f;
+                try (var transaction = Transaction.openRoot()) {
+                    long extracted = storage.extract((int) cost, transaction);
+                    if (extracted > 0) {
+                        transaction.commit();
+                        particle.velocity += 1.0f;
+                    }
+                }
             }
-
+            ci.cancel();
             return;
         }
 
@@ -58,10 +61,16 @@ public class AcceleratorMotorInteractionMixin {
         long availableEnergy = storage.getAmountAsLong();
 
         if (availableEnergy >= totalCost) {
-            var transaction = Transaction.openRoot();
-            storage.extract((int) totalCost, transaction);
-            particle.velocity += (long) (1.0f + additionalVelocity);
+            try (var transaction = Transaction.openRoot()) {
+                long extracted = storage.extract((int) totalCost, transaction);
+                if (extracted > 0) {
+                    transaction.commit();
+                    particle.velocity += (1.0f + additionalVelocity);
+                }
+            }
         }
+
+        ci.cancel();
     }
 
     @Unique
