@@ -1,19 +1,13 @@
 package com.lumengrid.oritechthings.item;
 
 import com.lumengrid.oritechthings.entity.custom.AcceleratorMagneticFieldBlockEntity;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.BlockItem;
+import com.lumengrid.oritechthings.item.custom.ModBlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 import rearth.oritech.init.ComponentContent;
-import rearth.oritech.util.TooltipHelper;
 
-import java.util.List;
-
-public class AcceleratorMagneticFieldBlockItem extends BlockItem {
+public class AcceleratorMagneticFieldBlockItem extends ModBlockItem {
 
     public AcceleratorMagneticFieldBlockItem(Block block, Properties settings) {
         super(block, settings.component(ComponentContent.ENERGY, 0));

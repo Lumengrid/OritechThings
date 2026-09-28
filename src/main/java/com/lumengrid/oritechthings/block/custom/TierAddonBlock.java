@@ -7,9 +7,9 @@ import com.lumengrid.oritechthings.util.Utility;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -30,13 +30,12 @@ import rearth.oritech.util.TooltipHelper;
 
 import static com.lumengrid.oritechthings.main.OritechThings.MOD_ID;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 public class TierAddonBlock extends MachineAddonBlock {
     public static final EnumProperty<Constants.AddonType> ADDON_TYPE = EnumProperty.create("addon_type", Constants.AddonType.class);
     public static final IntegerProperty ADDON_TIER = IntegerProperty.create("tier", 2, 9);
 
-    // ✅ Costruttore aggiornato per NeoForge 1.21.2+: accetta BlockBehaviour.Properties
     public TierAddonBlock(BlockBehaviour.Properties properties, AddonSettings addonSettings, int tier, Constants.AddonType type) {
         super(properties
                         .strength(2f)
@@ -83,57 +82,58 @@ public class TierAddonBlock extends MachineAddonBlock {
         return this.addonSettings.boundingShape()[state.getValue(FACING).ordinal()][state.getValue(FACE).ordinal()];
     }
 
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(ADDON_USED, FACING, FACE, ADDON_TIER, ADDON_TYPE);
     }
 
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip,
-                                TooltipFlag options) {
+    @Override
+    public void addToTooltip(Item.TooltipContext tooltipContext, Consumer<Component> consumer, TooltipFlag tooltipFlag, DataComponentGetter dataComponentGetter) {
         if (this.defaultBlockState().getValue(ADDON_TYPE).toString().equals(Constants.AddonType.CROSS_DIMENSIONAL.toString())) {
             if (!ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
-                tooltip.add(Component.translatable("tooltip." + MOD_ID + ".addon_block_cross_dimensional_disabled")
+                consumer.accept(Component.translatable("tooltip." + MOD_ID + ".addon_block_cross_dimensional_disabled")
                         .withStyle(ChatFormatting.RED));
                 return;
             }
 
             if (Utility.isControlDown()) {
-                tooltip.add(Component.translatable("tooltip." + MOD_ID + ".addon_block_cross_dimensional").withStyle(ChatFormatting.DARK_GRAY));
+                consumer.accept(Component.translatable("tooltip." + MOD_ID + ".addon_block_cross_dimensional").withStyle(ChatFormatting.DARK_GRAY));
             } else {
-                tooltip.add(Component.translatable("tooltip.oritech.item_extra_info").withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
+                consumer.accept(Component.translatable("tooltip.oritech.item_extra_info").withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
             }
         } else {
-            tooltip.add(Component.translatable("tooltip." + MOD_ID + ".tier_addon").withStyle(ChatFormatting.AQUA).append(
+            consumer.accept(Component.translatable("tooltip." + MOD_ID + ".tier_addon").withStyle(ChatFormatting.AQUA).append(
                     Component.literal(this.defaultBlockState().getValue(ADDON_TIER).toString()).withStyle(ChatFormatting.AQUA)));
             if (Utility.isControlDown()) {
                 if (addonSettings.speedMultiplier() != 1) {
                     var displayedNumber = Math.round((1 - addonSettings.speedMultiplier()) * 100);
-                    tooltip.add(Component.translatable("tooltip.oritech.addon_speed_desc").withStyle(ChatFormatting.DARK_GRAY)
+                    consumer.accept(Component.translatable("tooltip.oritech.addon_speed_desc").withStyle(ChatFormatting.DARK_GRAY)
                             .append(TooltipHelper.getFormattedValueChangeTooltip(displayedNumber)));
                 }
 
                 if (addonSettings.efficiencyMultiplier() != 1) {
                     var displayedNumber = Math.round((1 - addonSettings.efficiencyMultiplier()) * 100);
-                    tooltip.add(Component.translatable("tooltip.oritech.addon_efficiency_desc").withStyle(ChatFormatting.DARK_GRAY)
+                    consumer.accept(Component.translatable("tooltip.oritech.addon_efficiency_desc").withStyle(ChatFormatting.DARK_GRAY)
                             .append(TooltipHelper.getFormattedValueChangeTooltip(displayedNumber)));
                 }
 
                 if (addonSettings.addedCapacity() != 0) {
-                    tooltip.add(
+                    consumer.accept(
                             Component.translatable("tooltip.oritech.addon_capacity_desc").withStyle(ChatFormatting.DARK_GRAY)
                                     .append(TooltipHelper.getFormattedEnergyChangeTooltip(addonSettings.addedCapacity(), " RF")));
                 }
 
                 if (addonSettings.addedInsert() != 0) {
-                    tooltip.add(Component.translatable("tooltip.oritech.addon_transfer_desc").withStyle(ChatFormatting.DARK_GRAY)
+                    consumer.accept(Component.translatable("tooltip.oritech.addon_transfer_desc").withStyle(ChatFormatting.DARK_GRAY)
                             .append(TooltipHelper.getFormattedEnergyChangeTooltip(addonSettings.addedInsert(), " RF/t")));
                 }
 
                 if (addonSettings.chamberCount() > 1) {
-                    tooltip.add(Component.translatable("tooltip.oritechthings.tiered_addons.chambers_desc").withStyle(ChatFormatting.DARK_GRAY)
+                    consumer.accept(Component.translatable("tooltip.oritechthings.tiered_addons.chambers_desc").withStyle(ChatFormatting.DARK_GRAY)
                             .append(Component.literal("+" + (addonSettings.chamberCount() - 1)).withStyle(ChatFormatting.GREEN)));
                 }
             } else {
-                tooltip.add(Component.translatable("tooltip.oritech.item_extra_info").withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
+                consumer.accept(Component.translatable("tooltip.oritech.item_extra_info").withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
             }
         }
     }

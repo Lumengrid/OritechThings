@@ -38,19 +38,23 @@ public class ModLangProvider extends LanguageProvider {
         add("tag." + MOD_ID + ".tiered_addon_efficiency", "Efficiency Addons");
         add("tag." + MOD_ID + ".particle_accelerator", "Particle Accelerator Components");
 
-        // generic blocks (Registra solo 'block.oritechthings...')
-        ModBlocks.OTHER.getEntries().forEach(e -> addBlock(e, DataGenUtil.formatted(e.getRegisteredName())));
+        // generic blocks (Registra sia 'block.oritechthings...' che 'item.oritechthings...')
+        ModBlocks.OTHER.getEntries().forEach(e -> {
+            addBlock(e, DataGenUtil.formatted(e.getRegisteredName()));
+            add("item." + MOD_ID + "." + e.getId().getPath(), DataGenUtil.formatted(e.getRegisteredName()));
+        });
 
-        // block addons (Registra solo 'block.oritechthings...')
-        ModBlocks.ADDONS.getEntries().forEach(e -> addBlock(e, DataGenUtil.specificReplace(e.getRegisteredName())));
+        // block addons (Registra sia 'block.oritechthings...' che 'item.oritechthings...')
+        ModBlocks.ADDONS.getEntries().forEach(e -> {
+            addBlock(e, DataGenUtil.specificReplace(e.getRegisteredName()));
+            add("item." + MOD_ID + "." + e.getId().getPath(), DataGenUtil.specificReplace(e.getRegisteredName()));
+        });
 
-        // generic items (Registra 'item.oritechthings...')
+        // generic items
         ModItems.ITEMS.getEntries().forEach(e -> addItem(e, DataGenUtil.formatted(e.getRegisteredName())));
 
         // generic mobs
         ModEntities.MOD_MOB_ENTITIES.getEntries().forEach(e -> addEntityType(e, DataGenUtil.formatted(e.getRegisteredName())));
-
-        add("item.oritechthings.accelerator_magnetic_field", "Particle Accelerator Magnetic Field");
 
         // particle accelerator speed sensor
         var AspeedSensor = MOD_ID + "." + DataGenUtil.getName(ModBlocks.ACCELERATOR_SPEED_SENSOR);
