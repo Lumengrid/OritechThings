@@ -2,7 +2,8 @@ package com.lumengrid.oritechthings.menu;
 
 import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.entity.custom.AcceleratorSpeedSensorBlockEntity;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -16,18 +17,28 @@ public class AcceleratorSpeedSensorMenu extends AbstractContainerMenu {
     public final AcceleratorSpeedSensorBlockEntity be;
     private final Level level;
 
-    public AcceleratorSpeedSensorMenu(int pContainerId, Inventory inv, BlockEntity entity){
+    // Costruttore chiamato dal Server (o direttamente dal client se la BE è già nota)
+    public AcceleratorSpeedSensorMenu(int pContainerId, Inventory inv, BlockEntity entity) {
         super(ModMenuTypes.SPEED_SENSOR_MENU.get(), pContainerId);
 
-        this.be = ((AcceleratorSpeedSensorBlockEntity) entity);
+        this.be = (AcceleratorSpeedSensorBlockEntity) entity;
         this.level = inv.player.level();
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
     }
 
-    public AcceleratorSpeedSensorMenu(int pContainerId, Inventory inv, FriendlyByteBuf buf) {
-        this(pContainerId, inv, inv.player.level().getBlockEntity(buf.readBlockPos()));
+    // Costruttore chiamato dal Client tramite la rete
+    public AcceleratorSpeedSensorMenu(int pContainerId, Inventory inv, RegistryFriendlyByteBuf buf) {
+        this(pContainerId, inv, getBlockEntityFromBuf(inv, buf));
+    }
+
+    private static BlockEntity getBlockEntityFromBuf(Inventory inv, RegistryFriendlyByteBuf buf) {
+        if (buf != null && buf.readableBytes() > 0) {
+            BlockPos pos = buf.readBlockPos();
+            return inv.player.level().getBlockEntity(pos);
+        }
+        return null;
     }
 
     private void addPlayerInventory(Inventory playerInventory) {
@@ -51,7 +62,8 @@ public class AcceleratorSpeedSensorMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(@NotNull Player pPlayer) {
+        if (be == null) return false;
         return stillValid(ContainerLevelAccess.create(level, be.getBlockPos()),
-            pPlayer, ModBlocks.ACCELERATOR_SPEED_SENSOR.get());
+                pPlayer, ModBlocks.ACCELERATOR_SPEED_SENSOR.get());
     }
 }
