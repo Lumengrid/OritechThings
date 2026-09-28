@@ -4,7 +4,7 @@
   "fluidInputVariant": "minecraft:empty",
   "fluidOutputAmount": 0,
   "fluidOutputVariant": "minecraft:empty",
-  "ingredients": [
+  "itemInputs": [
     {
       "item": "oritech:machine_acceptor_addon"
     },
@@ -18,10 +18,10 @@
       "item": "oritech:machine_extender"
     }
   ],
-  "results": [
+  "itemResults": [
     {
       "count": 1,
-      "id": "oritechthings:addon_block_acceptor_tier_2"
+      "item": "oritechthings:addon_block_acceptor_tier_2"
     }
   ],
   "time": 100

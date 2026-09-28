@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "oritechthings:advanced_target_designator"
-    }
+    "oritechthings:advanced_target_designator"
   ],
   "result": {
     "count": 1,

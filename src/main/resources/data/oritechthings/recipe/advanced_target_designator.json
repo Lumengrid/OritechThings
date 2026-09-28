@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:silicon"
-    },
-    {
-      "item": "oritech:target_designator"
-    }
+    "#c:silicon",
+    "oritech:target_designator"
   ],
   "result": {
     "count": 1,

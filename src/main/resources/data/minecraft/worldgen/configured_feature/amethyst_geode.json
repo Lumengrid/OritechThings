@@ -19,16 +19,16 @@
                 "type": "minecraft:weighted_state_provider",
                 "entries": [
                     {
-                        "weight": 25,
                         "data": {
                             "Name": "minecraft:amethyst_block"
-                        }
+                        },
+                        "weight": 25
                     },
                     {
-                        "weight": 1,
                         "data": {
                             "Name": "oritechthings:infested_amethyst_block"
-                        }
+                        },
+                        "weight": 1
                     }
                 ]
             },

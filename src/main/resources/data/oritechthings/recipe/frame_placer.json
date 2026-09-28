@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "oritech:machine_frame_block"
-    },
-    {
-      "item": "oritech:motor"
-    }
+    "oritech:machine_frame",
+    "oritech:motor"
   ],
   "result": {
     "count": 1,

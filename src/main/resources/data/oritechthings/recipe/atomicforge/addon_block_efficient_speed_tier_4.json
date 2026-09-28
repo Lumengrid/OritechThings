@@ -4,7 +4,7 @@
   "fluidInputVariant": "minecraft:empty",
   "fluidOutputAmount": 0,
   "fluidOutputVariant": "minecraft:empty",
-  "ingredients": [
+  "itemInputs": [
     {
       "item": "oritechthings:addon_block_speed_tier_4"
     },
@@ -15,10 +15,10 @@
       "item": "oritech:motor"
     }
   ],
-  "results": [
+  "itemResults": [
     {
       "count": 1,
-      "id": "oritechthings:addon_block_efficient_speed_tier_4"
+      "item": "oritechthings:addon_block_efficient_speed_tier_4"
     }
   ],
   "time": 200

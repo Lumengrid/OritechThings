@@ -4,7 +4,7 @@
   "fluidInputVariant": "minecraft:empty",
   "fluidOutputAmount": 0,
   "fluidOutputVariant": "minecraft:empty",
-  "ingredients": [
+  "itemInputs": [
     {
       "item": "oritech:accelerator_sensor"
     },
@@ -15,10 +15,10 @@
       "item": "minecraft:ender_eye"
     }
   ],
-  "results": [
+  "itemResults": [
     {
       "count": 1,
-      "id": "oritechthings:particle_accelerator_speed_sensor"
+      "item": "oritechthings:particle_accelerator_speed_sensor"
     }
   ],
   "time": 100
