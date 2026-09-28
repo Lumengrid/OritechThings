@@ -74,6 +74,7 @@
   "gui.oritechthings.particle_accelerator_speed_sensor.on.tooltip": "Sensor is active and monitoring particle velocity",
   "gui.oritechthings.particle_accelerator_speed_sensor.speed_input": "Speed Input",
   "gui.oritechthings.particle_accelerator_speed_sensor.title": "Speed Sensor",
+  "item.oritechthings.accelerator_magnetic_field": "Particle Accelerator Magnetic Field",
   "item.oritechthings.advanced_target_designator": "Advanced Target Designator",
   "item.oritechthings.amethyst_fish_spawn_egg": "Amethyst Fish Spawn Egg",
   "item.oritechthings.frame_placer": "Frame Placer",
