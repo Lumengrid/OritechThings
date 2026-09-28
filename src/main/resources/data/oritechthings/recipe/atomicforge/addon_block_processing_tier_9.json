@@ -1,25 +1,15 @@
 {
   "type": "oritech:atomic_forge",
-  "fluidInputAmount": 0,
-  "fluidInputVariant": "minecraft:empty",
-  "fluidOutputAmount": 0,
-  "fluidOutputVariant": "minecraft:empty",
+  "time": 450,
   "itemInputs": [
-    {
-      "item": "oritechthings:addon_block_processing_tier_8"
-    },
-    {
-      "item": "oritech:machine_processing_addon"
-    },
-    {
-      "item": "oritech:machine_core_7"
-    }
+    "oritechthings:addon_block_processing_tier_8",
+    "oritech:auxiliary_processing_chamber_addon",
+    "oritech:machine_core_7"
   ],
   "itemResults": [
     {
-      "count": 1,
-      "item": "oritechthings:addon_block_processing_tier_9"
+      "id": "oritechthings:addon_block_processing_tier_9",
+      "count": 1
     }
-  ],
-  "time": 450
+  ]
 }

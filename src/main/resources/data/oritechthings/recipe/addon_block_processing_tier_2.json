@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "e": "oritech:machine_extender",
-    "a": "oritech:machine_processing_addon",
+    "a": "oritech:auxiliary_processing_chamber_addon",
     "b": "#c:storage_blocks/electrum",
     "p": "#c:plates/plastic",
     "s": "minecraft:comparator"

@@ -1,25 +1,15 @@
 {
   "type": "oritech:atomic_forge",
-  "fluidInputAmount": 0,
-  "fluidInputVariant": "minecraft:empty",
-  "fluidOutputAmount": 0,
-  "fluidOutputVariant": "minecraft:empty",
+  "time": 400,
   "itemInputs": [
-    {
-      "item": "oritechthings:addon_block_acceptor_tier_7"
-    },
-    {
-      "item": "oritech:machine_acceptor_addon"
-    },
-    {
-      "item": "oritech:prometheum_ingot"
-    }
+    "oritechthings:addon_block_acceptor_tier_7",
+    "oritech:machine_acceptor_addon",
+    "oritech:prometheum_ingot"
   ],
   "itemResults": [
     {
-      "count": 1,
-      "item": "oritechthings:addon_block_acceptor_tier_8"
+      "id": "oritechthings:addon_block_acceptor_tier_8",
+      "count": 1
     }
-  ],
-  "time": 400
+  ]
 }

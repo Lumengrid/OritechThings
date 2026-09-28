@@ -1,28 +1,16 @@
 {
   "type": "oritech:assembler",
-  "fluidInputAmount": 0,
-  "fluidInputVariant": "minecraft:empty",
-  "fluidOutputAmount": 0,
-  "fluidOutputVariant": "minecraft:empty",
+  "time": 200,
   "itemInputs": [
-    {
-      "item": "oritechthings:addon_block_processing_tier_3"
-    },
-    {
-      "item": "oritech:machine_processing_addon"
-    },
-    {
-      "tag": "c:ingots/electrum"
-    },
-    {
-      "item": "oritech:motor"
-    }
+    "oritechthings:addon_block_processing_tier_3",
+    "oritech:auxiliary_processing_chamber_addon",
+    "#c:ingots/electrum",
+    "oritech:motor"
   ],
   "itemResults": [
     {
-      "count": 1,
-      "item": "oritechthings:addon_block_processing_tier_4"
+      "id": "oritechthings:addon_block_processing_tier_4",
+      "count": 1
     }
-  ],
-  "time": 200
+  ]
 }

@@ -1,28 +1,16 @@
 {
   "type": "oritech:assembler",
-  "fluidInputAmount": 0,
-  "fluidInputVariant": "minecraft:empty",
-  "fluidOutputAmount": 0,
-  "fluidOutputVariant": "minecraft:empty",
+  "time": 100,
   "itemInputs": [
-    {
-      "item": "oritech:machine_efficiency_addon"
-    },
-    {
-      "item": "oritech:machine_efficiency_addon"
-    },
-    {
-      "tag": "c:storage_blocks/electrum"
-    },
-    {
-      "item": "oritech:machine_extender"
-    }
+    "oritech:machine_efficiency_addon",
+    "oritech:machine_efficiency_addon",
+    "#c:storage_blocks/electrum",
+    "oritech:machine_extender"
   ],
   "itemResults": [
     {
-      "count": 1,
-      "item": "oritechthings:addon_block_efficiency_tier_2"
+      "id": "oritechthings:addon_block_efficiency_tier_2",
+      "count": 1
     }
-  ],
-  "time": 100
+  ]
 }

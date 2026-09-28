@@ -4,7 +4,7 @@
   "key": {
     "e": "oritech:machine_extender",
     "a": "oritech:machine_speed_addon",
-    "b": "oritech:biosteel_block",
+    "b": "oritech:biosteel",
     "p": "#c:plates/plastic",
     "s": "#c:silicon"
   },
