@@ -2,7 +2,6 @@ package com.lumengrid.oritechthings.event;
 
 import com.lumengrid.oritechthings.entity.ModEntities;
 import com.lumengrid.oritechthings.entity.custom.AmethystFishEntity;
-import com.lumengrid.oritechthings.item.ModItems;
 import com.lumengrid.oritechthings.main.ConfigReloadListener;
 import com.lumengrid.oritechthings.main.OritechThings;
 import net.minecraft.resources.Identifier;
@@ -10,13 +9,25 @@ import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
+import rearth.oritech.api.transfer.energy.EnergyProvider;
 
 @EventBusSubscriber(modid = OritechThings.MOD_ID)
 public class ModBusEvents {
+
+    @SubscribeEvent
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+                Capabilities.Energy.BLOCK,
+                ModEntities.ACCELERATOR_MAGNETIC_FIELD_BLOCK_ENTITY.get(),
+                (entity, side) -> ((EnergyProvider) entity).getEnergyLookup(side)
+        );
+    }
 
     @SubscribeEvent
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {

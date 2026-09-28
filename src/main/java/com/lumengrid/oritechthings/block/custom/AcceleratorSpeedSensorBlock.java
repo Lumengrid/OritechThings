@@ -70,7 +70,7 @@ public class AcceleratorSpeedSensorBlock extends BaseEntityBlock implements Tool
             return InteractionResult.PASS;
         }
 
-        player.openMenu(menuProvider);
+        player.openMenu(menuProvider, pos);
         return InteractionResult.SUCCESS;
     }
 
