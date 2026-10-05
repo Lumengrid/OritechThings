@@ -105,6 +105,8 @@ dependencies {
 
     // Do not re-add the other old 1.21.1 CurseMaven dependencies here.
     // Add only versions explicitly compatible with Minecraft 26.1.2.
+
+    implementation files("libs/athena-4.7.3.jar")
 }
 
 var generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {

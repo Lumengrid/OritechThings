@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "oritechthings:item/amethyst_fish_spawn_egg"
+  }
+}
