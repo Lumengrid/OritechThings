@@ -28,11 +28,6 @@ import java.util.Optional;
 
 public class ModBlockStateProvider extends ModelProvider {
 
-    private static final ModelTemplate SPAWN_EGG_TEMPLATE = new ModelTemplate(
-            Optional.of(Identifier.fromNamespaceAndPath("minecraft", "item/template_spawn_egg")),
-            Optional.empty()
-    );
-
     public ModBlockStateProvider(PackOutput output) {
         super(output, OritechThings.MOD_ID);
     }
@@ -62,7 +57,7 @@ public class ModBlockStateProvider extends ModelProvider {
 
         itemModels.generateFlatItem(
                 ModItems.AMETHYST_FISH_SPAWN_EGG.get(),
-                SPAWN_EGG_TEMPLATE
+                ModelTemplates.FLAT_ITEM
         );
     }
 
@@ -181,7 +176,6 @@ public class ModBlockStateProvider extends ModelProvider {
             Direction facing,
             AttachFace face
     ) {
-
         return switch (facing) {
             case EAST -> BlockModelGenerators.Y_ROT_90;
             case SOUTH -> BlockModelGenerators.Y_ROT_180;
