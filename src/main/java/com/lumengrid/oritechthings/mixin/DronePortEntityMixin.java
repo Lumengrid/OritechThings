@@ -4,6 +4,7 @@ import com.lumengrid.oritechthings.api.CrossDimensionalDrone;
 import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.main.ConfigLoader;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -30,8 +31,6 @@ import rearth.oritech.block.entity.interaction.DronePortEntity;
 @Mixin(DronePortEntity.class)
 public class DronePortEntityMixin implements CrossDimensionalDrone {
 
-    // ✅ Rimossi i campi @Shadow non utilizzati/rinominati (baseEnergyUsage, takeOffTime, landTime, lastSentAt, incomingPacket, cardInventory, energyStorage)
-    @Shadow private BlockPos targetPosition;
     @Shadow private String statusMessage;
 
     @Unique
@@ -42,14 +41,20 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
 
     @Override
     public boolean oritechthings$setCrossDimensionalTarget(BlockPos targetPos, ResourceKey<Level> targetDimension) {
-        DronePortEntity self = (DronePortEntity) (Object) this;
-
-        if (!ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
-            return self.setTargetFromDesignator(targetPos);
+        if (targetPos == null) {
+            return false;
         }
 
+        DronePortEntity self = (DronePortEntity) (Object) this;
         assert self.getLevel() != null;
-        boolean isCrossDimensional = !targetDimension.equals(self.getLevel().dimension());
+
+        ResourceKey<Level> effectiveDimension = targetDimension != null ? targetDimension : self.getLevel().dimension();
+
+        if (!ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
+            return self.setTargetFromDesignator(GlobalPos.of(effectiveDimension, targetPos));
+        }
+
+        boolean isCrossDimensional = !effectiveDimension.equals(self.getLevel().dimension());
 
         if (isCrossDimensional) {
             validateCrossDimensionalAddonState();
@@ -59,9 +64,9 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
                 return false;
             }
 
-            return setCrossDimensionalTarget(targetPos, targetDimension);
+            return setCrossDimensionalTarget(targetPos, effectiveDimension);
         } else {
-            return self.setTargetFromDesignator(targetPos);
+            return self.setTargetFromDesignator(GlobalPos.of(self.getLevel().dimension(), targetPos));
         }
     }
 
@@ -145,8 +150,13 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
             return false;
         }
 
+        GlobalPos globalTarget = GlobalPos.of(targetDimension, targetPos);
+        boolean posSet = self.setTargetFromDesignator(globalTarget);
+        if (!posSet) {
+            return false;
+        }
+
         this.targetDimension = targetDimension;
-        this.targetPosition = targetPos;
         statusMessage = "message.oritechthings.drone.cross_dimensional_target_set";
 
         return true;
