@@ -15,7 +15,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import rearth.oritech.init.ComponentContent;
 
 @EventBusSubscriber(modid = OritechThings.MOD_ID, value = Dist.CLIENT)
 public class RenderWorldLastEvent {
@@ -42,10 +41,10 @@ public class RenderWorldLastEvent {
 
             BlockPos targetPos = null;
 
+            // Legge le coordinate usando esclusivamente il DataComponent custom di OritechThings 
+            // per evitare il crash di incompatibilita' binaria con Oritech 2.0.0-exp10
             if (item.has(ModDataComponents.TARGET_POSITION.get())) {
                 targetPos = item.get(ModDataComponents.TARGET_POSITION.get());
-            } else if (item.has(ComponentContent.TARGET_POSITION.get())) {
-                targetPos = item.get(ComponentContent.TARGET_POSITION.get());
             } else {
                 if (!loggedNoTarget) {
                     loggedNoTarget = true;
