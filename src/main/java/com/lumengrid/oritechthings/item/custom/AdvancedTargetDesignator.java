@@ -46,21 +46,17 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
             if (context.getLevel().isClientSide()) {
                 return InteractionResult.SUCCESS;
             }
-            var crossDimensionEnabled = ConfigLoader.getInstance().dimensionalDroneSettings.enabled();
-            if (!crossDimensionEnabled) {
-                return super.useOn(context);
-            }
 
             BlockPos clickedPos = context.getClickedPos();
             Level level = context.getLevel();
             Player player = context.getPlayer();
             BlockState clickedBlockState = level.getBlockState(clickedPos);
 
-            // Se viene cliccato un blocco core di un multiblock, risolve la posizione del controller principale
+            // 1. Risoluzione dei Multiblock (Enderic Laser, Drone Port ecc.)
             if (clickedBlockState.getBlock() instanceof MachineCoreBlock && clickedBlockState.getValue(MachineCoreBlock.USED)) {
-                BlockPos controllerPos = MachineCoreBlock.getControllerPos(level, clickedPos);
-                if (controllerPos != null) {
-                    clickedPos = controllerPos;
+                BlockEntity machineEntity = MachineCoreBlock.getControllerEntity(level, clickedPos);
+                if (machineEntity != null) {
+                    clickedPos = machineEntity.getBlockPos();
                     clickedBlockState = level.getBlockState(clickedPos);
                 }
             }
@@ -70,6 +66,7 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
             ResourceKey<Level> targetDimension = null;
             ItemStack itemInHand = context.getItemInHand();
 
+            // 2. Lettura del target salvato nel designator
             if (itemInHand.has(ComponentContent.TARGET_GLOBAL_POSITION.get())) {
                 GlobalPos globalPos = itemInHand.get(ComponentContent.TARGET_GLOBAL_POSITION.get());
                 if (globalPos != null) {
@@ -81,70 +78,48 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
                 targetDimension = itemInHand.get(ModDataComponents.TARGET_DIMENSION.get());
             }
 
-            boolean isSneaking = player != null && player.isShiftKeyDown();
-
-            // Se abbiamo un target memorizzato e NON stiamo facendo shift-click, proviamo ad applicarlo alle macchine
-            if (targetPos != null && !isSneaking) {
-                if (clickedBlockState.is(BlockContent.ENDERIC_LASER.get())) {
-                    if (clickedEntity instanceof EndericLaserBlockEntity laserEntity) {
-                        if (laserEntity.hunterAddons > 0) {
-                            laserEntity.cycleHunterTargetMode();
-                            player.sendSystemMessage(Component.translatable("message.oritech.target_designator.hunter_target",
-                                    Component.translatable(laserEntity.hunterTargetMode.message)));
-                            return InteractionResult.SUCCESS;
-                        }
-                        return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
-                    }
-                }
-                if (clickedBlockState.is(BlockContent.DRONE_PORT.get())) {
-                    if (clickedEntity instanceof DronePortEntity) {
-                        return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
-                    }
-                }
-                if (clickedBlockState.is(ModBlocks.ACCELERATOR_SPEED_SENSOR.get())) {
-                    if (clickedEntity instanceof AcceleratorSpeedSensorBlockEntity) {
-                        return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
-                    }
-                }
-                if (clickedBlockState.is(ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get())) {
-                    if (clickedEntity instanceof AcceleratorMagneticFieldBlockEntity) {
-                        return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
-                    }
-                }
-            } else if (clickedBlockState.is(BlockContent.ENDERIC_LASER.get())
-                    && clickedEntity instanceof EndericLaserBlockEntity laserEntity
-                    && laserEntity.hunterAddons > 0) {
-                laserEntity.cycleHunterTargetMode();
-                if (player != null) {
-                    player.sendSystemMessage(Component.translatable("message.oritech.target_designator.hunter_target",
-                            Component.translatable(laserEntity.hunterTargetMode.message)));
-                }
-                return InteractionResult.SUCCESS;
-            }
-
-            // Click su Particle Accelerator per salvare la sua posizione
+            // 3. Caso specifico per l'acceleratore di particelle (Salva SEMPRE)
             if (clickedBlockState.is(BlockContent.PARTICLE_ACCELERATOR.get())) {
                 if (clickedEntity instanceof rearth.oritech.block.entity.accelerator.ParticleAcceleratorBlockEntity) {
-                    GlobalPos globalPos = GlobalPos.of(level.dimension(), context.getClickedPos());
-                    itemInHand.set(ModDataComponents.TARGET_POSITION.get(), context.getClickedPos());
-                    itemInHand.set(ModDataComponents.TARGET_DIMENSION.get(), level.dimension());
-                    itemInHand.set(ComponentContent.TARGET_GLOBAL_POSITION.get(), globalPos);
-
+                    saveTarget(itemInHand, clickedPos, level.dimension());
                     if (player != null) {
                         player.sendSystemMessage(Component.translatable("message.oritechthings.advanced_target_designator.accelerator_saved")
-                                .append(Component.literal(context.getClickedPos().toShortString()).withStyle(ChatFormatting.BLUE)));
+                                .append(Component.literal(clickedPos.toShortString()).withStyle(ChatFormatting.BLUE)));
                     }
                     return InteractionResult.SUCCESS;
                 }
             }
 
-            // Memorizza la posizione del blocco cliccato (sia per Drone Port, chest, blocchi nel mondo, ecc.)
-            if (!clickedBlockState.is(Blocks.AIR)) {
-                GlobalPos globalPos = GlobalPos.of(level.dimension(), context.getClickedPos());
-                itemInHand.set(ModDataComponents.TARGET_POSITION.get(), context.getClickedPos());
-                itemInHand.set(ModDataComponents.TARGET_DIMENSION.get(), level.dimension());
-                itemInHand.set(ComponentContent.TARGET_GLOBAL_POSITION.get(), globalPos);
+            // 4. Caso Enderic Laser: Comportamento nativo di Oritech
+            if (clickedBlockState.is(BlockContent.ENDERIC_LASER.get()) && clickedEntity instanceof EndericLaserBlockEntity laserEntity) {
+                if (laserEntity.hunterAddons > 0) {
+                    laserEntity.cycleHunterTargetMode();
+                    if (player != null) {
+                        player.sendSystemMessage(Component.translatable("message.oritech.target_designator.hunter_target",
+                                Component.translatable(laserEntity.hunterTargetMode.message)));
+                    }
+                    return InteractionResult.SUCCESS;
+                } else if (targetPos != null) {
+                    return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
+                }
+            }
 
+            // 5. Assegnazione del target alle altre macchine
+            if (targetPos != null) {
+                if (clickedBlockState.is(BlockContent.DRONE_PORT.get()) && clickedEntity instanceof DronePortEntity) {
+                    return setTargetFromDesignator(clickedEntity, targetPos, targetDimension, player, level.dimension());
+                }
+                if (clickedBlockState.is(ModBlocks.ACCELERATOR_SPEED_SENSOR.get()) && clickedEntity instanceof AcceleratorSpeedSensorBlockEntity sensorEntity) {
+                    return setTargetFromDesignator(sensorEntity, targetPos, targetDimension, player, level.dimension());
+                }
+                if (clickedBlockState.is(ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get()) && clickedEntity instanceof AcceleratorMagneticFieldBlockEntity magEntity) {
+                    return setTargetFromDesignator(magEntity, targetPos, targetDimension, player, level.dimension());
+                }
+            }
+
+            // 6. Registrazione generica: Memorizza la posizione del blocco
+            if (!clickedBlockState.is(Blocks.AIR)) {
+                saveTarget(itemInHand, clickedPos, level.dimension());
                 if (player != null) {
                     player.sendSystemMessage(Component.translatable("message.oritech.target_designator.position_stored"));
                 }
@@ -154,7 +129,14 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
             OritechThings.LOGGER.error("AdvancedTargetDesignator.useOn: {}", e.getMessage());
         }
 
-        return InteractionResult.SUCCESS;
+        return super.useOn(context);
+    }
+
+    private void saveTarget(ItemStack stack, BlockPos pos, ResourceKey<Level> dimension) {
+        GlobalPos globalPos = GlobalPos.of(dimension, pos);
+        stack.set(ModDataComponents.TARGET_POSITION.get(), pos);
+        stack.set(ModDataComponents.TARGET_DIMENSION.get(), dimension);
+        stack.set(ComponentContent.TARGET_GLOBAL_POSITION.get(), globalPos);
     }
 
     private InteractionResult setTargetFromDesignator(BlockEntity entity, BlockPos targetPos, ResourceKey<Level> targetDimension, Player player, ResourceKey<Level> actualDimension) {
@@ -168,16 +150,19 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
         boolean success = false;
         if (entity instanceof DronePortEntity dronePortEntity) {
             var crossDimensionalDrone = (CrossDimensionalDrone) dronePortEntity;
-            success = crossDimensionalDrone.oritechthings$setCrossDimensionalTarget(targetPos, targetDimension);
+            if (ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
+                success = crossDimensionalDrone.oritechthings$setCrossDimensionalTarget(targetPos, targetDimension);
+            } else {
+                success = dronePortEntity.setTargetFromDesignator(GlobalPos.of(actualDimension, targetPos));
+            }
         } else {
-            // Check for cross-dimensional targets
+            // Verifica dimensioni per macchine non cross-dimensionali
             if (targetDimension != null && !targetDimension.equals(actualDimension)) {
                 if (player != null) {
                     player.sendSystemMessage(Component.translatable("message.oritechthings.advanced_target_designator.different_dimension"));
                 }
                 return InteractionResult.FAIL;
             } else {
-                // Same dimension - proceed normally
                 switch (entity) {
                     case EndericLaserBlockEntity laserEntity -> {
                         success = laserEntity.setTargetFromDesignator(targetPos);
