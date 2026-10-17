@@ -3,22 +3,26 @@ package com.lumengrid.oritechthings.entity.custom;
 import com.lumengrid.oritechthings.block.custom.AcceleratorSpeedSensorBlock;
 import com.lumengrid.oritechthings.entity.ModEntities;
 import com.lumengrid.oritechthings.menu.AcceleratorSpeedSensorMenu;
+import com.mojang.serialization.Codec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -113,7 +117,8 @@ public class AcceleratorSpeedSensorBlockEntity
 
         BlockEntity targetEntity = level.getBlockEntity(targetPos);
 
-        if (targetEntity == null) {
+        if (targetEntity == null || (!targetEntity.getClass().getSimpleName().contains("AcceleratorController")
+                && invokeNoArg(targetEntity, "getParticle") == null)) {
             player.sendSystemMessage(
                     Component.translatable(
                             "block.oritechthings.particle_accelerator_speed_sensor.invalid_controller"
@@ -235,7 +240,6 @@ public class AcceleratorSpeedSensorBlockEntity
         }
     }
 
-
     public static <T extends BlockEntity> void tick(
             Level level,
             BlockPos pos,
@@ -256,8 +260,7 @@ public class AcceleratorSpeedSensorBlockEntity
             return;
         }
 
-        BlockEntity target =
-                level.getBlockEntity(sensor.targetDesignator);
+        BlockEntity target = level.getBlockEntity(sensor.targetDesignator);
 
         boolean powered = isPowered(sensor, target);
 
@@ -293,6 +296,14 @@ public class AcceleratorSpeedSensorBlockEntity
         }
 
         int targetSpeed = sensor.speedLimit;
+
+        if (sensor.automaticMode) {
+            targetSpeed = getRequiredVelocityFromRecipe(target, sensor.level);
+            if (targetSpeed <= 0) {
+                return false;
+            }
+        }
+
         double currentVelocity = velocity.doubleValue();
 
         if (sensor.checkGreater) {
@@ -300,6 +311,87 @@ public class AcceleratorSpeedSensorBlockEntity
         }
 
         return currentVelocity < targetSpeed;
+    }
+
+    private static int getRequiredVelocityFromRecipe(
+            BlockEntity accelerator,
+            @Nullable Level level
+    ) {
+        if (!(level instanceof ServerLevel serverLevel)) {
+            return 0;
+        }
+
+        ItemStack activeItem = readItemStack(
+                accelerator,
+                "activeItemParticle",
+                "getActiveItemParticle"
+        );
+
+        if (activeItem == null || activeItem.isEmpty()) {
+            Object particle = invokeNoArg(accelerator, "getParticle");
+            if (particle != null) {
+                activeItem = readItemStack(particle, "item", "getItem");
+            }
+        }
+
+        if (activeItem == null || activeItem.isEmpty()) {
+            return 0;
+        }
+
+        var allRecipes = serverLevel.getServer().getRecipeManager().recipeMap().values();
+        int maxVelocity = 0;
+
+        for (RecipeHolder<?> recipeHolder : allRecipes) {
+            String recipeIdStr = recipeHolder.id().toString();
+            if (!recipeIdStr.contains("oritech") || (!recipeIdStr.contains("particle_collision") && !recipeIdStr.contains("particle"))) {
+                continue;
+            }
+
+            Object recipe = recipeHolder.value();
+
+            Object inputsObj = invokeNoArg(recipe, "itemInputs");
+            if (inputsObj == null) {
+                inputsObj = invokeNoArg(recipe, "getInputs");
+            }
+            if (inputsObj == null) {
+                inputsObj = invokeNoArg(recipe, "getIngredients");
+            }
+
+            if (inputsObj instanceof Iterable<?> inputs) {
+                for (Object input : inputs) {
+                    if (matchesItem(input, activeItem)) {
+                        Number time = readNumber(recipe, "time", "getTime");
+                        if (time != null) {
+                            maxVelocity = Math.max(maxVelocity, time.intValue());
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        return maxVelocity;
+    }
+
+    private static boolean matchesItem(Object input, ItemStack activeItem) {
+        if (input instanceof Ingredient ingredient) {
+            return ingredient.test(activeItem);
+        }
+        if (input instanceof ItemStack stack) {
+            return ItemStack.isSameItemSameComponents(stack, activeItem) || stack.is(activeItem.getItem());
+        }
+
+        Object innerIngredient = invokeNoArg(input, "ingredient");
+        if (innerIngredient instanceof Ingredient ing) {
+            return ing.test(activeItem);
+        }
+
+        Object innerStack = invokeNoArg(input, "stack");
+        if (innerStack instanceof ItemStack stack) {
+            return ItemStack.isSameItemSameComponents(stack, activeItem) || stack.is(activeItem.getItem());
+        }
+
+        return false;
     }
 
     private static void setPowered(
@@ -366,22 +458,58 @@ public class AcceleratorSpeedSensorBlockEntity
             String getterName
     ) {
         Object getterValue = invokeNoArg(object, getterName);
-
         if (getterValue instanceof Number number) {
             return number;
         }
 
-        Class<?> current = object.getClass();
+        Object recordGetterValue = invokeNoArg(object, fieldName);
+        if (recordGetterValue instanceof Number number) {
+            return number;
+        }
 
+        Class<?> current = object.getClass();
         while (current != null) {
             try {
                 Field field = current.getDeclaredField(fieldName);
                 field.setAccessible(true);
 
                 Object value = field.get(object);
-
                 if (value instanceof Number number) {
                     return number;
+                }
+            } catch (ReflectiveOperationException ignored) {
+                current = current.getSuperclass();
+            }
+        }
+
+        return null;
+    }
+
+    @Nullable
+    private static ItemStack readItemStack(
+            Object object,
+            String fieldName,
+            String getterName
+    ) {
+        Object getterValue = invokeNoArg(object, getterName);
+        if (getterValue instanceof ItemStack stack) {
+            return stack;
+        }
+
+        Object recordGetterValue = invokeNoArg(object, fieldName);
+        if (recordGetterValue instanceof ItemStack stack) {
+            return stack;
+        }
+
+        Class<?> current = object.getClass();
+        while (current != null) {
+            try {
+                Field field = current.getDeclaredField(fieldName);
+                field.setAccessible(true);
+
+                Object value = field.get(object);
+                if (value instanceof ItemStack stack) {
+                    return stack;
                 }
             } catch (ReflectiveOperationException ignored) {
                 current = current.getSuperclass();
