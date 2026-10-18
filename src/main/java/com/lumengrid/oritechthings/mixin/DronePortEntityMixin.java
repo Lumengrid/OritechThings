@@ -62,30 +62,33 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
     @Unique
     private boolean hasCrossDimensionalAddon = false;
 
+    @Unique
+    private long lastEffectTime = 0;
+
     /**
      * Public method to set cross-dimensional target from AdvancedTargetDesignator
      */
     @Override
     public boolean oritechthings$setCrossDimensionalTarget(BlockPos targetPos, ResourceKey<Level> targetDimension) {
         DronePortEntity self = (DronePortEntity) (Object) this;
-        
+
         if (!ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
             return self.setTargetFromDesignator(targetPos);
         }
-        
+
         assert self.getLevel() != null;
-        boolean isCrossDimensional = !targetDimension.equals(self.getLevel().dimension());
-        
+        boolean isCrossDimensional = targetDimension != null && !targetDimension.equals(self.getLevel().dimension());
+
         if (isCrossDimensional) {
             validateCrossDimensionalAddonState();
-            
+
             if (!hasCrossDimensionalAddon) {
                 statusMessage = "message.oritechthings.drone.addon_required";
-                OritechThings.LOGGER.warn("Player attempted to set cross-dimensional target at {} without Cross-Dimensional Addon at drone port {}", 
+                OritechThings.LOGGER.warn("Player attempted to set cross-dimensional target at {} without Cross-Dimensional Addon at drone port {}",
                         targetPos, self.getBlockPos());
                 return false;
             }
-            
+
             return setCrossDimensionalTarget(targetPos, targetDimension);
         } else {
             return self.setTargetFromDesignator(targetPos);
@@ -120,7 +123,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
                     assert self.getLevel() != null;
                     targetDimension = self.getLevel().dimension();
                 }
-                
+
                 assert self.getLevel() != null;
                 boolean isCrossDimensional = !targetDimension.equals(self.getLevel().dimension());
                 if (isCrossDimensional && !hasCrossDimensionalAddon) {
@@ -140,12 +143,12 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
 
                 ci.cancel();
             }
-            
+
         } catch (Exception e) {
             OritechThings.LOGGER.error("DronePortEntityMixin.checkPositionCard: {}", e.getMessage());
         }
     }
-    
+
     /**
      * Check if this drone port can perform cross-dimensional transfers
      */
@@ -158,7 +161,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
         if (self.getLevel() != null && self.getLevel().getGameTime() % 20 == 0) {
             validateCrossDimensionalAddonState();
         }
-        
+
         if (!hasCrossDimensionalAddon) {
             return false;
         }
@@ -166,7 +169,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
         assert self.getLevel() != null;
         return !targetDimension.equals(self.getLevel().dimension());
     }
-    
+
     @Unique
     private void validateCrossDimensionalAddonState() {
         DronePortEntity self = (DronePortEntity) (Object) this;
@@ -184,7 +187,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
 
         if (hasCrossDimensionalAddon != foundCrossDimensionalAddon) {
             hasCrossDimensionalAddon = foundCrossDimensionalAddon;
-            OritechThings.LOGGER.debug("Cross-dimensional addon state changed to: {} at {}", 
+            OritechThings.LOGGER.debug("Cross-dimensional addon state changed to: {} at {}",
                     hasCrossDimensionalAddon, self.getBlockPos());
         }
     }
@@ -211,27 +214,27 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
             long requiredEnergy = calculateCrossDimensionalEnergyUsage();
             long currentEnergy = self.getEnergyStorage().amount;
             if (currentEnergy < requiredEnergy) {
-                OritechThings.LOGGER.warn("not enough energy to jump : Current: {} Required: {}", currentEnergy, requiredEnergy);
+                // OritechThings.LOGGER.warn("not enough energy to jump : Current: {} Required: {}", currentEnergy, requiredEnergy);
                 cir.setReturnValue(false);
                 return;
             }
 
             if (!validateCrossDimensionalTarget()) {
-                OritechThings.LOGGER.warn("target dimension / position is not valid");
+                // OritechThings.LOGGER.warn("target dimension / position is not valid");
                 cir.setReturnValue(false);
                 return;
             }
 
             if (self.isSendingDrone()) {
-                OritechThings.LOGGER.info("is still sending drone");
+                // OritechThings.LOGGER.info("is still sending drone");
                 cir.setReturnValue(false);
                 return;
             }
-            
+
             cir.setReturnValue(true);
         }
     }
-    
+
     /**
      * Inject into sendDrone to handle cross-dimensional transfers
      */
@@ -243,18 +246,20 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
     }
 
     /**
-     * Inject into isSendingDrone to handle cross-dimensional transfers
+     * Inject into isSendingDrone to handle cross-dimensional transfers con Cooldown configurabile
      */
     @Inject(method = "isSendingDrone", at = @At("RETURN"), cancellable = true)
     private void isSendingDrone(CallbackInfoReturnable<Boolean> cir) {
         if (isCrossDimensional()) {
             DronePortEntity self = (DronePortEntity) (Object) this;
-            assert self.getLevel() != null;
-            long diff = self.getLevel().getGameTime() - this.lastSentAt;
-            cir.setReturnValue(diff < 40);
+            if (self.getLevel() != null) {
+                long diff = self.getLevel().getGameTime() - this.lastSentAt;
+                int cooldown = ConfigLoader.getInstance().dimensionalDroneSettings.cooldownTicks();
+                cir.setReturnValue(diff < cooldown);
+            }
         }
     }
-    
+
     /**
      * Inject into calculateEnergyUsage to include cross-dimensional costs
      */
@@ -264,7 +269,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
             cir.setReturnValue(calculateCrossDimensionalEnergyUsage());
         }
     }
-    
+
     /**
      * Inject into NBT saving to persist dimension data
      */
@@ -275,7 +280,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
         }
         nbt.putBoolean("has_cross_dimensional_addon", hasCrossDimensionalAddon);
     }
-    
+
     /**
      * Inject into NBT loading to restore dimension data
      */
@@ -293,7 +298,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
         }
         hasCrossDimensionalAddon = nbt.getBoolean("has_cross_dimensional_addon");
     }
-    
+
     /**
      * Inject into getAdditionalStatFromAddon to detect cross-dimensional addon
      */
@@ -303,7 +308,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
             hasCrossDimensionalAddon = true;
         }
     }
-    
+
     /**
      * Inject into resetAddons to reset cross-dimensional addon state
      */
@@ -311,7 +316,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
     private void resetAddons(CallbackInfo ci) {
         hasCrossDimensionalAddon = false;
     }
-    
+
     /**
      * Additional check to ensure addon state is properly updated
      * This method is called every time addons are recalculated
@@ -330,7 +335,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
                 }
             }
         }
-        
+
         hasCrossDimensionalAddon = foundCrossDimensionalAddon;
     }
 
@@ -345,7 +350,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
 
         if (!targetDimension.equals(self.getLevel().dimension()) && !hasCrossDimensionalAddon) {
             statusMessage = "message.oritechthings.drone.addon_required";
-            OritechThings.LOGGER.warn("Attempted to set cross-dimensional target without addon at drone port {}", 
+            OritechThings.LOGGER.warn("Attempted to set cross-dimensional target without addon at drone port {}",
                     self.getBlockPos());
             return false;
         }
@@ -387,27 +392,27 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
 
         return true;
     }
-    
+
     @Unique
     private boolean validateCrossDimensionalTarget() {
         if (targetDimension == null || targetPosition == null) return false;
-        
+
         DronePortEntity self = (DronePortEntity) (Object) this;
         MinecraftServer server = self.getLevel().getServer();
         if (server == null) return false;
-        
+
         Level targetLevel = server.getLevel(targetDimension);
         if (targetLevel == null) return false;
-        
+
         BlockEntity targetEntity = targetLevel.getBlockEntity(targetPosition);
         return targetEntity instanceof DronePortEntity;
     }
-    
+
     @Unique
     private long calculateCrossDimensionalEnergyUsage() {
         return baseEnergyUsage + ConfigLoader.getInstance().dimensionalDroneSettings.energyToCross();
     }
-    
+
     /**
      * Create special particle effects for cross-dimensional transfers
      * @param dronePort The drone port entity
@@ -417,76 +422,82 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
     private void triggerCrossDimensionalEffects(DronePortEntity dronePort, boolean isArrival) {
         if (!(dronePort.getLevel() instanceof ServerLevel serverLevel)) return;
 
+        long currentTime = serverLevel.getGameTime();
+        if (currentTime - this.lastEffectTime < 40) {
+            return;
+        }
+        this.lastEffectTime = currentTime;
+
         BlockPos centerPos = calculateMultiblockCenter(dronePort);
-        
+
         double x = centerPos.getX() + 0.5;
         double y = centerPos.getY() + 0.5;
         double z = centerPos.getZ() + 0.5;
-        
+
         for (int i = 0; i < 100; i++) {
             double angle = (i * 0.15) + (serverLevel.getGameTime() * 0.1);
             double radius = 1.5 + Math.sin(i * 0.08) * 1.0;
             double offsetY = Math.sin(i * 0.2) * 2.0;
-            
+
             double offsetX = Math.cos(angle) * radius;
             double offsetZ = Math.sin(angle) * radius;
- 
+
             serverLevel.sendParticles(ParticleTypes.PORTAL,
-                x + offsetX, y + offsetY, z + offsetZ,
-                2, 0.1, 0.1, 0.1, 0.3);
+                    x + offsetX, y + offsetY, z + offsetZ,
+                    2, 0.1, 0.1, 0.1, 0.3);
         }
- 
+
         for (int i = 0; i < 60; i++) {
             double angle = -(i * 0.3) + (serverLevel.getGameTime() * 0.15);
             double radius = 0.8 + Math.cos(i * 0.12) * 0.4;
             double offsetY = Math.cos(i * 0.15) * 1.5;
-            
+
             double offsetX = Math.cos(angle) * radius;
             double offsetZ = Math.sin(angle) * radius;
- 
+
             serverLevel.sendParticles(ParticleTypes.PORTAL,
-                x + offsetX, y + offsetY, z + offsetZ,
-                1, 0.05, 0.05, 0.05, 0.4);
+                    x + offsetX, y + offsetY, z + offsetZ,
+                    1, 0.05, 0.05, 0.05, 0.4);
         }
- 
+
         for (int i = 0; i < 40; i++) {
             double angle = Math.random() * Math.PI * 2;
             double radius = 0.5 + Math.random() * 2.0;
             double offsetX = Math.cos(angle) * radius;
             double offsetZ = Math.sin(angle) * radius;
             double offsetY = Math.random() * 2.5;
- 
+
             serverLevel.sendParticles(ParticleTypes.END_ROD,
-                x + offsetX, y + offsetY, z + offsetZ,
-                1, 0.05, 0.05, 0.05, 0.1);
- 
+                    x + offsetX, y + offsetY, z + offsetZ,
+                    1, 0.05, 0.05, 0.05, 0.1);
+
             serverLevel.sendParticles(ParticleTypes.REVERSE_PORTAL,
-                x + offsetX, y + offsetY, z + offsetZ,
-                1, 0.1, 0.1, 0.1, 0.2);
+                    x + offsetX, y + offsetY, z + offsetZ,
+                    1, 0.1, 0.1, 0.1, 0.2);
         }
- 
+
         for (int i = 0; i < 30; i++) {
             double offsetX = (Math.random() - 0.5) * 3.0;
             double offsetZ = (Math.random() - 0.5) * 3.0;
             double offsetY = Math.random() * 3.0;
-            
+
             serverLevel.sendParticles(ParticleTypes.WARPED_SPORE,
-                x + offsetX, y + offsetY, z + offsetZ,
-                1, 0.1, 0.1, 0.1, 0.05);
-            
+                    x + offsetX, y + offsetY, z + offsetZ,
+                    1, 0.1, 0.1, 0.1, 0.05);
+
             serverLevel.sendParticles(ParticleTypes.CRIMSON_SPORE,
-                x + offsetX, y + offsetY, z + offsetZ,
-                1, 0.1, 0.1, 0.1, 0.05);
+                    x + offsetX, y + offsetY, z + offsetZ,
+                    1, 0.1, 0.1, 0.1, 0.05);
         }
-        
+
         for (int i = 0; i < 20; i++) {
             double offsetX = (Math.random() - 0.5) * 4.0;
             double offsetZ = (Math.random() - 0.5) * 4.0;
             double offsetY = Math.random() * 3.0;
 
             serverLevel.sendParticles(ParticleTypes.SOUL_FIRE_FLAME,
-                x + offsetX, y + offsetY, z + offsetZ,
-                1, 0.02, 0.02, 0.02, 0.02);
+                    x + offsetX, y + offsetY, z + offsetZ,
+                    1, 0.02, 0.02, 0.02, 0.02);
         }
 
         if (isArrival) {
@@ -494,9 +505,9 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
             serverLevel.playSound(null, centerPos, SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.BLOCKS, 1.0f, 1.2f);
             serverLevel.playSound(null, centerPos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.8f, 0.8f);
             serverLevel.playSound(null, centerPos, SoundEvents.END_PORTAL_SPAWN, SoundSource.BLOCKS, 0.6f, 1.8f);
-            
-            OritechThings.LOGGER.info("Cross-dimensional arrival effects triggered at {} in dimension {}", 
-                    centerPos, serverLevel.dimension().location());
+
+            // OritechThings.LOGGER.info("Cross-dimensional arrival effects triggered at {} in dimension {}",
+            //        centerPos, serverLevel.dimension().location());
         } else {
             serverLevel.playSound(null, centerPos, SoundEvents.PORTAL_TRAVEL, SoundSource.BLOCKS, 1.5f, 0.7f);
             serverLevel.playSound(null, centerPos, SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.BLOCKS, 1.2f, 0.8f);
@@ -504,14 +515,14 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
             serverLevel.playSound(null, centerPos, SoundEvents.END_PORTAL_SPAWN, SoundSource.BLOCKS, 0.8f, 1.5f);
         }
     }
-    
+
     @Unique
     private BlockPos calculateMultiblockCenter(DronePortEntity dronePort) {
         BlockPos controllerPos = dronePort.getBlockPos();
         Direction facing = dronePort.getFacingForMultiblock();
         return controllerPos.relative(facing);
     }
-    
+
     /**
      * Inject into checkIncomingAnimation to prevent normal landing animation for cross-dimensional transfers
      */
@@ -521,11 +532,11 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
             ci.cancel();
         }
     }
-    
+
     @Unique
     private boolean isCrossDimensionalPacket() {
         if (incomingPacket == null) return false;
-        
+
         DronePortEntity self = (DronePortEntity) (Object) this;
         long expectedNormalTime = takeOffTime + landTime;
         long expectedCrossDimensionalTime = landTime;
@@ -535,13 +546,13 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
 
         return Math.abs(timeSinceCrossDimensional) < Math.abs(timeSinceSent);
     }
-    
+
     @Unique
     private boolean sendCrossDimensionalDrone() {
         DronePortEntity self = (DronePortEntity) (Object) this;
         assert self.getLevel() != null;
         MinecraftServer server = self.getLevel().getServer();
-        
+
         if (server == null) {
             OritechThings.LOGGER.error("Cannot perform cross-dimensional transfer: server is null");
             return false;
@@ -569,25 +580,25 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
 
         triggerCrossDimensionalEffects(self, false);
         scheduleCrossDimensionalArrival(targetPort, targetLevel, 20);
-        
+
         targetPort.setChanged();
         self.setChanged();
 
-        OritechThings.LOGGER.info("Cross-dimensional drone sent from {} to {} in dimension {} (arrives in {} ticks)", 
-                self.getBlockPos(), targetPosition, targetDimension.location(),
-                arriveTime - self.getLevel().getGameTime());
-        
+        // OritechThings.LOGGER.info("Cross-dimensional drone sent from {} to {} in dimension {} (arrives in {} ticks)",
+        //        self.getBlockPos(), targetPosition, targetDimension.location(),
+        //        arriveTime - self.getLevel().getGameTime());
+
         return true;
     }
-    
+
     @Unique
     private void scheduleCrossDimensionalArrival(DronePortEntity targetPort, Level targetLevel, int delayTicks) {
         if (targetLevel instanceof ServerLevel serverLevel) {
             serverLevel.getServer().tell(new net.minecraft.server.TickTask(
-                serverLevel.getServer().getTickCount() + delayTicks,
-                () -> {
-                    triggerCrossDimensionalEffects(targetPort, true);
-                }
+                    serverLevel.getServer().getTickCount() + delayTicks,
+                    () -> {
+                        triggerCrossDimensionalEffects(targetPort, true);
+                    }
             ));
         }
     }
