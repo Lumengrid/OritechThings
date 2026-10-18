@@ -22,6 +22,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import rearth.oritech.block.blocks.interaction.DronePortBlock;
 import rearth.oritech.block.blocks.processing.MachineCoreBlock;
@@ -32,6 +33,7 @@ import rearth.oritech.block.entity.interaction.DronePortEntity;
 public class DronePortEntityMixin implements CrossDimensionalDrone {
 
     @Shadow private String statusMessage;
+    @Shadow private long lastSentAt;
 
     @Unique
     private ResourceKey<Level> targetDimension = null;
@@ -160,5 +162,35 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
         statusMessage = "message.oritechthings.drone.cross_dimensional_target_set";
 
         return true;
+    }
+
+    private boolean isCrossDimensional() {
+        if (!ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
+            return false;
+        }
+
+        DronePortEntity self = (DronePortEntity) (Object) this;
+        if (self.getLevel() != null && self.getLevel().getGameTime() % 20 == 0) {
+            validateCrossDimensionalAddonState();
+        }
+
+        if (!hasCrossDimensionalAddon) {
+            return false;
+        }
+        if (targetDimension == null) return false;
+        assert self.getLevel() != null;
+        return !targetDimension.equals(self.getLevel().dimension());
+    }
+
+    @Inject(method = "isSendingDrone", at = @At("RETURN"), cancellable = true)
+    private void isSendingDrone(CallbackInfoReturnable<Boolean> cir) {
+        if (isCrossDimensional()) {
+            DronePortEntity self = (DronePortEntity) (Object) this;
+            if (self.getLevel() != null) {
+                long diff = self.getLevel().getGameTime() - this.lastSentAt;
+                int cooldown = ConfigLoader.getInstance().dimensionalDroneSettings.cooldownTicks();
+                cir.setReturnValue(diff < cooldown);
+            }
+        }
     }
 }
