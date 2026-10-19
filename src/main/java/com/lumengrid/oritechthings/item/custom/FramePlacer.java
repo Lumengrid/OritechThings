@@ -25,6 +25,7 @@ import rearth.oritech.util.Geometry;
 import java.util.function.Consumer;
 
 import static net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING;
+import static rearth.oritech.block.base.block.FrameInteractionBlock.HAS_FRAME;
 import static rearth.oritech.block.base.block.MultiblockMachine.ASSEMBLED;
 
 public class FramePlacer extends Item {
@@ -63,14 +64,23 @@ public class FramePlacer extends Item {
         }
 
         BlockState targetState = level.getBlockState(pos);
+        boolean isReady = false;
 
-        if (!targetState.getValue(ASSEMBLED)) {
+        for (var property : targetState.getProperties()) {
+            String propName = property.getName();
+            if ((propName.equals("machine_assembled") || propName.equals("has_frame"))
+                    && Boolean.TRUE.equals(targetState.getValue(property))) {
+                isReady = true;
+                break;
+            }
+        }
+
+        if (!isReady) {
             player.sendSystemMessage(
                     Component.translatable(
                             "message.oritechthings.frame_placer.not_assembled"
                     ).withStyle(ChatFormatting.RED)
             );
-
             return InteractionResult.FAIL;
         }
 
