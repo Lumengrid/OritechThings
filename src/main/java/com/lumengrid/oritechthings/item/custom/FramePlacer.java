@@ -23,6 +23,7 @@ import rearth.oritech.util.Geometry;
 import java.util.List;
 
 import static net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING;
+import static rearth.oritech.block.base.block.FrameInteractionBlock.HAS_FRAME;
 import static rearth.oritech.block.base.block.MultiblockMachine.ASSEMBLED;
 
 public class FramePlacer extends Item {
@@ -42,7 +43,8 @@ public class FramePlacer extends Item {
             BlockEntity targetEntity = level.getBlockEntity(pos);
             if (targetEntity instanceof FrameInteractionBlockEntity entity) {
                 BlockState targetState = level.getBlockState(pos);
-                if (targetState.getValue(ASSEMBLED)) {
+                if (targetState.hasProperty(HAS_FRAME) ||
+                        (targetState.hasProperty(ASSEMBLED) && targetState.getValue(ASSEMBLED))) {
                     Vec3i backRelative = new Vec3i(entity.getFrameOffset(), 0, 0);
                     Direction facing = targetState.getValue(FACING);
                     BlockPos searchStart = (BlockPos) Geometry.offsetToWorldPosition(facing, backRelative, pos);
