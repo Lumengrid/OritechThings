@@ -29,6 +29,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.NotNull;
+import rearth.oritech.block.entity.accelerator.ParticleAcceleratorBlockEntity;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
@@ -115,16 +116,9 @@ public class AcceleratorSpeedSensorBlockEntity
             return false;
         }
 
-        BlockEntity targetEntity = level.getBlockEntity(targetPos);
-
-        if (targetEntity == null || (!targetEntity.getClass().getSimpleName().contains("AcceleratorController")
-                && invokeNoArg(targetEntity, "getParticle") == null)) {
-            player.sendSystemMessage(
-                    Component.translatable(
-                            "block.oritechthings.particle_accelerator_speed_sensor.invalid_controller"
-                    ).withStyle(ChatFormatting.RED)
-            );
-
+        BlockEntity acceleratorEntity = level.getBlockEntity(targetPos);
+        if (acceleratorEntity == null || (!(acceleratorEntity instanceof ParticleAcceleratorBlockEntity))) {
+            player.sendSystemMessage(Component.translatable("block.oritechthings.particle_accelerator_speed_sensor.invalid_controller").withStyle(ChatFormatting.RED));
             return false;
         }
 
