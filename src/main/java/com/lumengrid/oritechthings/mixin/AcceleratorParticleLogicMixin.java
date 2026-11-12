@@ -103,8 +103,8 @@ public class AcceleratorParticleLogicMixin {
             // Estrazione sicura dell'energia con try-with-resources e commit
             if (magnetEntity.energyStorage.getAmountAsLong() >= energyCostLong) {
                 try (var transaction = Transaction.openRoot()) {
-                    long extracted = magnetEntity.energyStorage.extract((int) energyCostLong, transaction);
-                    if (extracted > 0) {
+                    long extracted = magnetEntity.energyStorage.internalExtract(energyCostLong, transaction);
+                    if (extracted == energyCostLong) {
                         transaction.commit();
                         lastEnergyTick.put(magnetEntity.getBlockPos(), currentTick);
                         createMagneticFieldParticles(serverWorld, magnetEntity.getBlockPos());
