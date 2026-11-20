@@ -24,26 +24,23 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
     mavenLocal()
 
-    exclusiveContent {
-        forRepository {
-            maven {
-                url = 'https://maven.minecraftforge.net/'
-            }
-        }
-        // Forge userdev artifacts
-        filter {
-            includeGroup 'net.minecraftforge'
+    // Plain repositories with content filters, not exclusiveContent: ForgeGradle serves the remapped
+    // "_mapped_parchment_" artifacts (from fg.deobf and the minecraft dependency) from its own internal
+    // repositories, and exclusiveContent would forbid those for net.minecraftforge and curse.maven.
+    maven {
+        url = 'https://maven.minecraftforge.net/'
+    }
+    maven {
+        url = 'https://cursemaven.com'
+        content {
+            includeGroup 'curse.maven'
         }
     }
-
-    exclusiveContent {
-        forRepository {
-            maven {
-                url = 'https://cursemaven.com'
-            }
-        }
-        filter {
-            includeGroup 'curse.maven'
+    // Mixin annotation processor (org.spongepowered:mixin:0.8.5:processor)
+    maven {
+        url = 'https://repo.spongepowered.org/repository/maven-public/'
+        content {
+            includeGroup 'org.spongepowered'
         }
     }
 }
