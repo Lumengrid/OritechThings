@@ -22,7 +22,7 @@ public class AcceleratorMagneticFieldBlockItem extends BlockItem implements Ener
     }
     
     @Override
-    public void appendHoverText(ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag type) {
+    public void appendHoverText(ItemStack stack, @org.jetbrains.annotations.Nullable net.minecraft.world.level.Level context, @NotNull List<Component> tooltip, @NotNull TooltipFlag type) {
         long storedEnergy = EnergyTagUtil.getEnergy(stack);
         
         if (storedEnergy != 0) {
@@ -57,8 +57,6 @@ public class AcceleratorMagneticFieldBlockItem extends BlockItem implements Ener
         return Math.round((fillAmount * 100f / capacity) * MAX_BAR_WIDTH) / 100;
     }
     
-    // TODO(1.20.1 oritech swap): re-implement against the oritech 1.20.1 EnergyApi
-    // (capability-based); SimpleEnergyItemStorage is the 1.21.1 API.
     @Override
     public EnergyApi.EnergyStorage getEnergyStorage(ItemStack stack) {
         return new SimpleEnergyItemStorage(

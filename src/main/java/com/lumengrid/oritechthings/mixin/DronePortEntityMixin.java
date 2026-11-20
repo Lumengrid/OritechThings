@@ -43,7 +43,7 @@ import java.util.Objects;
 /**
  * Mixin that adds cross-dimensional functionality to DronePortEntity
  */
-@Mixin(DronePortEntity.class)
+@Mixin(value = DronePortEntity.class, remap = false)
 public class DronePortEntityMixin implements CrossDimensionalDrone {
     @Shadow @Final private long baseEnergyUsage;
     @Shadow @Final private int takeOffTime;
@@ -52,7 +52,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
     @Shadow private long lastSentAt;
     @Shadow private DronePortEntity.DroneTransferData incomingPacket;
     @Shadow private String statusMessage;
-    @Shadow protected SimpleContainer cardInventory;
+    @Shadow @Final protected SimpleContainer cardInventory;
 
     @Shadow @Final protected DynamicEnergyStorage energyStorage;
 
@@ -273,7 +273,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
     /**
      * Inject into NBT saving to persist dimension data
      */
-    @Inject(method = "saveAdditional", at = @At("TAIL"))
+    @Inject(method = "saveAdditional", at = @At("TAIL"), remap = true)
     private void saveAdditional(CompoundTag nbt, CallbackInfo ci) {
         if (targetDimension != null) {
             nbt.putString("target_dimension", targetDimension.location().toString());
@@ -284,13 +284,13 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
     /**
      * Inject into NBT loading to restore dimension data
      */
-    @Inject(method = "loadAdditional", at = @At("TAIL"))
+    @Inject(method = "load", at = @At("TAIL"), remap = true)
     private void loadAdditional(CompoundTag nbt, CallbackInfo ci) {
         if (nbt.contains("target_dimension")) {
             String dimensionString = nbt.getString("target_dimension");
             try {
                 ResourceLocation dimensionLocation = new ResourceLocation(dimensionString);
-                targetDimension = ResourceKey.create(Registry.DIMENSION_REGISTRY, dimensionLocation);
+                targetDimension = ResourceKey.create(net.minecraft.core.registries.Registries.DIMENSION, dimensionLocation);
             } catch (Exception e) {
                 OritechThings.LOGGER.warn("Failed to load target dimension from NBT: {}", dimensionString, e);
                 targetDimension = null;

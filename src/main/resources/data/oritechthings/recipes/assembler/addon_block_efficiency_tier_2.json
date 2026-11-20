@@ -1,0 +1,24 @@
+{
+  "type": "oritech:assembler",
+  "ingredients": [
+    {
+      "item": "oritech:machine_efficiency_addon"
+    },
+    {
+      "item": "oritech:machine_efficiency_addon"
+    },
+    {
+      "tag": "forge:storage_blocks/electrum"
+    },
+    {
+      "item": "oritech:machine_extender"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_efficiency_tier_2"
+    }
+  ],
+  "time": 100
+}

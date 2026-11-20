@@ -4,26 +4,24 @@ import com.lumengrid.oritechthings.client.screen.AcceleratorSpeedSensorScreen;
 import com.lumengrid.oritechthings.main.ConfigLoader;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.menu.ModMenuTypes;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.EventBusSubscriber;
-import net.minecraftforge.client.event.RegisterMenuScreensEvent;
-import net.minecraftforge.client.event.ResourceReloadEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-@EventBusSubscriber(modid = OritechThings.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = OritechThings.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class GameBusClientEvents {
 
     @SubscribeEvent
-    public static void clientSetup(final RegisterMenuScreensEvent event) {
-        event.register(ModMenuTypes.SPEED_SENSOR_MENU.get(), AcceleratorSpeedSensorScreen::new);
+    public static void clientSetup(final FMLClientSetupEvent event) {
+        event.enqueueWork(() -> MenuScreens.register(ModMenuTypes.SPEED_SENSOR_MENU.get(), AcceleratorSpeedSensorScreen::new));
     }
 
-    /**
-     * Forge 1.20.1 has no RegisterClientReloadListenersEvent, so the config is
-     * reloaded when the game reloads its resources instead.
-     */
     @SubscribeEvent
-    public static void onResourcesReload(ResourceReloadEvent event) {
-        ConfigLoader.getInstance().load();
+    public static void onRegisterReloadListeners(RegisterClientReloadListenersEvent event) {
+        event.registerReloadListener((ResourceManagerReloadListener) manager -> ConfigLoader.getInstance().load());
     }
 }

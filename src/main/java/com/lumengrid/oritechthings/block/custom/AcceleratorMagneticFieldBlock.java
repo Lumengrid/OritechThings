@@ -29,7 +29,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.container.MenuProvider;
+import net.minecraft.world.MenuProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import rearth.oritech.block.base.entity.ExpandableEnergyStorageBlockEntity;
@@ -75,12 +75,12 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
     }
     
     @Override
-    protected boolean hasAnalogOutputSignal(@NotNull BlockState state) {
+    public boolean hasAnalogOutputSignal(@NotNull BlockState state) {
         return true;
     }
     
     @Override
-    protected int getAnalogOutputSignal(@NotNull BlockState state, Level world, @NotNull BlockPos pos) {
+    public int getAnalogOutputSignal(@NotNull BlockState state, Level world, @NotNull BlockPos pos) {
         return ((ComparatorOutputProvider) Objects.requireNonNull(world.getBlockEntity(pos))).getComparatorOutput();
     }
     
@@ -103,7 +103,8 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
     }
     
     @Override
-    public @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level world, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hit) {
+    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull Player player, @NotNull net.minecraft.world.InteractionHand hand, @NotNull BlockHitResult hit) {
+        if (hand != net.minecraft.world.InteractionHand.MAIN_HAND) return InteractionResult.PASS;
         
         if (!world.isClientSide) {
             
@@ -114,19 +115,17 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
             
             machineEntity.initAddons();
 
-            // TODO(1.20.1 oritech swap): align with oritech 1.20.1's menu-opening pattern
-            // (the Architectury MenuRegistry/ExtendedMenuProvider is not available for Forge).
-            var provider = (MenuProvider) world.getBlockEntity(pos);
-            player.openMenu(provider, pos);
+            var handler = (dev.architectury.registry.menu.ExtendedMenuProvider) world.getBlockEntity(pos);
+            dev.architectury.registry.menu.MenuRegistry.openExtendedMenu((ServerPlayer) player, handler);
         }
         
         return InteractionResult.SUCCESS;
     }
     
     @Override
-    public @NotNull List<ItemStack> getDrops(@NotNull BlockState state, LevelReader level, @NotNull BlockPos pos,
-                                             @NotNull ItemStack stack, @Nullable BlockEntity entity) {
-        var droppedStacks = super.getDrops(state, level, pos, stack, entity);
+    public @NotNull List<ItemStack> getDrops(@NotNull BlockState state, net.minecraft.world.level.storage.loot.LootParams.Builder builder) {
+        var droppedStacks = super.getDrops(state, builder);
+        var entity = builder.getOptionalParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.BLOCK_ENTITY);
 
         if (entity instanceof AcceleratorMagneticFieldBlockEntity storageEntity) {
             droppedStacks.addAll(storageEntity.inventory.getHeldStacks());
@@ -142,8 +141,6 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
         
         var storageEntity = (AcceleratorMagneticFieldBlockEntity) world.getBlockEntity(pos);
         assert storageEntity != null;
-        // TODO(1.20.1 oritech swap): the null argument is the 1.20.5+ HolderLookup form;
-        // re-check oritech 1.20.1's getEnergyStorage signature.
         long amount = storageEntity.getEnergyStorage(null).getAmount();
         if (amount > 0) {
             EnergyTagUtil.setEnergy(stack, amount);
@@ -176,7 +173,7 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
     }
     
     @Override
-    public @NotNull BlockState playerWillDestroy(Level world, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
+    public void playerWillDestroy(@NotNull Level world, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
         
         if (!world.isClientSide) {
             var entity = world.getBlockEntity(pos);
@@ -185,11 +182,11 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
             }
         }
         
-        return super.playerWillDestroy(world, pos, state, player);
+        super.playerWillDestroy(world, pos, state, player);
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context, @NotNull List<Component> tooltip,
+    public void appendHoverText(@NotNull ItemStack stack, @org.jetbrains.annotations.Nullable net.minecraft.world.level.BlockGetter context, @NotNull List<Component> tooltip,
                                 TooltipFlag options) {
         if (!ConfigLoader.getInstance().magneticFieldSettings.enabled()) {
             tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_magnetic_field_disabled")

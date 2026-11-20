@@ -152,8 +152,9 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
         tag.put("Inventory", this.inventory.serializeNBT());
     }
 
-    protected void loadAdditional(@NotNull CompoundTag tag) {
-        super.loadAdditional(tag);
+    @Override
+    public void load(@NotNull CompoundTag tag) {
+        super.load(tag);
         this.speedLimit = tag.getInt("SpeedLimit");
         this.enabled = tag.getBoolean("Enabled");
         this.checkGreater = tag.getBoolean("CheckGreater");
@@ -220,14 +221,14 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
         var recipeOptional = level.getRecipeManager().getRecipeFor(RecipeContent.PARTICLE_COLLISION, inputInv, level);
         
         if (recipeOptional.isPresent()) {
-            var recipe = recipeOptional.get().value();
+            var recipe = recipeOptional.get();
             return recipe.getTime();
         }
 
         var allRecipes = level.getRecipeManager().getAllRecipesFor(RecipeContent.PARTICLE_COLLISION);
         int maxVelocity = 0;
         for (var recipeHolder : allRecipes) {
-            var recipe = recipeHolder.value();
+            var recipe = recipeHolder;
             var inputs = recipe.getInputs();
             for (var ingredient : inputs) {
                 if (ingredient.test(activeItem)) {
@@ -241,11 +242,10 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
     }
 
     private static void notifyNeighbors(Level level, BlockPos pos) {
-        // 1.20.1: no updateNeighborsAt(BlockPos, Block) overload — use the flags variant
         BlockState state = level.getBlockState(pos);
-        level.updateNeighborsAt(pos, state.getBlock(), 3);
+        level.updateNeighborsAt(pos, state.getBlock());
         for (Direction direction : Direction.values()) {
-            level.updateNeighborsAt(pos.relative(direction), state.getBlock(), 3);
+            level.updateNeighborsAt(pos.relative(direction), state.getBlock());
         }
     }
 

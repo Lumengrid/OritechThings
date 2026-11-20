@@ -41,16 +41,16 @@ public class ModLangProvider extends LanguageProvider {
 
         //generic blocks
         ModBlocks.OTHER.getEntries().forEach(e -> addBlock(e,
-                DataGenUtil.formatted(e.getRegisteredName())));
+                DataGenUtil.formatted(e.getId().toString())));
         //block addons
         ModBlocks.ADDONS.getEntries().forEach(e -> addBlock(e,
-                DataGenUtil.specificReplace(e.getRegisteredName())));
+                DataGenUtil.specificReplace(e.getId().toString())));
         //generic items
         ModItems.ITEMS.getEntries().forEach(e -> addItem(e,
-                DataGenUtil.formatted(e.getRegisteredName())));
+                DataGenUtil.formatted(e.getId().toString())));
         //generic mobs
         ModEntities.MOD_MOB_ENTITIES.getEntries().forEach(e -> addEntityType(e,
-                DataGenUtil.formatted(e.getRegisteredName())));
+                DataGenUtil.formatted(e.getId().toString())));
 
         //particle accelerator speed sensor
 

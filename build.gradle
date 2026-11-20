@@ -4,6 +4,8 @@ plugins {
     id 'net.minecraftforge.gradle' version '6.0.16'
     // Must be applied after ForgeGradle: registers the "parchment" mappings channel
     id 'org.parchmentmc.librarian.forgegradle' version '1.2.0'
+    // Generates oritechthings.refmap.json so mixins into vanilla methods work outside the dev environment
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
 version = mod_version
@@ -53,30 +55,31 @@ dependencies {
     // win the Gradle version conflict against the mapped userdev version and the net.minecraft
     // classes would silently drop off the compile classpath (implementation extendsFrom minecraft).
     minecraft "net.minecraftforge:forge:${project.forge_version}"
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     // Oritech 1.20.1 backport (curseforge.com/minecraft/mc-mods/oritech-backported)
-    implementation "curse.maven:oritech-backported-1817588:9706700"
+    implementation fg.deobf("curse.maven:oritech-backported-1817588:9706700")
 
-    // Companion deps (1.21.1 file builds for now — replace each with its 1.20.1 build when swapping oritech).
-    implementation "curse.maven:athena-841890:5629395"
-    implementation "curse.maven:architectury-419699:5786327"
-    implementation "curse.maven:owolib-532610:5945693"
-    implementation "curse.maven:geckolib-388172:6024484"
+    // Required at runtime by Oritech Backported (1.20.1 Forge builds)
+    implementation fg.deobf("curse.maven:architectury-419699:5137938")   // architectury-9.2.14-forge
+    implementation fg.deobf("curse.maven:geckolib-388172:8285794")       // geckolib-forge-1.20.1-4.8.4
 
-    implementation "curse.maven:ftlibrary-404465:6466106"
-    implementation "curse.maven:ftpessential-410811:6179042"
+    // Optional mods for testing in the dev client (1.20.1 Forge builds)
+    runtimeOnly fg.deobf("curse.maven:jei-238222:9205046")              // jei-1.20.1-forge-15.71.0.224
+    runtimeOnly fg.deobf("curse.maven:jade-324717:8479276")             // Jade-1.20.1-Forge-11.13.3
+    runtimeOnly fg.deobf("curse.maven:rhino-416294:6186971")            // rhino-forge-2001.2.3
+    runtimeOnly fg.deobf("curse.maven:kubejs-238086:8020595")           // kubejs-forge-2001.6.5
+    runtimeOnly fg.deobf("curse.maven:ftblibrary-404465:8226927")       // ftb-library-forge-2001.2.13
+    runtimeOnly fg.deobf("curse.maven:ftbessentials-410811:7609948")    // ftb-essentials-forge-2001.2.4
+    runtimeOnly fg.deobf("curse.maven:supermarticonfig-438332:4715408") // supermartijn642configlib-1.1.8-forge-mc1.20
+    runtimeOnly fg.deobf("curse.maven:supermarticore-454372:9689182")   // supermartijn642corelib-1.1.26b-forge-mc1.20.1
+    runtimeOnly fg.deobf("curse.maven:trashcans-394535:9289018")        // trashcans-1.1.2-forge-mc1.20.4 (runs on 1.20.1)
+    // TODO: add 1.20.1 builds of Chunk Loaders, ShetiPhian Core and Ender Chests if they are needed for testing.
+}
 
-    implementation "curse.maven:rhino-416294:6000610"
-    implementation "curse.maven:kubejs-238086:5810100"
-    implementation "curse.maven:jade-324717:6011258"
-    implementation "curse.maven:trashcans-394535:5891067"
-    implementation "curse.maven:supermarticonfig-438332:5546996"
-    implementation "curse.maven:supermarticore-454372:6076757"
-    implementation "curse.maven:chunkloaders-402924:5550217"
-    implementation "curse.maven:shetiphiancore-71738:6978276"
-    implementation "curse.maven:enderchest-363535:6913788"
-
-    implementation "curse.maven:jei-238222:5846880"
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
+    config "${mod_id}.mixins.json"
 }
 
 // Sets up a dependency configuration called 'localRuntime'.

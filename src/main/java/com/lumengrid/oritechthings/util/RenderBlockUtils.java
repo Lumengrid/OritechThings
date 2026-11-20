@@ -59,7 +59,7 @@ public class RenderBlockUtils {
     }
 
     private static void addLine(VertexConsumer vertexConsumer, Matrix4f pose, float x1, float y1, float z1, float x2, float y2, float z2, float[] color) {
-        vertexConsumer.addVertex(pose, x1, y1, z1).setColor(color[0], color[1], color[2], 2.0F);
-        vertexConsumer.addVertex(pose, x2, y2, z2).setColor(color[0], color[1], color[2], 2.0F);
+        vertexConsumer.vertex(pose, x1, y1, z1).color(color[0], color[1], color[2], 2.0F).endVertex();
+        vertexConsumer.vertex(pose, x2, y2, z2).color(color[0], color[1], color[2], 2.0F).endVertex();
     }
 }

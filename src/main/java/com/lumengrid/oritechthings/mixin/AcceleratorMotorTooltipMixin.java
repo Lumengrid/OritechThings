@@ -14,11 +14,10 @@ import rearth.oritech.block.blocks.accelerator.AcceleratorMotorBlock;
 import java.util.List;
 
 @Mixin(AcceleratorMotorBlock.class)
-// TODO(1.20.1 oritech swap): verify mixin targets/signatures against the oritech 1.20.1 build.
 public class AcceleratorMotorTooltipMixin {
 
     @Inject(method = "appendHoverText", at = @At("TAIL"))
-    private void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag options, CallbackInfo ci) {
+    private void appendHoverText(ItemStack stack, @org.jetbrains.annotations.Nullable net.minecraft.world.level.BlockGetter context, List<Component> tooltip, TooltipFlag options, CallbackInfo ci) {
         if (Screen.hasControlDown()) {
             tooltip.add(Component.empty());
             tooltip.add(Component.translatable("tooltip.oritechthings.accelerator_motor.addon_info"));

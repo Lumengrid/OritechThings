@@ -1,0 +1,24 @@
+{
+  "type": "oritech:assembler",
+  "ingredients": [
+    {
+      "item": "oritechthings:addon_block_processing_tier_2"
+    },
+    {
+      "item": "oritech:machine_processing_addon"
+    },
+    {
+      "tag": "forge:ingots/electrum"
+    },
+    {
+      "item": "oritech:magnetic_coil"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_processing_tier_3"
+    }
+  ],
+  "time": 150
+}

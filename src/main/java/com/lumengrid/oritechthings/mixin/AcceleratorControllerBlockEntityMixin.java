@@ -33,7 +33,7 @@ public class AcceleratorControllerBlockEntityMixin implements MagneticFieldContr
         nbt.put("linkedMagneticFields", magneticFieldsTag);
     }
     
-    @Inject(method = "loadAdditional", at = @At("TAIL"))
+    @Inject(method = "load", at = @At("TAIL"))
     private void loadMagneticFields(CompoundTag nbt, CallbackInfo ci) {
         linkedMagneticFields.clear();
         if (nbt.contains("linkedMagneticFields", Tag.TAG_LIST)) {

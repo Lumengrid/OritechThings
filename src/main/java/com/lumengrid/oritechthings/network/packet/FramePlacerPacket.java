@@ -1,52 +1,43 @@
 package com.lumengrid.oritechthings.network.packet;
 
 import com.lumengrid.oritechthings.main.OritechThings;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.network.IPayloadContext;
+import net.minecraftforge.network.NetworkEvent;
+
+import java.util.function.Supplier;
 import org.jetbrains.annotations.NotNull;
 import rearth.oritech.init.BlockContent;
 
 public record FramePlacerPacket(BlockPos startPos, int xDimension, int yDimension, int offset,
                                 Direction facing) {
-    public static final StreamCodec<ByteBuf, FramePlacerPacket> STREAM_CODEC = StreamCodec.composite(
-            BlockPos.STREAM_CODEC,
-            FramePlacerPacket::startPos,
-            ByteBufCodecs.INT,
-            FramePlacerPacket::xDimension,
-            ByteBufCodecs.INT,
-            FramePlacerPacket::yDimension,
-            ByteBufCodecs.INT,
-            FramePlacerPacket::offset,
-            Direction.STREAM_CODEC,
-            FramePlacerPacket::facing,
-            FramePlacerPacket::new
-    );
-
-    public FriendlyByteBuf toBytes(FriendlyByteBuf buf) {
-        STREAM_CODEC.encode(buf, this);
-        return buf;
+    public void toBytes(FriendlyByteBuf buf) {
+        buf.writeBlockPos(startPos);
+        buf.writeInt(xDimension);
+        buf.writeInt(yDimension);
+        buf.writeInt(offset);
+        buf.writeEnum(facing);
     }
 
     public static FramePlacerPacket fromBytes(FriendlyByteBuf buf) {
-        return STREAM_CODEC.decode(buf);
+        return new FramePlacerPacket(buf.readBlockPos(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readEnum(Direction.class));
     }
 
-    public static void handleDataOnServer(final FramePlacerPacket packet, final IPayloadContext context) {
+    public static void handleDataOnServer(final FramePlacerPacket packet, final Supplier<NetworkEvent.Context> ctx) {
+        NetworkEvent.Context context = ctx.get();
+        context.setPacketHandled(true);
         context.enqueueWork(() -> {
-            if (!(context.player() instanceof ServerPlayer sPlayer)) return;
+            ServerPlayer sPlayer = context.getSender();
+            if (sPlayer == null) return;
             ServerLevel level = sPlayer.serverLevel();
             BlockPos startPos = getOffsetPosition(packet.facing, packet.startPos, -packet.offset, 0);
             BlockPos playerPos = sPlayer.blockPosition();

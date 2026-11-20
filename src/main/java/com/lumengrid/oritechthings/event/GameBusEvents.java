@@ -3,12 +3,11 @@ package com.lumengrid.oritechthings.event;
 import com.lumengrid.oritechthings.main.ConfigLoader;
 import com.lumengrid.oritechthings.main.OritechThings;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundSetTitlesPacket;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.EventBusSubscriber;
-import net.minecraftforge.event.PlayerTickEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.event.TickEvent;
 import rearth.oritech.init.ToolsContent;
 import rearth.oritech.item.tools.util.OritechEnergyItem;
 
@@ -17,19 +16,18 @@ import java.util.Map;
 import java.util.UUID;
 
 @EventBusSubscriber(modid = OritechThings.MOD_ID)
-// TODO(1.20.1 oritech swap): OritechEnergyItem/ToolsContent API may differ in oritech 1.20.1.
 public class GameBusEvents {
     private static final Map<UUID, Boolean> wasWearingJetpack = new HashMap<>();
 
     @SuppressWarnings("deprecation")
     @SubscribeEvent
-    public static void onPlayerTick(PlayerTickEvent event) {
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         // NeoForge 1.21.1 used a PlayerTickEvent.Post subtype; Forge 1.20.1 has one event with a phase
-        if (event.getPhase() != PlayerTickEvent.Phase.END) {
+        if (event.phase != TickEvent.Phase.END) {
             return;
         }
-        if (!event.getEntity().level().isClientSide) {
-            Player player = event.getEntity();
+        if (!event.player.level().isClientSide) {
+            Player player = event.player;
             UUID playerId = player.getUUID();
 
             if (player.isCreative() || player.isSpectator()) {
@@ -52,9 +50,7 @@ public class GameBusEvents {
                 }
                 if (energy <= ConfigLoader.getInstance().exoJetPackSettings.rfThreshold()) {
                     if (player.getAbilities().mayfly) {
-                        // 1.20.1: action bar via titles packet (displayClientMessage is 1.20.2+)
-                        player.connection.send(new ClientboundSetTitlesPacket(ClientboundSetTitlesPacket.Action.ACTIONBAR,
-                                Component.translatable("message.exo_jetpack.energy_low")));
+                        player.displayClientMessage(Component.translatable("message.exo_jetpack.energy_low"), true);
                     }
                     setCreativeFlight(player, false);
                 } else {

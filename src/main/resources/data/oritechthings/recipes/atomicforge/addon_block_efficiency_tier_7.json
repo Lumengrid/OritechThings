@@ -1,0 +1,21 @@
+{
+  "type": "oritech:atomic_forge",
+  "ingredients": [
+    {
+      "item": "oritechthings:addon_block_efficiency_tier_6"
+    },
+    {
+      "item": "oritech:machine_efficiency_addon"
+    },
+    {
+      "item": "oritech:heisenberg_compensator"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_efficiency_tier_7"
+    }
+  ],
+  "time": 350
+}

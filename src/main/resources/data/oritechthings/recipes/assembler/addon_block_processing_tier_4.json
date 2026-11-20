@@ -1,0 +1,24 @@
+{
+  "type": "oritech:assembler",
+  "ingredients": [
+    {
+      "item": "oritechthings:addon_block_processing_tier_3"
+    },
+    {
+      "item": "oritech:machine_processing_addon"
+    },
+    {
+      "tag": "forge:ingots/electrum"
+    },
+    {
+      "item": "oritech:motor"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_processing_tier_4"
+    }
+  ],
+  "time": 200
+}

@@ -9,7 +9,7 @@ import rearth.oritech.api.energy.EnergyApi;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.fml.eventbus.IEventBus;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraft.core.registries.BuiltInRegistries;
 
@@ -22,8 +22,6 @@ public class ModEntities {
                 MOD_MOB_ENTITIES.register(bus);
                 
                 // Register block entities with EnergyApi
-                // TODO(1.20.1 oritech swap): re-align with the oritech 1.20.1 EnergyApi
-                // (the 1.21.1 EnergyApi.BLOCK.registerBlockEntity signature may differ).
                 if (EnergyApi.BLOCK != null) {
                     EnergyApi.BLOCK.registerBlockEntity(ACCELERATOR_MAGNETIC_FIELD_BLOCK_ENTITY::get);
                     EnergyApi.BLOCK.registerBlockEntity(TIER_ADDON::get);
@@ -31,9 +29,9 @@ public class ModEntities {
         }
 
     public static final DeferredRegister<BlockEntityType<?>> MOD_BLOCK_ENTITIES =
-            DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, OritechThings.MOD_ID);
+            DeferredRegister.create(net.minecraft.core.registries.Registries.BLOCK_ENTITY_TYPE, OritechThings.MOD_ID);
     public static final DeferredRegister<EntityType<?>> MOD_MOB_ENTITIES =
-            DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, OritechThings.MOD_ID);
+            DeferredRegister.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, OritechThings.MOD_ID);
 
 public static final Supplier<BlockEntityType<AcceleratorSpeedSensorBlockEntity>> accelerator_speed_sensor =
             MOD_BLOCK_ENTITIES.register("accelerator_speed_sensor_block_entity",

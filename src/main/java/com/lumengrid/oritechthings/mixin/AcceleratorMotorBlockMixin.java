@@ -9,15 +9,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import rearth.oritech.block.blocks.accelerator.AcceleratorMotorBlock;
+import rearth.oritech.block.blocks.accelerator.AcceleratorPassthroughBlock;
 import rearth.oritech.block.blocks.addons.MachineAddonBlock;
 
-@Mixin(AcceleratorMotorBlock.class)
-// TODO(1.20.1 oritech swap): verify mixin targets/signatures against the oritech 1.20.1 build.
+// In 1.20.1 AcceleratorMotorBlock does not override onRemove; it is declared in AcceleratorPassthroughBlock.
+@Mixin(AcceleratorPassthroughBlock.class)
 public class AcceleratorMotorBlockMixin {
 
     @Inject(method = "onRemove", at = @At("HEAD"))
     private void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved, CallbackInfo ci) {
-        if (world.isClientSide) return;
+        if (world.isClientSide || !((Object) this instanceof AcceleratorMotorBlock)) return;
 
         var addonPos = pos.offset(Direction.DOWN.getNormal());
         var addonState = world.getBlockState(addonPos);

@@ -7,8 +7,8 @@ import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.registries.DeferredBlock;
-import net.minecraftforge.registries.DeferredHolder;
+import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class ModBlockLootTableProvider extends BlockLootSubProvider {
     protected ModBlockLootTableProvider() {
-        super(Set.of(), FeatureFlags.DEFAULT.allFlags());
+        super(Set.of(), FeatureFlags.REGISTRY.allFlags());
     }
 
     @Override
@@ -31,15 +31,15 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     }
 
     @SuppressWarnings("unchecked")
-        private List<Block> getList(DeferredRegister.Blocks blocks) {
-                return (List<Block>) blocks.getEntries().stream().map(DeferredHolder::get).toList();
+        private List<Block> getList(DeferredRegister<Block> blocks) {
+                return (List<Block>) blocks.getEntries().stream().map(RegistryObject::get).toList();
         }
 
     @Override
     protected void generate() {
 
-        for (DeferredBlock<?> data : Constants.getAllAddons()) {
-            dropSelf(data.get());
+        for (RegistryObject<?> data : Constants.getAllAddons()) {
+            dropSelf(((net.minecraft.world.level.block.Block) data.get()));
         }
         
         dropSelf(ModBlocks.ACCELERATOR_SPEED_SENSOR.get());

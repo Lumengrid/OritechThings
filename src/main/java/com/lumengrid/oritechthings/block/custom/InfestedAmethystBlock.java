@@ -4,7 +4,6 @@ import com.lumengrid.oritechthings.entity.ModEntities;
 import com.lumengrid.oritechthings.entity.custom.AmethystFishEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.ItemStack;
@@ -20,8 +19,8 @@ public class InfestedAmethystBlock extends InfestedBlock {
     }
 
     @Override
-    protected void spawnAfterBreak(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull ItemStack stack, boolean dropExperience) {
-        if (!level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS) || EnchantmentHelper.hasTag(stack, EnchantmentTags.PREVENTS_INFESTED_SPAWNS)) {
+    public void spawnAfterBreak(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull ItemStack stack, boolean dropExperience) {
+        if (!level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS) || EnchantmentHelper.hasSilkTouch(stack)) {
             return;
         }
         if (!AmethystFishEntity.checkAmethystFishSpawnRules(ModEntities.AMETHYST_FISH.get(), level,

@@ -8,13 +8,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
+import net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.registries.DeferredHolder;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import rearth.oritech.init.ItemContent;
 
@@ -22,12 +22,12 @@ import java.util.stream.Stream;
 
 public class ModEntityLootTableProvider extends EntityLootSubProvider {
     protected ModEntityLootTableProvider() {
-        super(FeatureFlags.DEFAULT.allFlags());
+        super(FeatureFlags.REGISTRY.allFlags());
     }
 
     @Override
     protected @NotNull Stream<EntityType<?>> getKnownEntityTypes() {
-        return ModEntities.MOD_MOB_ENTITIES.getEntries().stream().map(DeferredHolder::get);
+        return ModEntities.MOD_MOB_ENTITIES.getEntries().stream().map(RegistryObject::get);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ModEntityLootTableProvider extends EntityLootSubProvider {
                                         .add(
                                                 LootItem.lootTableItem(ItemContent.FLUXITE)
                                                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
-                                                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
+                                                        .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
                                                         .when(LootItemRandomChanceCondition.randomChance(0.5F))
                                         )
                         )
@@ -51,7 +51,7 @@ public class ModEntityLootTableProvider extends EntityLootSubProvider {
                                         .add(
                                                 LootItem.lootTableItem(Items.AMETHYST_SHARD)
                                                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
-                                                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
+                                                        .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
                                                         .when(LootItemRandomChanceCondition.randomChance(0.5F))
                                         )
                         )

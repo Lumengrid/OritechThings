@@ -16,8 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import rearth.oritech.block.entity.accelerator.AcceleratorControllerBlockEntity;
 import rearth.oritech.block.entity.accelerator.AcceleratorParticleLogic;
 
-@Mixin(AcceleratorParticleLogic.class)
-// TODO(1.20.1 oritech swap): verify mixin targets/signatures against the oritech 1.20.1 build.
+@Mixin(value = AcceleratorParticleLogic.class, remap = false)
 public class AcceleratorParticleLogicMixin {
 
     @Shadow
@@ -69,7 +68,7 @@ public class AcceleratorParticleLogicMixin {
             return false;
         }
 
-        if (serverWorld.getBlockEntity(linkedMagnets.getFirst()) instanceof AcceleratorMagneticFieldBlockEntity magnetEntity) {
+        if (serverWorld.getBlockEntity(linkedMagnets.get(0)) instanceof AcceleratorMagneticFieldBlockEntity magnetEntity) {
             if (magnetEntity.receivedRedstoneSignal() > 0) {
                 return false;
             }
