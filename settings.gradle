@@ -3,6 +3,8 @@ pluginManagement {
         mavenLocal()
         gradlePluginPortal()
         maven { url = 'https://maven.minecraftforge.net/' }
+        // ParchmentMC maven, needed by the Librarian plugin (parchment mappings for ForgeGradle)
+        maven { url = 'https://maven.parchmentmc.org' }
     }
 }
 

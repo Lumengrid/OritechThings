@@ -2,6 +2,8 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '6.0.16'
+    // Must be applied after ForgeGradle: registers the "parchment" mappings channel
+    id 'org.parchmentmc.librarian.forgegradle' version '1.2.0'
 }
 
 version = mod_version
@@ -45,12 +47,12 @@ repositories {
 }
 
 dependencies {
-    // Specify the version of Minecraft to use.
+    // Specify the version of Minecraft/Forge to use.
     // NOTE: This is a range, and the newest version will be used.
+    // Do NOT also add "implementation net.minecraftforge:forge:..." here: the plain version would
+    // win the Gradle version conflict against the mapped userdev version and the net.minecraft
+    // classes would silently drop off the compile classpath (implementation extendsFrom minecraft).
     minecraft "net.minecraftforge:forge:${project.forge_version}"
-
-    // Specify the version of Forge to use.
-    implementation "net.minecraftforge:forge:${project.forge_version}"
 
     // Oritech 1.20.1 backport (curseforge.com/minecraft/mc-mods/oritech-backported)
     implementation "curse.maven:oritech-backported-1817588:9706700"
