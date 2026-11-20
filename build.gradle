@@ -27,7 +27,9 @@ repositories {
             }
         }
         // Forge userdev artifacts
-        includeGroup 'net.minecraftforge'
+        filter {
+            includeGroup 'net.minecraftforge'
+        }
     }
 
     exclusiveContent {
@@ -50,9 +52,8 @@ dependencies {
     // Specify the version of Forge to use.
     implementation "net.minecraftforge:forge:${project.forge_version}"
 
-    // TODO: Oritech has no Forge/1.20.1 build yet — keep the current (1.21.1) file build
-    // until the 1.20.1 build exists, then swap the file id.
-    implementation "curse.maven:oritech-1030830:8054306"
+    // Oritech 1.20.1 backport (curseforge.com/minecraft/mc-mods/oritech-backported)
+    implementation "curse.maven:oritech-backported-1817588:9706700"
 
     // Companion deps (1.21.1 file builds for now — replace each with its 1.20.1 build when swapping oritech).
     implementation "curse.maven:athena-841890:5629395"

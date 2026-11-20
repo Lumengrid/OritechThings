@@ -121,20 +121,19 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
                 return InteractionResult.FAIL;
             } else {
                 // Same dimension - proceed normally
-                switch (entity) {
-                    case LaserArmBlockEntity laserEntity -> {
-                        if (laserEntity.hunterAddons > 0) {
-                            laserEntity.cycleHunterTargetMode();
-                            player.sendSystemMessage(Component.translatable("message.oritech.target_designator.hunter_target",
-                                    Component.translatable(laserEntity.hunterTargetMode.message)));
-                            return InteractionResult.SUCCESS;
-                        }
-                        success = laserEntity.setTargetFromDesignator(targetPos);
+                // (no pattern switch: type patterns in switch are a Java 21 feature)
+                if (entity instanceof LaserArmBlockEntity laserEntity) {
+                    if (laserEntity.hunterAddons > 0) {
+                        laserEntity.cycleHunterTargetMode();
+                        player.sendSystemMessage(Component.translatable("message.oritech.target_designator.hunter_target",
+                                Component.translatable(laserEntity.hunterTargetMode.message)));
+                        return InteractionResult.SUCCESS;
                     }
-                    case AcceleratorSpeedSensorBlockEntity speedSensorEntity -> success = speedSensorEntity.setTargetDesignator(targetPos, player);
-                    case AcceleratorMagneticFieldBlockEntity magneticFieldEntity -> success = magneticFieldEntity.setTargetDesignator(targetPos, player);
-                    default -> {
-                    }
+                    success = laserEntity.setTargetFromDesignator(targetPos);
+                } else if (entity instanceof AcceleratorSpeedSensorBlockEntity speedSensorEntity) {
+                    success = speedSensorEntity.setTargetDesignator(targetPos, player);
+                } else if (entity instanceof AcceleratorMagneticFieldBlockEntity magneticFieldEntity) {
+                    success = magneticFieldEntity.setTargetDesignator(targetPos, player);
                 }
             }
         }
