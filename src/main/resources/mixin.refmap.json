@@ -1,0 +1,19 @@
+{
+  "mappings": {
+    "rearth/oritech/mixin/EntityLaserDropsMixin": {
+      "m_5552_(Lnet/minecraft/world/item/ItemStack;F)Lnet/minecraft/world/entity/item/ItemEntity;": "spawnAtLocation(Lnet/minecraft/world/item/ItemStack;F)Lnet/minecraft/world/entity/item/ItemEntity;"
+    },
+    "rearth/oritech/mixin/EntityLaserDropsMixin$LivingEntityMixin": {
+      "m_21226_()V": "dropExperience()V"
+    },
+    "rearth/oritech/mixin/MachineControllerLifecycleMixin": {
+      "m_142339_(Lnet/minecraft/world/level/Level;)V": "setLevel(Lnet/minecraft/world/level/Level;)V"
+    },
+    "rearth/oritech/mixin/client/CapeLayerMixin": {
+      "m_6494_(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/client/player/AbstractClientPlayer;FFFFFF)V": "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/client/player/AbstractClientPlayer;FFFFFF)V"
+    },
+    "rearth/oritech/mixin/client/HumanoidModelMixin": {
+      "m_6973_(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V": "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V"
+    }
+  }
+}

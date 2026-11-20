@@ -16,7 +16,7 @@ public class ModRendererTypes extends RenderType {
     }
 
     static {
-        BLOCK_LINES = create("lumen_block_lines", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.LINES, 256, false, false,
+        BLOCK_LINES = create("lumen_block_lines", DefaultVertexFormat.POSITION_COLOR_NORMAL, VertexFormat.Mode.LINES, 256, false, false,
                 CompositeState.builder()
                         .setShaderState(RENDERTYPE_LINES_SHADER)
                         .setLineState(new RenderStateShard.LineStateShard(OptionalDouble.of(7.0F)))  // thickness

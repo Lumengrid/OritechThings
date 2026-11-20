@@ -4,6 +4,7 @@ import com.lumengrid.oritechthings.item.custom.AdvancedTargetDesignator;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.util.RenderBlockUtils;
 import com.lumengrid.oritechthings.util.TargetTagUtil;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -28,11 +29,11 @@ public class RenderWorldLastEvent {
         if (player == null) {
             return;
         }
-        checkTargetDesignator(player, InteractionHand.MAIN_HAND);
-        checkTargetDesignator(player, InteractionHand.OFF_HAND);
+        checkTargetDesignator(player, InteractionHand.MAIN_HAND, evt.getPoseStack());
+        checkTargetDesignator(player, InteractionHand.OFF_HAND, evt.getPoseStack());
     }
 
-    private static void checkTargetDesignator(Player player, InteractionHand hand) {
+    private static void checkTargetDesignator(Player player, InteractionHand hand, PoseStack poseStack) {
         try {
             ItemStack item = player.getItemInHand(hand);
             // Only render for AdvancedTargetDesignator items
@@ -44,10 +45,10 @@ public class RenderWorldLastEvent {
                 if (item.getTag() != null && TargetTagUtil.getTargetDim(item) != null) {
                     ResourceKey<Level> dimension = TargetTagUtil.getTargetDim(item);
                     if (dimension == null || dimension == player.level().dimension()) {
-                        RenderBlockUtils.createBox(targetPos);
+                        RenderBlockUtils.createBox(poseStack, targetPos);
                     }
                 } else {
-                    RenderBlockUtils.createBox(targetPos);
+                    RenderBlockUtils.createBox(poseStack, targetPos);
                 }
             }
         } catch (Exception e) {
