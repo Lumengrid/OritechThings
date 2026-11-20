@@ -148,14 +148,10 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 }
 // Include the output of "generateModMetadata" as a resource in the main jar
 sourceSets.main.resources.srcDir generateModMetadata
-// To avoid having to run "generateModMetadata" manually, make it run on each project load
-afterEvaluate {
-    tasks.named("processResources", ProcessResources) {
-        from(generateModMetadata)
-    }
-    tasks.named("jar", Jar) {
-        from(generateModMetadata)
-    }
+// The srcDir above already makes processResources run generateModMetadata and puts mods.toml in the jar.
+// Hand-written files in src/main/resources win over datagen output if a path ever exists in both.
+tasks.named('processResources', ProcessResources) {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 // Example configuration to allow publishing using the maven-publish plugin
