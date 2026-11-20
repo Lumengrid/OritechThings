@@ -6,7 +6,6 @@ import com.lumengrid.oritechthings.menu.AcceleratorSpeedSensorMenu;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -22,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import rearth.oritech.block.entity.accelerator.AcceleratorControllerBlockEntity;
 import rearth.oritech.block.entity.accelerator.AcceleratorParticleLogic;
@@ -135,14 +134,14 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
     }
 
     @Override
-    public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider registries) {
+    public @NotNull CompoundTag getUpdateTag() {
         CompoundTag tag = new CompoundTag();
-        saveAdditional(tag, registries);
+        saveAdditional(tag);
         return tag;
     }
 
-    protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registryLookup) {
-        super.saveAdditional(tag, registryLookup);
+    protected void saveAdditional(@NotNull CompoundTag tag) {
+        super.saveAdditional(tag);
         tag.putInt("SpeedLimit", this.speedLimit);
         tag.putBoolean("Enabled", this.enabled);
         tag.putBoolean("CheckGreater", this.checkGreater);
@@ -150,11 +149,11 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
         if (this.targetDesignator != null) {
             tag.putLong("TargetDesignator", this.targetDesignator.asLong());
         }
-        tag.put("Inventory", this.inventory.serializeNBT(registryLookup));
+        tag.put("Inventory", this.inventory.serializeNBT());
     }
 
-    protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registryLookup) {
-        super.loadAdditional(tag, registryLookup);
+    protected void loadAdditional(@NotNull CompoundTag tag) {
+        super.loadAdditional(tag);
         this.speedLimit = tag.getInt("SpeedLimit");
         this.enabled = tag.getBoolean("Enabled");
         this.checkGreater = tag.getBoolean("CheckGreater");
@@ -162,7 +161,7 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
         if (tag.contains("TargetDesignator")) {
             this.targetDesignator = BlockPos.of(tag.getLong("TargetDesignator"));
         }
-        inventory.deserializeNBT(registryLookup, tag.getCompound("Inventory"));
+        inventory.deserializeNBT(tag.getCompound("Inventory"));
     }
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState state, T ignoredT) {
@@ -242,9 +241,11 @@ public class AcceleratorSpeedSensorBlockEntity extends BlockEntity implements Me
     }
 
     private static void notifyNeighbors(Level level, BlockPos pos) {
-        level.updateNeighborsAt(pos, level.getBlockState(pos).getBlock());
+        // 1.20.1: no updateNeighborsAt(BlockPos, Block) overload — use the flags variant
+        BlockState state = level.getBlockState(pos);
+        level.updateNeighborsAt(pos, state.getBlock(), 3);
         for (Direction direction : Direction.values()) {
-            level.updateNeighborsAt(pos.relative(direction), level.getBlockState(pos).getBlock());
+            level.updateNeighborsAt(pos.relative(direction), state.getBlock(), 3);
         }
     }
 

@@ -3,7 +3,7 @@ package com.lumengrid.oritechthings.util;
 import com.lumengrid.oritechthings.block.ModBlocks;
 
 import net.minecraft.util.StringRepresentable;
-import net.neoforged.neoforge.registries.DeferredBlock;
+import net.minecraftforge.registries.DeferredBlock;
 import org.jetbrains.annotations.NotNull;
 
 public class Constants {

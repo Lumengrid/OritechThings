@@ -31,6 +31,7 @@ import static com.lumengrid.oritechthings.main.OritechThings.MOD_ID;
 
 import java.util.List;
 
+// TODO(1.20.1 oritech swap): MachineAddonBlock.AddonSettings API may differ in oritech 1.20.1.
 public class TierAddonBlock extends MachineAddonBlock {
     public static final EnumProperty<Constants.AddonType> ADDON_TYPE = EnumProperty.create("addon_type", Constants.AddonType.class);
     public static final IntegerProperty ADDON_TIER = IntegerProperty.create("tier", 2, 9);

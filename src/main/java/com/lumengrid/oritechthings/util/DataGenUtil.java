@@ -2,7 +2,7 @@ package com.lumengrid.oritechthings.util;
 
 import static com.lumengrid.oritechthings.main.OritechThings.MOD_ID;
 
-import net.neoforged.neoforge.registries.DeferredHolder;
+import net.minecraftforge.registries.DeferredHolder;
 
 public class DataGenUtil {
 

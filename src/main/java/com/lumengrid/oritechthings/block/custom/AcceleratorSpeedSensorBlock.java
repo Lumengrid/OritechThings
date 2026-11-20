@@ -68,7 +68,8 @@ public class AcceleratorSpeedSensorBlock extends BaseEntityBlock {
             return InteractionResult.SUCCESS_NO_ITEM_USED;
         }
 
-        player.openMenu(state.getMenuProvider(level, pos), p -> p.writeBlockPos(pos));
+        // 1.20.1 form: openMenu(MenuProvider, BlockPos)
+        player.openMenu(state.getMenuProvider(level, pos), pos);
 
         return InteractionResult.SUCCESS_NO_ITEM_USED;
     }

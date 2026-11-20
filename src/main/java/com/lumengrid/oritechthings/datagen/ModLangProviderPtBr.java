@@ -8,7 +8,7 @@ import com.lumengrid.oritechthings.util.DataGenUtil;
 import static com.lumengrid.oritechthings.main.OritechThings.MOD_ID;
 
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.minecraftforge.common.data.LanguageProvider;
 import rearth.oritech.init.ToolsContent;
 
 public class ModLangProviderPtBr extends LanguageProvider {

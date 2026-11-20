@@ -5,25 +5,22 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.minecraftforge.network.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 import rearth.oritech.init.BlockContent;
 
 public record FramePlacerPacket(BlockPos startPos, int xDimension, int yDimension, int offset,
-                                Direction facing) implements CustomPacketPayload {
-    public static final Type<FramePlacerPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(OritechThings.MOD_ID, "frame_placer"));
-
+                                Direction facing) {
     public static final StreamCodec<ByteBuf, FramePlacerPacket> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC,
             FramePlacerPacket::startPos,
@@ -38,34 +35,40 @@ public record FramePlacerPacket(BlockPos startPos, int xDimension, int yDimensio
             FramePlacerPacket::new
     );
 
-    @Override
-    public @NotNull Type<? extends CustomPacketPayload> type() {
-        return TYPE;
+    public FriendlyByteBuf toBytes(FriendlyByteBuf buf) {
+        STREAM_CODEC.encode(buf, this);
+        return buf;
+    }
+
+    public static FramePlacerPacket fromBytes(FriendlyByteBuf buf) {
+        return STREAM_CODEC.decode(buf);
     }
 
     public static void handleDataOnServer(final FramePlacerPacket packet, final IPayloadContext context) {
-        if (!(context.player() instanceof ServerPlayer sPlayer)) return;
-        ServerLevel level = sPlayer.serverLevel();
-        BlockPos startPos = getOffsetPosition(packet.facing, packet.startPos, -packet.offset, 0);
-        BlockPos playerPos = sPlayer.blockPosition();
-        Direction playerFacing = sPlayer.getDirection();
-        for (int x = 0; x < packet.xDimension; x++) {
-            for (int y = 0; y < packet.yDimension; y++) {
-                BlockPos currentPos = getOffsetPosition(packet.facing, startPos, x, y);
-                BlockState state = level.getBlockState(currentPos);
-                boolean isPerimeter = isPerimeter(x, y, packet.xDimension, packet.yDimension);
-                if (isPerimeter && state.is(BlockContent.MACHINE_FRAME_BLOCK)) {
-                    continue;
-                }
-                if (!state.isAir()) {
-                    level.destroyBlock(currentPos, false);
-                    dropBlockInFrontOfPlayer(level, playerPos, playerFacing, state);
-                }
-                if (isPerimeter && !placeFrameBlock(sPlayer, level, currentPos)) {
-                    return;
+        context.enqueueWork(() -> {
+            if (!(context.player() instanceof ServerPlayer sPlayer)) return;
+            ServerLevel level = sPlayer.serverLevel();
+            BlockPos startPos = getOffsetPosition(packet.facing, packet.startPos, -packet.offset, 0);
+            BlockPos playerPos = sPlayer.blockPosition();
+            Direction playerFacing = sPlayer.getDirection();
+            for (int x = 0; x < packet.xDimension; x++) {
+                for (int y = 0; y < packet.yDimension; y++) {
+                    BlockPos currentPos = getOffsetPosition(packet.facing, startPos, x, y);
+                    BlockState state = level.getBlockState(currentPos);
+                    boolean isPerimeter = isPerimeter(x, y, packet.xDimension, packet.yDimension);
+                    if (isPerimeter && state.is(BlockContent.MACHINE_FRAME_BLOCK)) {
+                        continue;
+                    }
+                    if (!state.isAir()) {
+                        level.destroyBlock(currentPos, false);
+                        dropBlockInFrontOfPlayer(level, playerPos, playerFacing, state);
+                    }
+                    if (isPerimeter && !placeFrameBlock(sPlayer, level, currentPos)) {
+                        return;
+                    }
                 }
             }
-        }
+        });
     }
 
     private static void dropBlockInFrontOfPlayer(ServerLevel level, BlockPos playerPos, Direction playerFacing, BlockState blockState) {

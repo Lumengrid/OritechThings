@@ -12,13 +12,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import com.lumengrid.oritechthings.network.ModNetwork;
 
 @SuppressWarnings("null")
 public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<AcceleratorSpeedSensorMenu> {
         private final Component title = Component
                         .translatable("gui.oritechthings.particle_accelerator_speed_sensor.title");
-        public static ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(OritechThings.MOD_ID,
+        public static ResourceLocation BACKGROUND = new ResourceLocation(OritechThings.MOD_ID,
                         "textures/gui/speed_sensor.png");
         
         private EditBox speedInput;
@@ -47,7 +47,7 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
                                         // Update client-side state immediately
                                         menu.be.setAutomaticMode(newState);
                                         // Send to server
-                                        PacketDistributor.sendToServer(new UpdateSpeedSensorC2SPacket(
+                                        ModNetwork.CHANNEL.sendToServer(new UpdateSpeedSensorC2SPacket(
                                                         menu.be.getBlockPos(),
                                                         menu.be.getSpeedLimit(), menu.be.isEnabled(), menu.be.isCheckGreater(), newState));
                                         // Update button appearance
@@ -78,7 +78,7 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
                                         // Update client-side state immediately
                                         menu.be.setEnabled(newState);
                                         // Send to server
-                                        PacketDistributor.sendToServer(new UpdateSpeedSensorC2SPacket(
+                                        ModNetwork.CHANNEL.sendToServer(new UpdateSpeedSensorC2SPacket(
                                                         menu.be.getBlockPos(),
                                                         menu.be.getSpeedLimit(), newState, menu.be.isCheckGreater(), menu.be.isAutomaticMode()));
                                         // Update button appearance
@@ -103,7 +103,7 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
                                 Component.literal(menu.be.isCheckGreater() ? ">" : "<"),
                                 button -> {
                                         boolean newState = !menu.be.isCheckGreater();
-                                        PacketDistributor.sendToServer(new UpdateSpeedSensorC2SPacket(
+                                        ModNetwork.CHANNEL.sendToServer(new UpdateSpeedSensorC2SPacket(
                                                         menu.be.getBlockPos(),
                                                         menu.be.getSpeedLimit(), menu.be.isEnabled(), newState, menu.be.isAutomaticMode()));
                                         button.setMessage(Component.literal(newState ? ">" : "<"));
@@ -165,11 +165,11 @@ public class AcceleratorSpeedSensorScreen extends AbstractContainerScreen<Accele
                         // Allow empty input, default to 0
                         int value = input.isEmpty() ? 0 : Integer.parseInt(input);
                         value = Math.max(0, Math.min(value, 999999));
-                        PacketDistributor.sendToServer(new UpdateSpeedSensorC2SPacket(menu.be.getBlockPos(), value,
+                        ModNetwork.CHANNEL.sendToServer(new UpdateSpeedSensorC2SPacket(menu.be.getBlockPos(), value,
                                         menu.be.isEnabled(), menu.be.isCheckGreater(), menu.be.isAutomaticMode()));
                 } catch (NumberFormatException e) {
                         // If parsing fails, default to 0
-                        PacketDistributor.sendToServer(new UpdateSpeedSensorC2SPacket(menu.be.getBlockPos(), 0,
+                        ModNetwork.CHANNEL.sendToServer(new UpdateSpeedSensorC2SPacket(menu.be.getBlockPos(), 0,
                                         menu.be.isEnabled(), menu.be.isCheckGreater(), menu.be.isAutomaticMode()));
                 }
         }

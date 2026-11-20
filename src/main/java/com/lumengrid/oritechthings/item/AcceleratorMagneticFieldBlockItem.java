@@ -1,6 +1,7 @@
 package com.lumengrid.oritechthings.item;
 
 import com.lumengrid.oritechthings.entity.custom.AcceleratorMagneticFieldBlockEntity;
+import com.lumengrid.oritechthings.util.EnergyTagUtil;
 import org.jetbrains.annotations.NotNull;
 import rearth.oritech.api.energy.EnergyApi;
 import rearth.oritech.api.energy.containers.SimpleEnergyItemStorage;
@@ -22,7 +23,7 @@ public class AcceleratorMagneticFieldBlockItem extends BlockItem implements Ener
     
     @Override
     public void appendHoverText(ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag type) {
-        long storedEnergy = stack.getOrDefault(EnergyApi.ITEM.getEnergyComponent(), 0L);
+        long storedEnergy = EnergyTagUtil.getEnergy(stack);
         
         if (storedEnergy != 0) {
             var text = Component.translatable("tooltip.oritech.energy_stored", TooltipHelper.getEnergyText(storedEnergy));
@@ -34,7 +35,7 @@ public class AcceleratorMagneticFieldBlockItem extends BlockItem implements Ener
     
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        var contentEmpty = stack.getOrDefault(EnergyApi.ITEM.getEnergyComponent(), 0L) <= 0;
+        var contentEmpty = EnergyTagUtil.getEnergy(stack) <= 0;
         return !contentEmpty;
     }
     
@@ -46,7 +47,7 @@ public class AcceleratorMagneticFieldBlockItem extends BlockItem implements Ener
     @Override
     public int getBarWidth(ItemStack stack) {
         var capacity = AcceleratorMagneticFieldBlockEntity.BASE_ENERGY_CAPACITY;
-        long fillAmount = stack.getOrDefault(EnergyApi.ITEM.getEnergyComponent(), 0L);
+        long fillAmount = EnergyTagUtil.getEnergy(stack);
         if (fillAmount <= 0) {
             return 0;
         }
@@ -56,6 +57,8 @@ public class AcceleratorMagneticFieldBlockItem extends BlockItem implements Ener
         return Math.round((fillAmount * 100f / capacity) * MAX_BAR_WIDTH) / 100;
     }
     
+    // TODO(1.20.1 oritech swap): re-implement against the oritech 1.20.1 EnergyApi
+    // (capability-based); SimpleEnergyItemStorage is the 1.21.1 API.
     @Override
     public EnergyApi.EnergyStorage getEnergyStorage(ItemStack stack) {
         return new SimpleEnergyItemStorage(

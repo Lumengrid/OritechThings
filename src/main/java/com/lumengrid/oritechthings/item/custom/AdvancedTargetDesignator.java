@@ -4,9 +4,9 @@ import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.entity.custom.AcceleratorMagneticFieldBlockEntity;
 import com.lumengrid.oritechthings.entity.custom.AcceleratorSpeedSensorBlockEntity;
 import com.lumengrid.oritechthings.main.ConfigLoader;
-import com.lumengrid.oritechthings.main.ModDataComponents;
 import com.lumengrid.oritechthings.api.CrossDimensionalDrone;
 import com.lumengrid.oritechthings.main.OritechThings;
+import com.lumengrid.oritechthings.util.TargetTagUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -33,6 +33,7 @@ import rearth.oritech.item.tools.LaserTargetDesignator;
 import java.util.List;
 import java.util.Objects;
 
+// TODO(1.20.1 oritech swap): re-align against the oritech 1.20.1 LaserTargetDesignator/drone API.
 public class AdvancedTargetDesignator extends LaserTargetDesignator {
     public AdvancedTargetDesignator(Properties settings) {
         super(settings);
@@ -63,9 +64,9 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
             BlockPos targetPos = null;
             ResourceKey<Level> targetDimension = null;
             ItemStack itemInHand = context.getItemInHand();
-            if (itemInHand.has(ModDataComponents.TARGET_POSITION)) {
-                targetPos = itemInHand.get(ModDataComponents.TARGET_POSITION.get());
-                targetDimension = itemInHand.get(ModDataComponents.TARGET_DIMENSION.get());
+            if (TargetTagUtil.hasTarget(itemInHand)) {
+                targetPos = TargetTagUtil.getTargetPos(itemInHand);
+                targetDimension = TargetTagUtil.getTargetDim(itemInHand);
             }
             if (clickedBlockState.getBlock().equals(BlockContent.LASER_ARM_BLOCK)) {
                 if (clickedEntity instanceof LaserArmBlockEntity) {
@@ -91,16 +92,14 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
             if (clickedBlockState.getBlock().equals(BlockContent.ACCELERATOR_CONTROLLER)) {
                 if (clickedEntity instanceof rearth.oritech.block.entity.accelerator.AcceleratorControllerBlockEntity) {
                     // Save the accelerator position in the designator
-                    itemInHand.set(ModDataComponents.TARGET_POSITION.get(), context.getClickedPos());
-                    itemInHand.set(ModDataComponents.TARGET_DIMENSION.get(), level.dimension());
+                    TargetTagUtil.saveTarget(itemInHand, context.getClickedPos(), level.dimension());
                     Objects.requireNonNull(player).sendSystemMessage(Component.translatable("message.oritechthings.advanced_target_designator.accelerator_saved")
                             .append(Component.literal(context.getClickedPos().toShortString()).withStyle(ChatFormatting.BLUE)));
                     return InteractionResult.SUCCESS;
                 }
             }
             if (!clickedBlockState.getBlock().equals(Blocks.AIR)) {
-                itemInHand.set(ModDataComponents.TARGET_POSITION.get(), context.getClickedPos());
-                itemInHand.set(ModDataComponents.TARGET_DIMENSION.get(), level.dimension());
+                TargetTagUtil.saveTarget(itemInHand, context.getClickedPos(), level.dimension());
                 Objects.requireNonNull(player).sendSystemMessage(Component.translatable("message.oritech.target_designator.position_stored"));
             }
         } catch (Exception e) {
@@ -149,15 +148,14 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag type) {
-        if (stack.has(ModDataComponents.TARGET_POSITION.get())) {
-            BlockPos data = stack.get(ModDataComponents.TARGET_POSITION.get());
-            assert data != null;
+        BlockPos data = TargetTagUtil.getTargetPos(stack);
+        if (data != null) {
             tooltip.add(Component.translatable("tooltip.oritech.target_designator.set_to", data.toShortString()));
         } else {
             tooltip.add(Component.translatable("tooltip.oritech.target_designator.no_target"));
         }
         if (ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
-            ResourceKey<Level> dimension = stack.get(ModDataComponents.TARGET_DIMENSION.get());
+            ResourceKey<Level> dimension = TargetTagUtil.getTargetDim(stack);
             tooltip.add(Component.translatable("tooltip.oritechthings.advanced_target_designator.dimension")
                     .append(Component.literal(getDimensionName(dimension)).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.BOLD)));
         }

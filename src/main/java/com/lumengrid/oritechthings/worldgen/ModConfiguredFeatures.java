@@ -1,7 +1,7 @@
 package com.lumengrid.oritechthings.worldgen;
 
 import com.lumengrid.oritechthings.main.OritechThings;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +14,7 @@ public class ModConfiguredFeatures {
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(OritechThings.MOD_ID, name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(OritechThings.MOD_ID, name));
     }
 
     @SuppressWarnings("unused")

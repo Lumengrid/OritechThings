@@ -2,6 +2,7 @@ package com.lumengrid.oritechthings.block.custom;
 
 import com.lumengrid.oritechthings.entity.custom.AcceleratorMagneticFieldBlockEntity;
 import com.lumengrid.oritechthings.main.ConfigLoader;
+import com.lumengrid.oritechthings.util.EnergyTagUtil;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,17 +28,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.container.MenuProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import rearth.oritech.api.energy.EnergyApi;
 import rearth.oritech.block.base.entity.ExpandableEnergyStorageBlockEntity;
 import rearth.oritech.util.ComparatorOutputProvider;
 import rearth.oritech.util.MachineAddonController;
-import dev.architectury.registry.menu.ExtendedMenuProvider;
-import dev.architectury.registry.menu.MenuRegistry;
 
 import java.util.List;
 import java.util.Objects;
@@ -116,20 +113,22 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
             }
             
             machineEntity.initAddons();
-            
-            var handler = (ExtendedMenuProvider) world.getBlockEntity(pos);
-            MenuRegistry.openExtendedMenu((ServerPlayer) player, handler);
+
+            // TODO(1.20.1 oritech swap): align with oritech 1.20.1's menu-opening pattern
+            // (the Architectury MenuRegistry/ExtendedMenuProvider is not available for Forge).
+            var provider = (MenuProvider) world.getBlockEntity(pos);
+            player.openMenu(provider, pos);
         }
         
         return InteractionResult.SUCCESS;
     }
     
     @Override
-    protected @NotNull List<ItemStack> getDrops(@NotNull BlockState state, LootParams.@NotNull Builder builder) {
-        var droppedStacks = super.getDrops(state, builder);
+    public @NotNull List<ItemStack> getDrops(@NotNull BlockState state, LevelReader level, @NotNull BlockPos pos,
+                                             @NotNull ItemStack stack, @Nullable BlockEntity entity) {
+        var droppedStacks = super.getDrops(state, level, pos, stack, entity);
 
-        var blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-        if (blockEntity instanceof AcceleratorMagneticFieldBlockEntity storageEntity) {
+        if (entity instanceof AcceleratorMagneticFieldBlockEntity storageEntity) {
             droppedStacks.addAll(storageEntity.inventory.getHeldStacks());
             storageEntity.inventory.clearContent();
         }
@@ -143,10 +142,13 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
         
         var storageEntity = (AcceleratorMagneticFieldBlockEntity) world.getBlockEntity(pos);
         assert storageEntity != null;
-        if (storageEntity.getEnergyStorage(null).getAmount() > 0) {
-            stack.set(EnergyApi.ITEM.getEnergyComponent(), storageEntity.getEnergyStorage(null).getAmount());
+        // TODO(1.20.1 oritech swap): the null argument is the 1.20.5+ HolderLookup form;
+        // re-check oritech 1.20.1's getEnergyStorage signature.
+        long amount = storageEntity.getEnergyStorage(null).getAmount();
+        if (amount > 0) {
+            EnergyTagUtil.setEnergy(stack, amount);
         }
-        
+
         return stack;
     }
     
@@ -154,7 +156,7 @@ public class AcceleratorMagneticFieldBlock extends Block implements EntityBlock 
     public void setPlacedBy(@NotNull Level world, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable LivingEntity placer, @NotNull ItemStack itemStack) {
         super.setPlacedBy(world, pos, state, placer, itemStack);
         
-        long storedEnergyInStack = itemStack.getOrDefault(EnergyApi.ITEM.getEnergyComponent(), 0L);
+        long storedEnergyInStack = EnergyTagUtil.getEnergy(itemStack);
         
         if (storedEnergyInStack > 0) {
             var storageEntity = (ExpandableEnergyStorageBlockEntity) world.getBlockEntity(pos);

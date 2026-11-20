@@ -14,6 +14,7 @@ import rearth.oritech.block.blocks.accelerator.AcceleratorMotorBlock;
 import java.util.List;
 
 @Mixin(AcceleratorMotorBlock.class)
+// TODO(1.20.1 oritech swap): verify mixin targets/signatures against the oritech 1.20.1 build.
 public class AcceleratorMotorTooltipMixin {
 
     @Inject(method = "appendHoverText", at = @At("TAIL"))

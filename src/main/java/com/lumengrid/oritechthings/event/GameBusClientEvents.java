@@ -1,15 +1,14 @@
 package com.lumengrid.oritechthings.event;
 
-import com.lumengrid.oritechthings.client.renderer.AcceleratorSpeedSensorBlockEntityRender;
 import com.lumengrid.oritechthings.client.screen.AcceleratorSpeedSensorScreen;
-import com.lumengrid.oritechthings.entity.ModEntities;
+import com.lumengrid.oritechthings.main.ConfigLoader;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.menu.ModMenuTypes;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.EventBusSubscriber;
+import net.minecraftforge.client.event.RegisterMenuScreensEvent;
+import net.minecraftforge.client.event.ResourceReloadEvent;
 
 @EventBusSubscriber(modid = OritechThings.MOD_ID, value = Dist.CLIENT)
 public class GameBusClientEvents {
@@ -19,9 +18,12 @@ public class GameBusClientEvents {
         event.register(ModMenuTypes.SPEED_SENSOR_MENU.get(), AcceleratorSpeedSensorScreen::new);
     }
 
+    /**
+     * Forge 1.20.1 has no RegisterClientReloadListenersEvent, so the config is
+     * reloaded when the game reloads its resources instead.
+     */
     @SubscribeEvent
-    public static void onBlockEntityRender(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(ModEntities.accelerator_speed_sensor.get(),
-                AcceleratorSpeedSensorBlockEntityRender::new);
+    public static void onResourcesReload(ResourceReloadEvent event) {
+        ConfigLoader.getInstance().load();
     }
 }

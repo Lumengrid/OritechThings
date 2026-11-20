@@ -20,9 +20,9 @@ import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.fml.eventbus.IEventBus;
+import net.minecraftforge.registries.DeferredBlock;
+import net.minecraftforge.registries.DeferredRegister;
 import rearth.oritech.block.blocks.addons.MachineAddonBlock;
 import rearth.oritech.util.Geometry;
 
@@ -230,13 +230,14 @@ public class ModBlocks {
 
     private static <T extends Block> void registerEnergyStorageBlockItem(String name, DeferredBlock<T> block) {
         ModItems.BLOCKITEMS.register(name, () -> {
+            // TODO(1.20.1 oritech swap): re-register the item's energy provider
+            // with the oritech 1.20.1 EnergyApi; energy is stored via NBT in the meantime
+            // (see util/EnergyTagUtil), since Data Components do not exist in 1.20.1.
+            var item = new AcceleratorMagneticFieldBlockItem(block.get(), new Item.Properties());
             if (EnergyApi.ITEM != null) {
-                var item = new AcceleratorMagneticFieldBlockItem(block.get(), new Item.Properties().component(EnergyApi.ITEM.getEnergyComponent(), 0L));
                 EnergyApi.ITEM.registerForItem(() -> item);
-                return item;
-            } else {
-                return new BlockItem(block.get(), new Item.Properties());
             }
+            return item;
         });
     }
 

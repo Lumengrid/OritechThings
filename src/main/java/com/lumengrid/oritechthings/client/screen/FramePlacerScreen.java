@@ -9,10 +9,10 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import net.neoforged.neoforge.network.PacketDistributor;
+import com.lumengrid.oritechthings.network.ModNetwork;
 
 import static com.lumengrid.oritechthings.main.OritechThings.MOD_ID;
 
@@ -172,7 +172,7 @@ public class FramePlacerScreen extends Screen {
     }
 
     private void confirmDimensions() {
-        PacketDistributor.sendToServer(new FramePlacerPacket(startPos, xValue, yValue, offsetValue, facing));
+        ModNetwork.CHANNEL.sendToServer(new FramePlacerPacket(startPos, xValue, yValue, offsetValue, facing));
         Minecraft.getInstance().setScreen(null);
     }
 

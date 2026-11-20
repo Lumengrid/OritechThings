@@ -12,6 +12,7 @@ import rearth.oritech.util.MachineAddonController;
 
 import java.util.Objects;
 
+// TODO(1.20.1 oritech swap): re-align against the oritech 1.20.1 EnergyApi/AddonBlockEntity API.
 public class TierAddonBlockEntity extends AddonBlockEntity implements EnergyApi.BlockProvider {
     private final DelegatingEnergyStorage delegatedStorage = new DelegatingEnergyStorage(this::getMainStorage, this::isConnected);
 

@@ -5,10 +5,10 @@ import com.lumengrid.oritechthings.item.custom.AdvancedTargetDesignator;
 import com.lumengrid.oritechthings.item.custom.FramePlacer;
 import com.lumengrid.oritechthings.main.OritechThings;
 import net.minecraft.world.item.Item;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.common.DeferredSpawnEggItem;
-import net.neoforged.neoforge.registries.DeferredItem;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.fml.eventbus.IEventBus;
+import net.minecraftforge.common.DeferredSpawnEggItem;
+import net.minecraftforge.registries.DeferredItem;
+import net.minecraftforge.registries.DeferredRegister;
 
 public class ModItems {
 

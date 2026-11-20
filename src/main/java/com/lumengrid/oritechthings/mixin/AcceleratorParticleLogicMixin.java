@@ -17,6 +17,7 @@ import rearth.oritech.block.entity.accelerator.AcceleratorControllerBlockEntity;
 import rearth.oritech.block.entity.accelerator.AcceleratorParticleLogic;
 
 @Mixin(AcceleratorParticleLogic.class)
+// TODO(1.20.1 oritech swap): verify mixin targets/signatures against the oritech 1.20.1 build.
 public class AcceleratorParticleLogicMixin {
 
     @Shadow

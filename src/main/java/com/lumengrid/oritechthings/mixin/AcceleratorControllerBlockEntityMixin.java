@@ -2,7 +2,6 @@ package com.lumengrid.oritechthings.mixin;
 
 import com.lumengrid.oritechthings.api.MagneticFieldController;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -22,7 +21,7 @@ public class AcceleratorControllerBlockEntityMixin implements MagneticFieldContr
     private final List<BlockPos> linkedMagneticFields = new ArrayList<>();
     
     @Inject(method = "saveAdditional", at = @At("TAIL"))
-    private void saveMagneticFields(CompoundTag nbt, HolderLookup.Provider registryLookup, CallbackInfo ci) {
+    private void saveMagneticFields(CompoundTag nbt, CallbackInfo ci) {
         ListTag magneticFieldsTag = new ListTag();
         for (BlockPos pos : linkedMagneticFields) {
             CompoundTag posTag = new CompoundTag();
@@ -35,7 +34,7 @@ public class AcceleratorControllerBlockEntityMixin implements MagneticFieldContr
     }
     
     @Inject(method = "loadAdditional", at = @At("TAIL"))
-    private void loadMagneticFields(CompoundTag nbt, HolderLookup.Provider registryLookup, CallbackInfo ci) {
+    private void loadMagneticFields(CompoundTag nbt, CallbackInfo ci) {
         linkedMagneticFields.clear();
         if (nbt.contains("linkedMagneticFields", Tag.TAG_LIST)) {
             ListTag magneticFieldsTag = nbt.getList("linkedMagneticFields", Tag.TAG_COMPOUND);

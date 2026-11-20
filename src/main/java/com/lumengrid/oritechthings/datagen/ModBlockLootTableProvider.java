@@ -3,14 +3,13 @@ package com.lumengrid.oritechthings.datagen;
 import com.lumengrid.oritechthings.block.ModBlocks;
 import com.lumengrid.oritechthings.util.Constants;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.registries.DeferredBlock;
+import net.minecraftforge.registries.DeferredHolder;
+import net.minecraftforge.registries.DeferredRegister;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -19,8 +18,8 @@ import java.util.List;
 import java.util.Set;
 
 public class ModBlockLootTableProvider extends BlockLootSubProvider {
-    protected ModBlockLootTableProvider(HolderLookup.Provider registries) {
-        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
+    protected ModBlockLootTableProvider() {
+        super(Set.of(), FeatureFlags.DEFAULT.allFlags());
     }
 
     @Override

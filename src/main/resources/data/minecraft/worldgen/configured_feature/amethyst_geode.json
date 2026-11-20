@@ -5,14 +5,14 @@
             "alternate_inner_layer_provider": {
                 "type": "minecraft:simple_state_provider",
                 "state": {
-                    "Name": "minecraft:budding_amethyst"
+                    "name":"minecraft:budding_amethyst"
                 }
             },
             "cannot_replace": "#minecraft:features_cannot_replace",
             "filling_provider": {
                 "type": "minecraft:simple_state_provider",
                 "state": {
-                    "Name": "minecraft:air"
+                    "name":"minecraft:air"
                 }
             },
             "inner_layer_provider": {
@@ -21,42 +21,42 @@
                     {
                         "weight": 25,
                         "data": {
-                            "Name": "minecraft:amethyst_block"
+                            "name":"minecraft:amethyst_block"
                         }
                     },
                     {
                         "weight": 1,
                         "data": {
-                            "Name": "oritechthings:infested_amethyst_block"
+                            "name":"oritechthings:infested_amethyst_block"
                         }
                     }
                 ]
             },
             "inner_placements": [
                 {
-                    "Name": "minecraft:small_amethyst_bud",
-                    "Properties": {
+                    "name":"minecraft:small_amethyst_bud",
+                    "properties": {
                         "facing": "up",
                         "waterlogged": "false"
                     }
                 },
                 {
-                    "Name": "minecraft:medium_amethyst_bud",
-                    "Properties": {
+                    "name":"minecraft:medium_amethyst_bud",
+                    "properties": {
                         "facing": "up",
                         "waterlogged": "false"
                     }
                 },
                 {
-                    "Name": "minecraft:large_amethyst_bud",
-                    "Properties": {
+                    "name":"minecraft:large_amethyst_bud",
+                    "properties": {
                         "facing": "up",
                         "waterlogged": "false"
                     }
                 },
                 {
-                    "Name": "minecraft:amethyst_cluster",
-                    "Properties": {
+                    "name":"minecraft:amethyst_cluster",
+                    "properties": {
                         "facing": "up",
                         "waterlogged": "false"
                     }
@@ -66,13 +66,13 @@
             "middle_layer_provider": {
                 "type": "minecraft:simple_state_provider",
                 "state": {
-                    "Name": "minecraft:calcite"
+                    "name":"minecraft:calcite"
                 }
             },
             "outer_layer_provider": {
                 "type": "minecraft:simple_state_provider",
                 "state": {
-                    "Name": "minecraft:smooth_basalt"
+                    "name":"minecraft:smooth_basalt"
                 }
             }
         },

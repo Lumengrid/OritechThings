@@ -33,10 +33,10 @@ public class ModTags {
     }
 
     private static TagKey<Block> createBlockTag(String name) {
-        return BlockTags.create(ResourceLocation.fromNamespaceAndPath(OritechThings.MOD_ID, name));
+        return BlockTags.create(new ResourceLocation(OritechThings.MOD_ID, name));
     }
 
     private static TagKey<Item> createItemTag(String name) {
-        return ItemTags.create(ResourceLocation.fromNamespaceAndPath(OritechThings.MOD_ID, name));
+        return ItemTags.create(new ResourceLocation(OritechThings.MOD_ID, name));
     }
 }

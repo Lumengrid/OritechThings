@@ -1,17 +1,17 @@
 package com.lumengrid.oritechthings.mixin;
 
 import com.lumengrid.oritechthings.item.custom.AdvancedTargetDesignator;
-import com.lumengrid.oritechthings.main.ModDataComponents;
 import com.lumengrid.oritechthings.main.OritechThings;
 import com.lumengrid.oritechthings.main.ConfigLoader;
 import com.lumengrid.oritechthings.api.CrossDimensionalDrone;
 import com.lumengrid.oritechthings.block.ModBlocks;
+import com.lumengrid.oritechthings.util.TargetTagUtil;
+// TODO (oritech 1.20.1 swap): replace with oritech 1.20.1's fluid stack type (1.21.1 uses architectury's)
 import dev.architectury.fluid.FluidStack;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -112,11 +112,11 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
                 return;
             }
 
-            if (source.has(ModDataComponents.TARGET_POSITION.get())) {
-                var targetPos = source.get(ModDataComponents.TARGET_POSITION.get());
+            if (TargetTagUtil.hasTarget(source)) {
+                var targetPos = TargetTagUtil.getTargetPos(source);
                 ResourceKey<Level> targetDimension = null;
-                if (ConfigLoader.getInstance().dimensionalDroneSettings.enabled() && source.has(ModDataComponents.TARGET_DIMENSION.get())) {
-                    targetDimension = source.get(ModDataComponents.TARGET_DIMENSION.get());
+                if (ConfigLoader.getInstance().dimensionalDroneSettings.enabled()) {
+                    targetDimension = TargetTagUtil.getTargetDim(source);
                 }
 
                 if (targetDimension == null) {
@@ -274,7 +274,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
      * Inject into NBT saving to persist dimension data
      */
     @Inject(method = "saveAdditional", at = @At("TAIL"))
-    private void saveAdditional(CompoundTag nbt, HolderLookup.Provider registryLookup, CallbackInfo ci) {
+    private void saveAdditional(CompoundTag nbt, CallbackInfo ci) {
         if (targetDimension != null) {
             nbt.putString("target_dimension", targetDimension.location().toString());
         }
@@ -285,12 +285,12 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
      * Inject into NBT loading to restore dimension data
      */
     @Inject(method = "loadAdditional", at = @At("TAIL"))
-    private void loadAdditional(CompoundTag nbt, HolderLookup.Provider registryLookup, CallbackInfo ci) {
+    private void loadAdditional(CompoundTag nbt, CallbackInfo ci) {
         if (nbt.contains("target_dimension")) {
             String dimensionString = nbt.getString("target_dimension");
             try {
-                ResourceLocation dimensionLocation = ResourceLocation.parse(dimensionString);
-                targetDimension = ResourceKey.create(Registries.DIMENSION, dimensionLocation);
+                ResourceLocation dimensionLocation = new ResourceLocation(dimensionString);
+                targetDimension = ResourceKey.create(Registry.DIMENSION_REGISTRY, dimensionLocation);
             } catch (Exception e) {
                 OritechThings.LOGGER.warn("Failed to load target dimension from NBT: {}", dimensionString, e);
                 targetDimension = null;
@@ -571,6 +571,7 @@ public class DronePortEntityMixin implements CrossDimensionalDrone {
         }
 
         long arriveTime = targetLevel.getGameTime() + 20; // since we just teleport the time to arrive should be really short
+        // TODO (oritech 1.20.1 swap): DroneTransferData/fluidStorage types may differ in oritech 1.20.1
         var data = new DronePortEntity.DroneTransferData(self.inventory.getHeldStacks().stream().filter(stack -> !stack.isEmpty()).toList(), self.fluidStorage.getStack(), arriveTime);
         targetPort.setIncomingPacket(data);
         self.inventory.clearContent();

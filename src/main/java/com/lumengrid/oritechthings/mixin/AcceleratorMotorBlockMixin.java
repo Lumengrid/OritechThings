@@ -12,6 +12,7 @@ import rearth.oritech.block.blocks.accelerator.AcceleratorMotorBlock;
 import rearth.oritech.block.blocks.addons.MachineAddonBlock;
 
 @Mixin(AcceleratorMotorBlock.class)
+// TODO(1.20.1 oritech swap): verify mixin targets/signatures against the oritech 1.20.1 build.
 public class AcceleratorMotorBlockMixin {
 
     @Inject(method = "onRemove", at = @At("HEAD"))

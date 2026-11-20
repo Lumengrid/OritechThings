@@ -10,7 +10,7 @@ import net.minecraft.world.entity.monster.Silverfish;
 import org.jetbrains.annotations.NotNull;
 
 public class AmethystFishRenderer extends MobRenderer<AmethystFishEntity, AmethystFishModel<AmethystFishEntity>> {
-    private static final ResourceLocation TEXTURE_LOCATION = ResourceLocation.fromNamespaceAndPath(OritechThings.MOD_ID,"textures/entity/amethystfish.png");
+    private static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(OritechThings.MOD_ID,"textures/entity/amethystfish.png");
 
     public AmethystFishRenderer(EntityRendererProvider.Context p_174378_) {
         super(p_174378_, new AmethystFishModel<>(p_174378_.bakeLayer(ModelLayers.SILVERFISH)), 0.3F);
