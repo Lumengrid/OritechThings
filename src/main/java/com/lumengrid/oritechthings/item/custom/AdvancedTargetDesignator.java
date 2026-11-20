@@ -33,7 +33,6 @@ import rearth.oritech.item.tools.LaserTargetDesignator;
 import java.util.List;
 import java.util.Objects;
 
-// TODO(1.20.1 oritech swap): re-align against the oritech 1.20.1 LaserTargetDesignator/drone API.
 public class AdvancedTargetDesignator extends LaserTargetDesignator {
     public AdvancedTargetDesignator(Properties settings) {
         super(settings);
@@ -146,7 +145,7 @@ public class AdvancedTargetDesignator extends LaserTargetDesignator {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag type) {
+    public void appendHoverText(ItemStack stack, @org.jetbrains.annotations.Nullable net.minecraft.world.level.Level context, List<Component> tooltip, TooltipFlag type) {
         BlockPos data = TargetTagUtil.getTargetPos(stack);
         if (data != null) {
             tooltip.add(Component.translatable("tooltip.oritech.target_designator.set_to", data.toShortString()));

@@ -16,9 +16,7 @@ import rearth.oritech.block.entity.accelerator.AcceleratorControllerBlockEntity;
 import rearth.oritech.block.entity.accelerator.AcceleratorMotorBlockEntity;
 import rearth.oritech.block.entity.accelerator.AcceleratorParticleLogic;
 
-@Mixin(AcceleratorControllerBlockEntity.class)
-// TODO(1.20.1 oritech swap): verify mixin targets/signatures against the oritech 1.20.1 build
-// (getEnergyStorage(null) is the 1.21.1 HolderLookup form; OritechConfig field names may differ).
+@Mixin(value = AcceleratorControllerBlockEntity.class, remap = false)
 public class AcceleratorMotorInteractionMixin {
     @Shadow
     private AcceleratorParticleLogic.ActiveParticle particle;

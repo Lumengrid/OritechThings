@@ -1,0 +1,24 @@
+{
+  "type": "oritech:assembler",
+  "ingredients": [
+    {
+      "item": "oritechthings:addon_block_speed_tier_2"
+    },
+    {
+      "item": "oritech:machine_speed_addon"
+    },
+    {
+      "tag": "forge:ingots/steel"
+    },
+    {
+      "item": "oritech:magnetic_coil"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_speed_tier_3"
+    }
+  ],
+  "time": 150
+}

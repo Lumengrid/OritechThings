@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "e": {
+      "item": "oritech:machine_extender"
+    },
+    "a": {
+      "item": "oritech:machine_speed_addon"
+    },
+    "b": {
+      "item": "oritech:biosteel_block"
+    },
+    "p": {
+      "tag": "forge:plates/plastic"
+    },
+    "s": {
+      "tag": "forge:silicon"
+    }
+  },
+  "pattern": [
+    "ppp",
+    "aea",
+    "sbs"
+  ],
+  "result": {
+    "item": "oritechthings:addon_block_speed_tier_2",
+    "count": 1
+  }
+}

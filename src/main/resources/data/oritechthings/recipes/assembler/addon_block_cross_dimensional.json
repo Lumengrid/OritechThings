@@ -1,0 +1,24 @@
+{
+  "type": "oritech:assembler",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/electrum"
+    },
+    {
+      "item": "oritech:heisenberg_compensator"
+    },
+    {
+      "item": "oritech:advanced_computing_engine"
+    },
+    {
+      "item": "minecraft:ender_pearl"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_cross_dimensional"
+    }
+  ],
+  "time": 200
+}

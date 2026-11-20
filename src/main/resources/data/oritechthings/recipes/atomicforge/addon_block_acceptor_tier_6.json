@@ -1,0 +1,21 @@
+{
+  "type": "oritech:atomic_forge",
+  "ingredients": [
+    {
+      "item": "oritechthings:addon_block_acceptor_tier_5"
+    },
+    {
+      "item": "oritech:machine_acceptor_addon"
+    },
+    {
+      "item": "oritech:advanced_computing_engine"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_acceptor_tier_6"
+    }
+  ],
+  "time": 300
+}

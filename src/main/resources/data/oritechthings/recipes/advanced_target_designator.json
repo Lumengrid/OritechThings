@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "forge:silicon"
+    },
+    {
+      "item": "oritech:target_designator"
+    }
+  ],
+  "result": {
+    "item": "oritechthings:advanced_target_designator",
+    "count": 1
+  }
+}

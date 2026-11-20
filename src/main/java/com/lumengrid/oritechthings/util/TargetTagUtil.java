@@ -57,6 +57,6 @@ public class TargetTagUtil {
         if (dim.isEmpty()) {
             return null;
         }
-        return ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dim));
+        return ResourceKey.create(net.minecraft.core.registries.Registries.DIMENSION, new ResourceLocation(dim));
     }
 }

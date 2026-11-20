@@ -17,7 +17,6 @@ import rearth.oritech.block.blocks.accelerator.AcceleratorMotorBlock;
 import rearth.oritech.init.BlockContent;
 
 @Mixin(MachineAddonBlock.class)
-// TODO(1.20.1 oritech swap): verify mixin targets/signatures against the oritech 1.20.1 build.
 public class MachineAddonBlockMixin {
 
     @Inject(method = "setPlacedBy", at = @At("TAIL"))

@@ -31,7 +31,6 @@ import static com.lumengrid.oritechthings.main.OritechThings.MOD_ID;
 
 import java.util.List;
 
-// TODO(1.20.1 oritech swap): MachineAddonBlock.AddonSettings API may differ in oritech 1.20.1.
 public class TierAddonBlock extends MachineAddonBlock {
     public static final EnumProperty<Constants.AddonType> ADDON_TYPE = EnumProperty.create("addon_type", Constants.AddonType.class);
     public static final IntegerProperty ADDON_TIER = IntegerProperty.create("tier", 2, 9);
@@ -84,7 +83,7 @@ public class TierAddonBlock extends MachineAddonBlock {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip,
+    public void appendHoverText(ItemStack stack, @org.jetbrains.annotations.Nullable net.minecraft.world.level.BlockGetter context, List<Component> tooltip,
             TooltipFlag options) {
         if (this.defaultBlockState().getValue(ADDON_TYPE).toString().equals(Constants.AddonType.CROSS_DIMENSIONAL.toString())) {
             // Check if cross-dimensional addons are enabled

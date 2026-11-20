@@ -13,7 +13,7 @@ import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.DeferredBlock;
+import net.minecraftforge.registries.RegistryObject;
 
 public class ModBlockStateProvider extends BlockStateProvider {
     public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
@@ -22,7 +22,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        for (DeferredBlock<?> data : Constants.getAllAddons()) {
+        for (RegistryObject<?> data : Constants.getAllAddons()) {
             addonBlockState(data);
         }
         
@@ -32,20 +32,20 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     @SuppressWarnings("unused")
-    private void blockWithItem(DeferredBlock<?> deferredBlock) {
-        simpleBlockWithItem(deferredBlock.get(), cubeAll(deferredBlock.get()));
+    private void blockWithItem(RegistryObject<?> deferredBlock) {
+        simpleBlockWithItem(((net.minecraft.world.level.block.Block) deferredBlock.get()), cubeAll(((net.minecraft.world.level.block.Block) deferredBlock.get())));
     }
 
-    private void blockwithparentModel(DeferredBlock<?> deferredBlock,String parent) {
-        simpleBlockWithItem(deferredBlock.get(),
-                models().withExistingParent(deferredBlock.getRegisteredName(), this.mcLoc(parent)));
+    private void blockwithparentModel(RegistryObject<?> deferredBlock,String parent) {
+        simpleBlockWithItem(((net.minecraft.world.level.block.Block) deferredBlock.get()),
+                models().withExistingParent(deferredBlock.getId().toString(), this.mcLoc(parent)));
     }
 
-    private void addonBlockState(DeferredBlock<?> deferredBlock) {
+    private void addonBlockState(RegistryObject<?> deferredBlock) {
         ModelFile model = model(deferredBlock);
-        simpleBlockItem(deferredBlock.get(), model);
+        simpleBlockItem(((net.minecraft.world.level.block.Block) deferredBlock.get()), model);
         
-        var block = deferredBlock.get();
+        var block = ((net.minecraft.world.level.block.Block) deferredBlock.get());
         if (block instanceof TierAddonBlock) {
             var variantBuilder = getVariantBuilder(block);
             
@@ -81,16 +81,15 @@ public class ModBlockStateProvider extends BlockStateProvider {
         }
     }
 
-    private void simpleBlockState(DeferredBlock<?> deferredBlock) {
+    private void simpleBlockState(RegistryObject<?> deferredBlock) {
         ModelFile model = model(deferredBlock);
-        simpleBlockItem(deferredBlock.get(), model);
-        getVariantBuilder(deferredBlock.get())
+        simpleBlockItem(((net.minecraft.world.level.block.Block) deferredBlock.get()), model);
+        getVariantBuilder(((net.minecraft.world.level.block.Block) deferredBlock.get()))
                 .forAllStates(state -> ConfiguredModel.builder().modelFile(model).build());
     }
 
-    private static ModelFile model(DeferredBlock<?> deferredBlock) {
-        ResourceLocation model = ResourceLocation
-                .parse(deferredBlock.getId().getNamespace() + ":block/" + deferredBlock.getId().getPath());
+    private static ModelFile model(RegistryObject<?> deferredBlock) {
+        ResourceLocation model = new ResourceLocation(deferredBlock.getId().getNamespace() + ":block/" + deferredBlock.getId().getPath());
 
         return new ModelFile.UncheckedModelFile(model);
     }

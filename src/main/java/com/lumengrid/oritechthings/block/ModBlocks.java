@@ -20,8 +20,8 @@ import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fml.eventbus.IEventBus;
-import net.minecraftforge.registries.DeferredBlock;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import rearth.oritech.block.blocks.addons.MachineAddonBlock;
 import rearth.oritech.util.Geometry;
@@ -35,81 +35,81 @@ public class ModBlocks {
                 ADDONS.register(bus);
         }
         
-    public static final DeferredRegister.Blocks OTHER = DeferredRegister.createBlocks(OritechThings.MOD_ID);
-    public static final DeferredRegister.Blocks ADDONS = DeferredRegister.createBlocks(OritechThings.MOD_ID);
+    public static final DeferredRegister<Block> OTHER = DeferredRegister.create(net.minecraftforge.registries.ForgeRegistries.BLOCKS, OritechThings.MOD_ID);
+    public static final DeferredRegister<Block> ADDONS = DeferredRegister.create(net.minecraftforge.registries.ForgeRegistries.BLOCKS, OritechThings.MOD_ID);
     
-    public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_2 = speedAddonBuilder(2);
-    public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_3 = speedAddonBuilder(3);
-    public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_4 = speedAddonBuilder(4);
-    public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_5 = speedAddonBuilder(5);
-    public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_6 = speedAddonBuilder(6);
-    public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_7 = speedAddonBuilder(7);
-    public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_8 = speedAddonBuilder(8);
-    public static final DeferredBlock<Block> ADDON_BLOCK_SPEED_TIER_9 = speedAddonBuilder(9);
+    public static final RegistryObject<Block> ADDON_BLOCK_SPEED_TIER_2 = speedAddonBuilder(2);
+    public static final RegistryObject<Block> ADDON_BLOCK_SPEED_TIER_3 = speedAddonBuilder(3);
+    public static final RegistryObject<Block> ADDON_BLOCK_SPEED_TIER_4 = speedAddonBuilder(4);
+    public static final RegistryObject<Block> ADDON_BLOCK_SPEED_TIER_5 = speedAddonBuilder(5);
+    public static final RegistryObject<Block> ADDON_BLOCK_SPEED_TIER_6 = speedAddonBuilder(6);
+    public static final RegistryObject<Block> ADDON_BLOCK_SPEED_TIER_7 = speedAddonBuilder(7);
+    public static final RegistryObject<Block> ADDON_BLOCK_SPEED_TIER_8 = speedAddonBuilder(8);
+    public static final RegistryObject<Block> ADDON_BLOCK_SPEED_TIER_9 = speedAddonBuilder(9);
 
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_2 = efficientSpeedAddonBuilder(2);
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_3 = efficientSpeedAddonBuilder(3);
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_4 = efficientSpeedAddonBuilder(4);
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_5 = efficientSpeedAddonBuilder(5);
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_6 = efficientSpeedAddonBuilder(6);
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_7 = efficientSpeedAddonBuilder(7);
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_8 = efficientSpeedAddonBuilder(8);
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_9 = efficientSpeedAddonBuilder(9);
+    public static final RegistryObject<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_2 = efficientSpeedAddonBuilder(2);
+    public static final RegistryObject<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_3 = efficientSpeedAddonBuilder(3);
+    public static final RegistryObject<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_4 = efficientSpeedAddonBuilder(4);
+    public static final RegistryObject<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_5 = efficientSpeedAddonBuilder(5);
+    public static final RegistryObject<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_6 = efficientSpeedAddonBuilder(6);
+    public static final RegistryObject<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_7 = efficientSpeedAddonBuilder(7);
+    public static final RegistryObject<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_8 = efficientSpeedAddonBuilder(8);
+    public static final RegistryObject<Block> ADDON_BLOCK_EFFICIENT_SPEED_TIER_9 = efficientSpeedAddonBuilder(9);
 
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENCY_TIER_2 = efficiencyAddonBuilder(2);
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENCY_TIER_3 = efficiencyAddonBuilder(3);
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENCY_TIER_4 = efficiencyAddonBuilder(4);
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENCY_TIER_5 = efficiencyAddonBuilder(5);
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENCY_TIER_6 = efficiencyAddonBuilder(6);
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENCY_TIER_7 = efficiencyAddonBuilder(7);
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENCY_TIER_8 = efficiencyAddonBuilder(8);
-    public static final DeferredBlock<Block> ADDON_BLOCK_EFFICIENCY_TIER_9 = efficiencyAddonBuilder(9);
+    public static final RegistryObject<Block> ADDON_BLOCK_EFFICIENCY_TIER_2 = efficiencyAddonBuilder(2);
+    public static final RegistryObject<Block> ADDON_BLOCK_EFFICIENCY_TIER_3 = efficiencyAddonBuilder(3);
+    public static final RegistryObject<Block> ADDON_BLOCK_EFFICIENCY_TIER_4 = efficiencyAddonBuilder(4);
+    public static final RegistryObject<Block> ADDON_BLOCK_EFFICIENCY_TIER_5 = efficiencyAddonBuilder(5);
+    public static final RegistryObject<Block> ADDON_BLOCK_EFFICIENCY_TIER_6 = efficiencyAddonBuilder(6);
+    public static final RegistryObject<Block> ADDON_BLOCK_EFFICIENCY_TIER_7 = efficiencyAddonBuilder(7);
+    public static final RegistryObject<Block> ADDON_BLOCK_EFFICIENCY_TIER_8 = efficiencyAddonBuilder(8);
+    public static final RegistryObject<Block> ADDON_BLOCK_EFFICIENCY_TIER_9 = efficiencyAddonBuilder(9);
 
-    public static final DeferredBlock<Block> ADDON_BLOCK_CAPACITOR_TIER_2 = capacitorAddonBuilder(2);
-    public static final DeferredBlock<Block> ADDON_BLOCK_CAPACITOR_TIER_3 = capacitorAddonBuilder(3);
-    public static final DeferredBlock<Block> ADDON_BLOCK_CAPACITOR_TIER_4 = capacitorAddonBuilder(4);
-    public static final DeferredBlock<Block> ADDON_BLOCK_CAPACITOR_TIER_5 = capacitorAddonBuilder(5);
-    public static final DeferredBlock<Block> ADDON_BLOCK_CAPACITOR_TIER_6 = capacitorAddonBuilder(6);
-    public static final DeferredBlock<Block> ADDON_BLOCK_CAPACITOR_TIER_7 = capacitorAddonBuilder(7);
-    public static final DeferredBlock<Block> ADDON_BLOCK_CAPACITOR_TIER_8 = capacitorAddonBuilder(8);
-    public static final DeferredBlock<Block> ADDON_BLOCK_CAPACITOR_TIER_9 = capacitorAddonBuilder(9);
+    public static final RegistryObject<Block> ADDON_BLOCK_CAPACITOR_TIER_2 = capacitorAddonBuilder(2);
+    public static final RegistryObject<Block> ADDON_BLOCK_CAPACITOR_TIER_3 = capacitorAddonBuilder(3);
+    public static final RegistryObject<Block> ADDON_BLOCK_CAPACITOR_TIER_4 = capacitorAddonBuilder(4);
+    public static final RegistryObject<Block> ADDON_BLOCK_CAPACITOR_TIER_5 = capacitorAddonBuilder(5);
+    public static final RegistryObject<Block> ADDON_BLOCK_CAPACITOR_TIER_6 = capacitorAddonBuilder(6);
+    public static final RegistryObject<Block> ADDON_BLOCK_CAPACITOR_TIER_7 = capacitorAddonBuilder(7);
+    public static final RegistryObject<Block> ADDON_BLOCK_CAPACITOR_TIER_8 = capacitorAddonBuilder(8);
+    public static final RegistryObject<Block> ADDON_BLOCK_CAPACITOR_TIER_9 = capacitorAddonBuilder(9);
 
-    public static final DeferredBlock<Block> ADDON_BLOCK_ACCEPTOR_TIER_2 = acceptorAddonBuilder(2);
-    public static final DeferredBlock<Block> ADDON_BLOCK_ACCEPTOR_TIER_3 = acceptorAddonBuilder(3);
-    public static final DeferredBlock<Block> ADDON_BLOCK_ACCEPTOR_TIER_4 = acceptorAddonBuilder(4);
-    public static final DeferredBlock<Block> ADDON_BLOCK_ACCEPTOR_TIER_5 = acceptorAddonBuilder(5);
-    public static final DeferredBlock<Block> ADDON_BLOCK_ACCEPTOR_TIER_6 = acceptorAddonBuilder(6);
-    public static final DeferredBlock<Block> ADDON_BLOCK_ACCEPTOR_TIER_7 = acceptorAddonBuilder(7);
-    public static final DeferredBlock<Block> ADDON_BLOCK_ACCEPTOR_TIER_8 = acceptorAddonBuilder(8);
-    public static final DeferredBlock<Block> ADDON_BLOCK_ACCEPTOR_TIER_9 = acceptorAddonBuilder(9);
+    public static final RegistryObject<Block> ADDON_BLOCK_ACCEPTOR_TIER_2 = acceptorAddonBuilder(2);
+    public static final RegistryObject<Block> ADDON_BLOCK_ACCEPTOR_TIER_3 = acceptorAddonBuilder(3);
+    public static final RegistryObject<Block> ADDON_BLOCK_ACCEPTOR_TIER_4 = acceptorAddonBuilder(4);
+    public static final RegistryObject<Block> ADDON_BLOCK_ACCEPTOR_TIER_5 = acceptorAddonBuilder(5);
+    public static final RegistryObject<Block> ADDON_BLOCK_ACCEPTOR_TIER_6 = acceptorAddonBuilder(6);
+    public static final RegistryObject<Block> ADDON_BLOCK_ACCEPTOR_TIER_7 = acceptorAddonBuilder(7);
+    public static final RegistryObject<Block> ADDON_BLOCK_ACCEPTOR_TIER_8 = acceptorAddonBuilder(8);
+    public static final RegistryObject<Block> ADDON_BLOCK_ACCEPTOR_TIER_9 = acceptorAddonBuilder(9);
 
-    public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_2 = processingAddonBuilder(2);
-    public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_3 = processingAddonBuilder(3);
-    public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_4 = processingAddonBuilder(4);
-    public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_5 = processingAddonBuilder(5);
-    public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_6 = processingAddonBuilder(6);
-    public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_7 = processingAddonBuilder(7);
-    public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_8 = processingAddonBuilder(8);
-    public static final DeferredBlock<Block> ADDON_BLOCK_PROCESSING_TIER_9 = processingAddonBuilder(9);
+    public static final RegistryObject<Block> ADDON_BLOCK_PROCESSING_TIER_2 = processingAddonBuilder(2);
+    public static final RegistryObject<Block> ADDON_BLOCK_PROCESSING_TIER_3 = processingAddonBuilder(3);
+    public static final RegistryObject<Block> ADDON_BLOCK_PROCESSING_TIER_4 = processingAddonBuilder(4);
+    public static final RegistryObject<Block> ADDON_BLOCK_PROCESSING_TIER_5 = processingAddonBuilder(5);
+    public static final RegistryObject<Block> ADDON_BLOCK_PROCESSING_TIER_6 = processingAddonBuilder(6);
+    public static final RegistryObject<Block> ADDON_BLOCK_PROCESSING_TIER_7 = processingAddonBuilder(7);
+    public static final RegistryObject<Block> ADDON_BLOCK_PROCESSING_TIER_8 = processingAddonBuilder(8);
+    public static final RegistryObject<Block> ADDON_BLOCK_PROCESSING_TIER_9 = processingAddonBuilder(9);
 
-    public static final DeferredBlock<Block> ADDON_BLOCK_CROSS_DIMENSIONAL = registerAddon(
+    public static final RegistryObject<Block> ADDON_BLOCK_CROSS_DIMENSIONAL = registerAddon(
             "addon_block_cross_dimensional", () -> new TierAddonBlock(
                     MachineAddonBlock.AddonSettings.getDefaultSettings()
                             .withNeedsSupport(true)
                             .withBoundingShape(generateAddonShape(7)),
                     2, Constants.AddonType.CROSS_DIMENSIONAL));
 
-    public static final DeferredBlock<Block> ACCELERATOR_SPEED_SENSOR = registerBlock(
+    public static final RegistryObject<Block> ACCELERATOR_SPEED_SENSOR = registerBlock(
             "particle_accelerator_speed_sensor", AcceleratorSpeedSensorBlock::new);
 
-    public static final DeferredBlock<Block> ACCELERATOR_MAGNETIC_FIELD = registerEnergyStorageBlock(
+    public static final RegistryObject<Block> ACCELERATOR_MAGNETIC_FIELD = registerEnergyStorageBlock(
             "accelerator_magnetic_field", com.lumengrid.oritechthings.block.custom.AcceleratorMagneticFieldBlock::new);
 
-    public static final DeferredBlock<Block> INFESTED_AMETHYST_BLOCK = registerBlock(
+    public static final RegistryObject<Block> INFESTED_AMETHYST_BLOCK = registerBlock(
             "infested_amethyst_block", () -> new InfestedAmethystBlock(Blocks.AMETHYST_BLOCK,
                     BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).strength(1.5F).sound(SoundType.AMETHYST))
     );
-    private static DeferredBlock<Block> processingAddonBuilder(int tier) {
+    private static RegistryObject<Block> processingAddonBuilder(int tier) {
         return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.PROCESSING, tier), () -> new TierAddonBlock(
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
@@ -123,7 +123,7 @@ public class ModBlocks {
 
     }
 
-    private static DeferredBlock<Block> capacitorAddonBuilder(int tier) {
+    private static RegistryObject<Block> capacitorAddonBuilder(int tier) {
         return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.CAPACITOR, tier), () -> new TierAddonBlock(
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
@@ -135,7 +135,7 @@ public class ModBlocks {
                         tier, Constants.AddonType.CAPACITOR));
     }
 
-    private static DeferredBlock<Block> acceptorAddonBuilder(int tier) {
+    private static RegistryObject<Block> acceptorAddonBuilder(int tier) {
         return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.ACCEPTOR, tier), () -> new TierAddonBlock(
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
@@ -148,7 +148,7 @@ public class ModBlocks {
                         tier, Constants.AddonType.ACCEPTOR));
     }
 
-    private static DeferredBlock<Block> efficientSpeedAddonBuilder(int tier) {
+    private static RegistryObject<Block> efficientSpeedAddonBuilder(int tier) {
         return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.EFFICIENT + NameUtil.Type.SPEED, tier), () -> new TierAddonBlock(
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
@@ -161,7 +161,7 @@ public class ModBlocks {
                         tier, Constants.AddonType.EFFICIENT_SPEED));
     }
 
-    private static DeferredBlock<Block> speedAddonBuilder(int tier) {
+    private static RegistryObject<Block> speedAddonBuilder(int tier) {
         return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.SPEED, tier), () -> new TierAddonBlock(
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
@@ -174,7 +174,7 @@ public class ModBlocks {
                         tier, Constants.AddonType.SPEED));
     }
 
-    private static DeferredBlock<Block> efficiencyAddonBuilder(int tier) {
+    private static RegistryObject<Block> efficiencyAddonBuilder(int tier) {
         return registerAddon(
                 NameUtil.genAddonName(NameUtil.Type.EFFICIENCY, tier), () -> new TierAddonBlock(
                         MachineAddonBlock.AddonSettings.getDefaultSettings()
@@ -202,37 +202,34 @@ public class ModBlocks {
         return shape;
     }
 
-    private static <T extends Block> DeferredBlock<T> registerAddon(String name, Supplier<T> block) {
-        DeferredBlock<T> toReturn = ADDONS.register(name, block);
+    private static <T extends Block> RegistryObject<T> registerAddon(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = ADDONS.register(name, block);
         registerBlockItem(name, toReturn,ModItems.ADDONS);
         return toReturn;
     }
 
-    private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
-        DeferredBlock<T> toReturn = OTHER.register(name, block);
+    private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = OTHER.register(name, block);
         registerBlockItem(name, toReturn);
         return toReturn;
     }
 
-    private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block) {
+    private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
         ModItems.BLOCKITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
 
-    private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block,DeferredRegister.Items items) {
+    private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block,DeferredRegister<Item> items) {
         items.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
 
-    private static <T extends Block> DeferredBlock<T> registerEnergyStorageBlock(String name, Supplier<T> block) {
-        DeferredBlock<T> toReturn = OTHER.register(name, block);
+    private static <T extends Block> RegistryObject<T> registerEnergyStorageBlock(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = OTHER.register(name, block);
         registerEnergyStorageBlockItem(name, toReturn);
         return toReturn;
     }
 
-    private static <T extends Block> void registerEnergyStorageBlockItem(String name, DeferredBlock<T> block) {
+    private static <T extends Block> void registerEnergyStorageBlockItem(String name, RegistryObject<T> block) {
         ModItems.BLOCKITEMS.register(name, () -> {
-            // TODO(1.20.1 oritech swap): re-register the item's energy provider
-            // with the oritech 1.20.1 EnergyApi; energy is stored via NBT in the meantime
-            // (see util/EnergyTagUtil), since Data Components do not exist in 1.20.1.
             var item = new AcceleratorMagneticFieldBlockItem(block.get(), new Item.Properties());
             if (EnergyApi.ITEM != null) {
                 EnergyApi.ITEM.registerForItem(() -> item);

@@ -5,6 +5,8 @@ pluginManagement {
         maven { url = 'https://maven.minecraftforge.net/' }
         // ParchmentMC maven, needed by the Librarian plugin (parchment mappings for ForgeGradle)
         maven { url = 'https://maven.parchmentmc.org' }
+        // MixinGradle (generates the mixin refmap for obfuscated/SRG names)
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
     }
 }
 

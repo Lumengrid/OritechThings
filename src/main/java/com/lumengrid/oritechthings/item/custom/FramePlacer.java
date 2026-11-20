@@ -61,7 +61,7 @@ public class FramePlacer extends Item {
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, List<Component> tooltip, @NotNull TooltipFlag type) {
+    public void appendHoverText(@NotNull ItemStack stack, @org.jetbrains.annotations.Nullable net.minecraft.world.level.Level context, List<Component> tooltip, @NotNull TooltipFlag type) {
         tooltip.add(Component.translatable("tooltip.oritechthings.frame_placer").withStyle(ChatFormatting.ITALIC));
     }
 }

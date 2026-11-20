@@ -10,15 +10,15 @@ import com.lumengrid.oritechthings.menu.ModMenuTypes;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.common.Forge;
+import net.minecraftforge.common.MinecraftForge;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
-import net.minecraftforge.fml.eventbus.IEventBus;
-import net.minecraftforge.fml.ModContainer;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 
 @SuppressWarnings("unused")
@@ -28,14 +28,16 @@ public class OritechThings
     public static final String MOD_ID = "oritechthings";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public OritechThings(IEventBus modEventBus, ModContainer modContainer)
+    public OritechThings()
     {
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ConfigLoader.getInstance().load();
         ModCreativeModeTabs.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModItems.register(modEventBus);
         ModEntities.register(modEventBus);
         ModMenuTypes.MENUS.register(modEventBus);
+        com.lumengrid.oritechthings.network.ModNetwork.init();
     }
 
 
@@ -44,7 +46,7 @@ public class OritechThings
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(ModEntities.AMETHYST_FISH.get(), AmethystFishRenderer::new);
-            Forge.EVENT_BUS.register(RenderWorldLastEvent.class);
+            MinecraftForge.EVENT_BUS.register(RenderWorldLastEvent.class);
         }
     }
 }

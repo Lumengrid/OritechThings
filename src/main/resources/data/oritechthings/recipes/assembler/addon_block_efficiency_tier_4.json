@@ -1,0 +1,24 @@
+{
+  "type": "oritech:assembler",
+  "ingredients": [
+    {
+      "item": "oritechthings:addon_block_efficiency_tier_3"
+    },
+    {
+      "item": "oritech:machine_efficiency_addon"
+    },
+    {
+      "tag": "forge:ingots/electrum"
+    },
+    {
+      "item": "oritech:motor"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_efficiency_tier_4"
+    }
+  ],
+  "time": 200
+}

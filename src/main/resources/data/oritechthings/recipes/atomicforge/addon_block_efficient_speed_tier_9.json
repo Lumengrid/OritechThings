@@ -1,0 +1,21 @@
+{
+  "type": "oritech:atomic_forge",
+  "ingredients": [
+    {
+      "item": "oritechthings:addon_block_speed_tier_9"
+    },
+    {
+      "item": "oritechthings:addon_block_efficiency_tier_9"
+    },
+    {
+      "item": "oritech:machine_core_7"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_efficient_speed_tier_9"
+    }
+  ],
+  "time": 450
+}

@@ -16,17 +16,24 @@ public class ModNetwork {
     public static final String PROTOCOL_VERSION = "1";
     public static final ResourceLocation CHANNEL_NAME = new ResourceLocation(OritechThings.MOD_ID, "main");
 
-    public static final SimpleChannel CHANNEL = NetworkRegistry.newChannel(CHANNEL_NAME, PROTOCOL_VERSION);
+    public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(CHANNEL_NAME,
+            () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
+
+    private static int id = 0;
 
     static {
-        CHANNEL.registerMessage(UpdateSpeedSensorC2SPacket.class,
-                UpdateSpeedSensorC2SPacket::toBytes,
+        CHANNEL.registerMessage(id++, UpdateSpeedSensorC2SPacket.class,
+                (msg, buf) -> msg.toBytes(buf),
                 UpdateSpeedSensorC2SPacket::fromBytes,
                 UpdateSpeedSensorC2SPacket::handleDataOnServer);
 
-        CHANNEL.registerMessage(FramePlacerPacket.class,
-                FramePlacerPacket::toBytes,
+        CHANNEL.registerMessage(id++, FramePlacerPacket.class,
+                (msg, buf) -> msg.toBytes(buf),
                 FramePlacerPacket::fromBytes,
                 FramePlacerPacket::handleDataOnServer);
+        }
+
+    /** Forces the static initializer (channel + messages) to run during mod construction. */
+    public static void init() {
     }
 }

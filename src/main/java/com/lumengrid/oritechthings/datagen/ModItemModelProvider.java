@@ -8,7 +8,7 @@ import com.lumengrid.oritechthings.util.Constants;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.DeferredBlock;
+import net.minecraftforge.registries.RegistryObject;
 
 public class ModItemModelProvider extends ItemModelProvider {
     public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -18,7 +18,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
 
-        for(DeferredBlock<?> data: Constants.getAllAddons()){
+        for(RegistryObject<?> data: Constants.getAllAddons()){
             customItemModel(data.getId().getPath());
         }
         customItemModel(ModBlocks.ACCELERATOR_SPEED_SENSOR.getId().getPath());

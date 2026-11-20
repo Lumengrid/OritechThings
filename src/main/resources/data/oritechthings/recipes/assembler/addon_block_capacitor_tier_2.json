@@ -1,0 +1,24 @@
+{
+  "type": "oritech:assembler",
+  "ingredients": [
+    {
+      "item": "oritech:machine_capacitor_addon"
+    },
+    {
+      "item": "oritech:machine_capacitor_addon"
+    },
+    {
+      "tag": "forge:storage_blocks/energite"
+    },
+    {
+      "item": "oritech:machine_extender"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_capacitor_tier_2"
+    }
+  ],
+  "time": 100
+}

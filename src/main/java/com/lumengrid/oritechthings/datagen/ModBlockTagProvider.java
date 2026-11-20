@@ -9,20 +9,20 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.DeferredBlock;
+import net.minecraftforge.registries.RegistryObject;
 
 import org.jetbrains.annotations.Nullable;
 
 public class ModBlockTagProvider extends BlockTagsProvider {
-    public ModBlockTagProvider(PackOutput output, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, OritechThings.MOD_ID, existingFileHelper);
+    public ModBlockTagProvider(PackOutput output, java.util.concurrent.CompletableFuture<net.minecraft.core.HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
+        super(output, lookupProvider, OritechThings.MOD_ID, existingFileHelper);
     }
 
     @Override
-    protected void addTags() {
+    protected void addTags(net.minecraft.core.HolderLookup.@org.jetbrains.annotations.NotNull Provider provider) {
 
-        for (DeferredBlock<?> data : Constants.getAllAddons()) {
-            tag(ModTags.Blocks.ADDONS).add(data.get());
+        for (RegistryObject<?> data : Constants.getAllAddons()) {
+            tag(ModTags.Blocks.ADDONS).add(((net.minecraft.world.level.block.Block) data.get()));
         }
 
         tag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(ModTags.Blocks.ADDONS);
@@ -31,28 +31,28 @@ public class ModBlockTagProvider extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ACCELERATOR_MAGNETIC_FIELD.get());
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.INFESTED_AMETHYST_BLOCK.get());
 
-        for(DeferredBlock<?> data: Constants.EFFICIENCY){
-            tag(ModTags.Blocks.TIERED_ADDON_EFFICIENCY).add(data.get());
+        for(RegistryObject<?> data: Constants.EFFICIENCY){
+            tag(ModTags.Blocks.TIERED_ADDON_EFFICIENCY).add(((net.minecraft.world.level.block.Block) data.get()));
         }
 
-        for(DeferredBlock<?> data: Constants.SPEED){
-            tag(ModTags.Blocks.TIERED_ADDON_SPEED).add(data.get());
+        for(RegistryObject<?> data: Constants.SPEED){
+            tag(ModTags.Blocks.TIERED_ADDON_SPEED).add(((net.minecraft.world.level.block.Block) data.get()));
         }
 
-        for(DeferredBlock<?> data: Constants.EFFICIENT){
-            tag(ModTags.Blocks.TIERED_ADDON_EFFICIENT_SPEED).add(data.get());
+        for(RegistryObject<?> data: Constants.EFFICIENT){
+            tag(ModTags.Blocks.TIERED_ADDON_EFFICIENT_SPEED).add(((net.minecraft.world.level.block.Block) data.get()));
         }
 
-        for(DeferredBlock<?> data: Constants.CAPACITOR){
-            tag(ModTags.Blocks.TIERED_ADDON_CAPACITOR).add(data.get());
+        for(RegistryObject<?> data: Constants.CAPACITOR){
+            tag(ModTags.Blocks.TIERED_ADDON_CAPACITOR).add(((net.minecraft.world.level.block.Block) data.get()));
         }
 
-        for(DeferredBlock<?> data: Constants.ACCEPTOR){
-            tag(ModTags.Blocks.TIERED_ADDON_ACCEPTOR).add(data.get());
+        for(RegistryObject<?> data: Constants.ACCEPTOR){
+            tag(ModTags.Blocks.TIERED_ADDON_ACCEPTOR).add(((net.minecraft.world.level.block.Block) data.get()));
         }
 
-        for(DeferredBlock<?> data: Constants.PROCESSING){
-            tag(ModTags.Blocks.TIERED_ADDON_PROCESSING).add(data.get());
+        for(RegistryObject<?> data: Constants.PROCESSING){
+            tag(ModTags.Blocks.TIERED_ADDON_PROCESSING).add(((net.minecraft.world.level.block.Block) data.get()));
         }
 
         tag(ModTags.Blocks.PARTICLE_ACCELERATOR).add(ModBlocks.ACCELERATOR_SPEED_SENSOR.get());

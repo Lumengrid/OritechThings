@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "m": {
+      "item": "oritech:magnetic_coil"
+    },
+    "c": {
+      "tag": "forge:ingots/electrum"
+    },
+    "e": {
+      "item": "oritech:super_ai_chip"
+    }
+  },
+  "pattern": [
+    "mcm",
+    "cec",
+    "mcm"
+  ],
+  "result": {
+    "item": "oritechthings:accelerator_magnetic_field",
+    "count": 1
+  }
+}

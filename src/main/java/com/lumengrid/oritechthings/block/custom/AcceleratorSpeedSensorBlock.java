@@ -2,7 +2,9 @@ package com.lumengrid.oritechthings.block.custom;
 
 import com.lumengrid.oritechthings.entity.custom.AcceleratorSpeedSensorBlockEntity;
 import com.lumengrid.oritechthings.util.ShapeUtil;
-import com.mojang.serialization.MapCodec;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraftforge.network.NetworkHooks;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -56,22 +58,21 @@ public class AcceleratorSpeedSensorBlock extends BaseEntityBlock {
 
     @SuppressWarnings("null")
     @Override
-    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos,
-            @NotNull Player player, @NotNull BlockHitResult hitResult) {
+    public @NotNull InteractionResult use(@NotNull BlockState state, Level level, @NotNull BlockPos pos,
+            @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (level.isClientSide()) {
-            return InteractionResult.SUCCESS_NO_ITEM_USED;
+            return InteractionResult.SUCCESS;
         }
 
         BlockEntity blockEntity = level.getBlockEntity(pos);
 
-        if (!(blockEntity instanceof AcceleratorSpeedSensorBlockEntity)) {
-            return InteractionResult.SUCCESS_NO_ITEM_USED;
+        if (!(blockEntity instanceof AcceleratorSpeedSensorBlockEntity sensor)) {
+            return InteractionResult.SUCCESS;
         }
 
-        // 1.20.1 form: openMenu(MenuProvider, BlockPos)
-        player.openMenu(state.getMenuProvider(level, pos), pos);
+        NetworkHooks.openScreen((ServerPlayer) player, sensor, pos);
 
-        return InteractionResult.SUCCESS_NO_ITEM_USED;
+        return InteractionResult.SUCCESS;
     }
 
     @Override
@@ -110,17 +111,12 @@ public class AcceleratorSpeedSensorBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected RenderShape getRenderShape(BlockState state) {
+    public @NotNull RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(AcceleratorSpeedSensorBlock::new);
-    }
-
-    @Override
-    public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
+    public void appendHoverText(@NotNull ItemStack stack, @org.jetbrains.annotations.Nullable BlockGetter context,
             @NotNull List<Component> tooltip,
             @NotNull TooltipFlag options) {
         tooltip.add(Component.translatable("tooltip.oritechthings.particle_accelerator_speed_sensor")

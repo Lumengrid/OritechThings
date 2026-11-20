@@ -1,0 +1,24 @@
+{
+  "type": "oritech:assembler",
+  "ingredients": [
+    {
+      "item": "oritechthings:addon_block_capacitor_tier_4"
+    },
+    {
+      "item": "oritech:machine_capacitor_addon"
+    },
+    {
+      "tag": "forge:ingots/energite"
+    },
+    {
+      "item": "oritech:flux_gate"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_capacitor_tier_5"
+    }
+  ],
+  "time": 250
+}

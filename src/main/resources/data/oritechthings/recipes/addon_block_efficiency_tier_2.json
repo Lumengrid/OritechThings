@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "e": {
+      "item": "oritech:machine_extender"
+    },
+    "a": {
+      "item": "oritech:machine_efficiency_addon"
+    },
+    "b": {
+      "tag": "forge:storage_blocks/electrum"
+    },
+    "p": {
+      "tag": "forge:plates/plastic"
+    },
+    "s": {
+      "tag": "forge:silicon"
+    }
+  },
+  "pattern": [
+    "ppp",
+    "aea",
+    "sbs"
+  ],
+  "result": {
+    "item": "oritechthings:addon_block_efficiency_tier_2",
+    "count": 1
+  }
+}

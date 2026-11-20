@@ -1,0 +1,21 @@
+{
+  "type": "oritech:atomic_forge",
+  "ingredients": [
+    {
+      "item": "oritechthings:addon_block_speed_tier_2"
+    },
+    {
+      "item": "oritechthings:addon_block_efficiency_tier_2"
+    },
+    {
+      "tag": "forge:storage_blocks/electrum"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_efficient_speed_tier_2"
+    }
+  ],
+  "time": 100
+}

@@ -43,7 +43,6 @@ public class AmethystFishEntity extends Monster {
                 .add(Attributes.MAX_HEALTH, 8d)
                 .add(Attributes.MOVEMENT_SPEED, 0.20D)
                 .add(Attributes.FOLLOW_RANGE, 24D)
-                .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 0.05D)
                 .add(Attributes.ATTACK_DAMAGE, 1D);
     }
 
@@ -54,7 +53,7 @@ public class AmethystFishEntity extends Monster {
     @Override
     public void aiStep() {
         if (this.isAlive() && this.isSunSensitive() && this.isSunBurnTick()) {
-            this.igniteForSeconds(4.0F);
+            this.setSecondsOnFire(4);
         }
         super.aiStep();
     }

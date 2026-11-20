@@ -1,44 +1,35 @@
 package com.lumengrid.oritechthings.network.packet;
 
 import com.lumengrid.oritechthings.entity.custom.AcceleratorSpeedSensorBlockEntity;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.network.IPayloadContext;
+import net.minecraftforge.network.NetworkEvent;
+
+import java.util.function.Supplier;
 
 public record UpdateSpeedSensorC2SPacket(BlockPos pos, int speed, boolean active,
                                          boolean checkGreater, boolean automaticMode) {
-    public static final StreamCodec<ByteBuf, UpdateSpeedSensorC2SPacket> STREAM_CODEC = StreamCodec.composite(
-            BlockPos.STREAM_CODEC,
-            UpdateSpeedSensorC2SPacket::pos,
-            ByteBufCodecs.INT,
-            UpdateSpeedSensorC2SPacket::speed,
-            ByteBufCodecs.BOOL,
-            UpdateSpeedSensorC2SPacket::active,
-            ByteBufCodecs.BOOL,
-            UpdateSpeedSensorC2SPacket::checkGreater,
-            ByteBufCodecs.BOOL,
-            UpdateSpeedSensorC2SPacket::automaticMode,
-            UpdateSpeedSensorC2SPacket::new
-    );
-
-    public FriendlyByteBuf toBytes(FriendlyByteBuf buf) {
-        STREAM_CODEC.encode(buf, this);
-        return buf;
+    public void toBytes(FriendlyByteBuf buf) {
+        buf.writeBlockPos(pos);
+        buf.writeInt(speed);
+        buf.writeBoolean(active);
+        buf.writeBoolean(checkGreater);
+        buf.writeBoolean(automaticMode);
     }
 
     public static UpdateSpeedSensorC2SPacket fromBytes(FriendlyByteBuf buf) {
-        return STREAM_CODEC.decode(buf);
+        return new UpdateSpeedSensorC2SPacket(buf.readBlockPos(), buf.readInt(), buf.readBoolean(), buf.readBoolean(), buf.readBoolean());
     }
 
-    public static void handleDataOnServer(final UpdateSpeedSensorC2SPacket packet, final IPayloadContext context) {
+    public static void handleDataOnServer(final UpdateSpeedSensorC2SPacket packet, final Supplier<NetworkEvent.Context> ctx) {
+        NetworkEvent.Context context = ctx.get();
+        context.setPacketHandled(true);
         context.enqueueWork(() -> {
-            if (!(context.player() instanceof ServerPlayer sPlayer)) return;
+            ServerPlayer sPlayer = context.getSender();
+            if (sPlayer == null) return;
             ServerLevel serverLevel = sPlayer.serverLevel();
 
             BlockEntity e = serverLevel.getBlockEntity(packet.pos());

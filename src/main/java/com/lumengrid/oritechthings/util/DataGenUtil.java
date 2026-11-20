@@ -2,12 +2,12 @@ package com.lumengrid.oritechthings.util;
 
 import static com.lumengrid.oritechthings.main.OritechThings.MOD_ID;
 
-import net.minecraftforge.registries.DeferredHolder;
+import net.minecraftforge.registries.RegistryObject;
 
 public class DataGenUtil {
 
-    public static String getName(DeferredHolder<?,?> b){
-        return b.getRegisteredName().replace(MOD_ID + ":", "");
+    public static String getName(RegistryObject<?> b){
+        return b.getId().getPath();
     }
 
     /**

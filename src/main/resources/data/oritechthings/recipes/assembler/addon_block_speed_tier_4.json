@@ -1,0 +1,24 @@
+{
+  "type": "oritech:assembler",
+  "ingredients": [
+    {
+      "item": "oritechthings:addon_block_speed_tier_3"
+    },
+    {
+      "item": "oritech:machine_speed_addon"
+    },
+    {
+      "tag": "forge:ingots/steel"
+    },
+    {
+      "item": "oritech:motor"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "oritechthings:addon_block_speed_tier_4"
+    }
+  ],
+  "time": 200
+}
