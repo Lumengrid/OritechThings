@@ -20,6 +20,9 @@ import com.mojang.logging.LogUtils;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import com.electronwill.nightconfig.core.CommentedConfig;
+import rearth.oritech.init.OritechStartupConfig;
 
 @SuppressWarnings("unused")
 @Mod(OritechThings.MOD_ID)
@@ -31,6 +34,7 @@ public class OritechThings
     public OritechThings()
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        loadOritechStartupConfigInDev();
         ConfigLoader.getInstance().load();
         ModCreativeModeTabs.register(modEventBus);
         ModBlocks.register(modEventBus);
@@ -40,6 +44,14 @@ public class OritechThings
         com.lumengrid.oritechthings.network.ModNetwork.init();
     }
 
+
+    // Oritech reads OritechStartupConfig while registering its blocks, before Forge has loaded that spec (always the
+    // case in runData). Outside production Forge throws on that read, so feed the spec its defaults first.
+    private static void loadOritechStartupConfigInDev() {
+        if (!FMLEnvironment.production && !OritechStartupConfig.STARTUP_SPEC.isLoaded()) {
+            OritechStartupConfig.STARTUP_SPEC.acceptConfig(CommentedConfig.inMemory());
+        }
+    }
 
     @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvent {
